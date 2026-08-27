@@ -13,11 +13,11 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #eae5f0;
-  --card: rgba(255,255,255,0.65);
-  --card-hover: rgba(255,255,255,0.85);
-  --border: rgba(0,0,0,0.05);
-  --text1: #1a1a2e;
+  --bg: #f5f5f7;
+  --card: #ffffff;
+  --card-hover: #fafafa;
+  --border: #e8e8e8;
+  --text1: #1a1a1a;
   --text2: #555;
   --text3: #999;
   --accent: #6c5ce7;
@@ -41,8 +41,7 @@
 
 body {
   font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  background: linear-gradient(180deg, #e8e0f0 0%, #dce8e8 40%, #eaeef2 100%);
-  background-attachment: fixed;
+  background: var(--bg);
   color: var(--text1); min-height: 100vh; -webkit-font-smoothing: antialiased;
 }
 
@@ -55,8 +54,8 @@ body {
   gap: 16px; flex-wrap: wrap;
 }
 .site-header-left { display: flex; align-items: center; gap: 14px; }
-.site-header-left img { width: 40px; height: 40px; border-radius: 10px; }
-.site-header-left h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.03em; }
+.site-header-left img { width: 36px; height: 36px; border-radius: 8px; }
+.site-header-left h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; }
 .site-header-left p { font-size: 13px; color: var(--text3); margin-top: 2px; }
 
 /* ── Top bar ── */
@@ -68,20 +67,20 @@ body {
 .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aaa; }
 .search-wrap input {
   width: 100%; padding: 10px 16px 10px 40px;
-  background: var(--card); backdrop-filter: blur(8px);
-  border: 1px solid var(--border); border-radius: 12px;
+  background: #fff;
+  border: 1px solid var(--border); border-radius: 10px;
   color: var(--text1); font-size: 14px; outline: none;
 }
-.search-wrap input:focus { border-color: rgba(108,92,231,0.3); background: rgba(255,255,255,0.9); }
+.search-wrap input:focus { border-color: rgba(108,92,231,0.4); }
 .search-wrap input::placeholder { color: #bbb; }
 
 .btn {
-  padding: 9px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
-  border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px);
+  padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border); background: #fff;
   color: var(--text1); cursor: pointer; transition: all 0.15s;
   display: flex; align-items: center; gap: 6px;
 }
-.btn:hover { background: var(--card-hover); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.btn:hover { background: var(--card-hover); }
 .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 .btn-primary:hover { background: #5a4bd6; }
 
@@ -125,27 +124,27 @@ body {
 .chip-divider { width: 1px; height: 20px; background: rgba(0,0,0,0.08); margin: 0 4px; align-self: center; flex-shrink: 0; }
 
 /* ── Stats ── */
-.stats { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+.stats { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
 .stat {
-  background: var(--card); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); border-radius: 14px;
+  background: #fff;
+  border: 1px solid var(--border); border-radius: 12px;
   padding: 16px 20px; min-width: 100px; flex: 1;
 }
-.stat-value { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+.stat-value { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
 .stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
 
 /* ── Card grid ── */
 .grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 10px; margin-top: 18px; align-items: start;
+  gap: 14px; margin-top: 20px; align-items: start;
 }
 .card {
-  background: var(--card); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); border-radius: 16px;
-  padding: 20px; transition: all 0.2s; cursor: pointer; position: relative;
+  background: #fff;
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 20px; transition: all 0.15s; cursor: pointer; position: relative;
   display: flex; flex-direction: column; gap: 10px;
 }
-.card:hover { background: var(--card-hover); box-shadow: 0 2px 20px rgba(0,0,0,0.04); }
+.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
 .card-top { display: flex; align-items: flex-start; gap: 12px; }
 .card-icon {
   width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
@@ -186,13 +185,13 @@ body {
 .detail-value { color: var(--text2); }
 
 /* ── Workflow ── */
-.workflow-list { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
+.workflow-list { margin-top: 20px; display: flex; flex-direction: column; gap: 14px; }
 .wf-card {
-  background: var(--card); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); border-radius: 16px;
-  overflow: hidden; transition: all 0.2s;
+  background: #fff;
+  border: 1px solid var(--border); border-radius: 14px;
+  overflow: hidden; transition: all 0.15s;
 }
-.wf-card:hover { box-shadow: 0 2px 20px rgba(0,0,0,0.04); }
+.wf-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
 .wf-header {
   padding: 18px 24px; cursor: pointer; display: flex; align-items: center; gap: 14px;
 }
@@ -225,7 +224,7 @@ body {
 .pipe-step:last-child .pipe-connector { display: none; }
 .pipe-content { flex: 1; padding: 8px 0 8px 10px; min-width: 0; }
 .pipe-content-inner {
-  background: rgba(255,255,255,0.5); border-radius: 10px; padding: 12px 16px;
+  background: #f8f8fa; border-radius: 10px; padding: 12px 16px;
 }
 .pipe-content-inner.gap { background: rgba(214,48,49,0.06); }
 .pipe-name { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
@@ -255,9 +254,9 @@ body {
 
 /* ── Guide banner ── */
 .guide-banner {
-  background: var(--card); backdrop-filter: blur(12px);
-  border: 1px solid var(--border); border-radius: 16px;
-  padding: 24px; margin-top: 18px;
+  background: #fff;
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 24px; margin-top: 24px;
   display: flex; align-items: flex-start; gap: 16px;
 }
 .guide-icon {
@@ -287,14 +286,14 @@ body {
 /* ── Modal ── */
 .modal-overlay {
   display: none; position: fixed; inset: 0; z-index: 100;
-  background: rgba(0,0,0,0.4); backdrop-filter: blur(4px);
+  background: rgba(0,0,0,0.35);
   align-items: center; justify-content: center;
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  background: #fff; border-radius: 18px; padding: 32px;
+  background: #fff; border-radius: 16px; padding: 32px;
   width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.15);
 }
 .modal h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
 .modal .subtitle { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
@@ -344,7 +343,7 @@ body {
   <!-- Header -->
   <div class="site-header">
     <div class="site-header-left">
-      <img src="favicon.png" alt="">
+      <img src="logo.svg" alt="">
       <div>
         <h1>Routinery Skill Registry</h1>
         <p>팀이 만든 에이전트, 스킬, 자동화 워크플로우를 한눈에</p>

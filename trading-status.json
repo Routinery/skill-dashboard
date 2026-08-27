@@ -1,0 +1,18 @@
+{
+  "updated_at": "2026-08-21T10:54:00",
+  "btc_price": 0,
+  "rsi": 0,
+  "ema_short": 0,
+  "ema_long": 0,
+  "balance_usd": 675.89,
+  "balance_krw": 993563,
+  "initial_usd": 675.89,
+  "pnl_usd": 0,
+  "pnl_pct": 0,
+  "pnl_krw": 0,
+  "position": null,
+  "leverage": 3,
+  "strategy": "RSI+EMA Cross",
+  "timeframe": "4h",
+  "_note": "봇이 send_status.py 실행 시 실데이터로 교체됨"
+}
