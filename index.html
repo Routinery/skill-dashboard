@@ -5,801 +5,402 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Routinery Skill Registry</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
-<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#fff;--surface:#f7f7f8;--border:#eee;
+  --text:#111;--text2:#666;--text3:#aaa;
+  --accent:#6c5ce7;--accent-bg:rgba(108,92,231,0.07);
+  --green:#00a67e;--green-bg:rgba(0,166,126,0.07);
+  --orange:#e17055;--orange-bg:rgba(225,112,85,0.07);
+  --red:#d63031;--red-bg:rgba(214,48,49,0.07);
+  --blue:#0984e3;--blue-bg:rgba(9,132,227,0.07);
+  --pink:#e84393;--pink-bg:rgba(232,67,147,0.07);
+  --yellow:#fdcb6e;--yellow-bg:rgba(253,203,110,0.15);
+  --gray:#b2bec3;--gray-bg:rgba(178,190,195,0.12);
+}
+body{font-family:'Inter',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 
-:root {
-  --bg: #f5f5f7;
-  --card: #ffffff;
-  --card-hover: #fafafa;
-  --border: #e8e8e8;
-  --text1: #1a1a1a;
-  --text2: #555;
-  --text3: #999;
-  --accent: #6c5ce7;
-  --accent-light: rgba(108,92,231,0.08);
-  --green: #00b894;
-  --green-light: rgba(0,184,148,0.08);
-  --orange: #e17055;
-  --orange-light: rgba(225,112,85,0.08);
-  --pink: #e84393;
-  --pink-light: rgba(232,67,147,0.08);
-  --cyan: #0984e3;
-  --cyan-light: rgba(9,132,227,0.08);
-  --purple: #6c5ce7;
-  --purple-light: rgba(108,92,231,0.08);
-  --red: #d63031;
-  --red-light: rgba(214,48,49,0.08);
-  --human-color: #fdcb6e;
-  --agent-color: #6c5ce7;
-  --trigger-color: #b2bec3;
-}
+/* Layout */
+.page{max-width:960px;margin:0 auto;padding:40px 32px 100px}
 
-body {
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text1); min-height: 100vh; -webkit-font-smoothing: antialiased;
-}
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:32px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo img{width:32px;height:32px;border-radius:8px}
+.logo h1{font-size:18px;font-weight:700;letter-spacing:-0.02em}
+.header-actions{display:flex;gap:8px}
 
-.page { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+/* Buttons */
+.btn{
+  height:34px;padding:0 14px;border-radius:8px;font-size:13px;font-weight:500;
+  border:1px solid var(--border);background:#fff;color:var(--text);
+  cursor:pointer;display:inline-flex;align-items:center;gap:5px;white-space:nowrap;
+}
+.btn:hover{background:var(--surface)}
+.btn-primary{background:var(--text);color:#fff;border-color:var(--text)}
+.btn-primary:hover{background:#333}
 
-/* ── Header ── */
-.site-header {
-  padding: 48px 0 0;
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
+/* Search */
+.search{
+  width:100%;height:38px;padding:0 14px 0 36px;
+  border:1px solid var(--border);border-radius:8px;background:var(--surface);
+  font-size:13px;color:var(--text);outline:none;margin-bottom:20px;
 }
-.site-header-left { display: flex; align-items: center; gap: 14px; }
-.site-header-left img { width: 36px; height: 36px; border-radius: 8px; }
-.site-header-left h1 { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; }
-.site-header-left p { font-size: 13px; color: var(--text3); margin-top: 2px; }
+.search:focus{border-color:var(--accent);background:#fff}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3)}
 
-/* ── Top bar ── */
-.top-bar {
-  display: flex; align-items: center; gap: 8px;
-  margin-top: 20px; flex-wrap: wrap;
+/* Tabs */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px}
+.tab{
+  padding:10px 16px;font-size:14px;font-weight:500;color:var(--text3);
+  background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;
 }
-.search-wrap { flex: 1; min-width: 200px; position: relative; }
-.search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aaa; }
-.search-wrap input {
-  width: 100%; padding: 10px 16px 10px 40px;
-  background: #fff;
-  border: 1px solid var(--border); border-radius: 10px;
-  color: var(--text1); font-size: 14px; outline: none;
-}
-.search-wrap input:focus { border-color: rgba(108,92,231,0.4); }
-.search-wrap input::placeholder { color: #bbb; }
+.tab:hover{color:var(--text2)}
+.tab.active{color:var(--text);border-bottom-color:var(--text)}
+.tab-badge{font-size:11px;color:var(--text3);background:var(--surface);padding:1px 6px;border-radius:4px;margin-left:6px}
 
-.btn {
-  padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
-  border: 1px solid var(--border); background: #fff;
-  color: var(--text1); cursor: pointer; transition: all 0.15s;
-  display: flex; align-items: center; gap: 6px;
+/* Filters */
+.filters{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:20px}
+.filter{
+  height:30px;padding:0 12px;border-radius:6px;border:none;
+  background:transparent;color:var(--text3);font-size:12px;font-weight:500;cursor:pointer;
 }
-.btn:hover { background: var(--card-hover); }
-.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-.btn-primary:hover { background: #5a4bd6; }
+.filter:hover{color:var(--text2);background:var(--surface)}
+.filter.active{color:var(--text);background:var(--surface)}
+.filter-sep{width:1px;height:16px;background:var(--border);align-self:center;margin:0 4px}
+.filter.author{color:#9a6e30}
+.filter.author.active{background:rgba(154,110,48,0.08)}
 
-/* ── Main Tabs ── */
-.main-tabs {
-  display: flex; gap: 0; margin-top: 18px;
-  border-bottom: 1px solid rgba(0,0,0,0.06);
-}
-.main-tab {
-  padding: 14px 24px; background: none; border: none;
-  font-size: 17px; font-weight: 600; color: #aaa;
-  cursor: pointer; border-bottom: 3px solid transparent;
-  margin-bottom: -1px; transition: color 0.15s;
-  display: flex; align-items: center; gap: 8px;
-}
-.main-tab:hover { color: #555; }
-.main-tab.active { color: #111; border-bottom-color: #111; }
-.tab-count {
-  font-size: 13px; color: #bbb; background: rgba(0,0,0,0.04);
-  padding: 2px 8px; border-radius: 6px;
-}
-.main-tab.active .tab-count { color: #666; background: rgba(0,0,0,0.07); }
-.tab-gap-count {
-  font-size: 11px; color: var(--red); background: var(--red-light);
-  padding: 2px 8px; border-radius: 6px; font-weight: 600;
-}
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.stat{background:#fff;padding:16px;text-align:center}
+.stat-val{font-size:24px;font-weight:700;letter-spacing:-0.03em}
+.stat-label{font-size:11px;color:var(--text3);margin-top:2px;text-transform:uppercase;letter-spacing:0.03em;font-weight:500}
 
-/* ── Sub-filters ── */
-.sub-filters {
-  margin-top: 14px; display: flex; gap: 4px; flex-wrap: wrap;
+/* Registry cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:24px}
+.card{background:#fff;padding:20px;cursor:pointer;transition:background 0.1s}
+.card:hover{background:#fafbfc}
+.card-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.card-emoji{font-size:20px;line-height:1}
+.card-name{font-size:14px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.card-cmd{font-size:11px;color:var(--accent);font-family:'SF Mono',monospace;font-weight:500}
+.card-desc{font-size:12px;color:var(--text2);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+.card-tags{display:flex;gap:4px;flex-wrap:wrap}
+.tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:4px;background:var(--surface);color:var(--text3)}
+.tag-type{background:var(--accent-bg);color:var(--accent)}
+.tag-platform{background:var(--green-bg);color:var(--green)}
+.tag-int{background:var(--blue-bg);color:var(--blue)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:11px;color:var(--text3)}
+.card-schedule{font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 6px;border-radius:4px}
+.card-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.7}
+.card.expanded .card-detail{display:block}
+.card.expanded .card-desc{-webkit-line-clamp:unset}
+.detail-row{display:flex;gap:8px;margin-bottom:4px}
+.detail-label{color:var(--text3);min-width:44px;flex-shrink:0}
+.author-input{
+  padding:4px 8px;border:1px solid var(--border);border-radius:6px;
+  font-size:12px;font-family:inherit;color:var(--text);background:var(--surface);
+  outline:none;width:140px;
 }
-.chip {
-  padding: 8px 16px; border-radius: 10px; border: none;
-  background: transparent; color: #999; font-size: 13px; font-weight: 600;
-  cursor: pointer; transition: all 0.15s; min-height: 36px;
-}
-.chip:hover { color: #555; background: rgba(0,0,0,0.04); }
-.chip.active { color: #111; background: rgba(0,0,0,0.06); }
-.chip-author { color: #b07020; }
-.chip-author.active { color: #8a5a10; background: rgba(176,112,32,0.1); }
-.chip-divider { width: 1px; height: 20px; background: rgba(0,0,0,0.08); margin: 0 4px; align-self: center; flex-shrink: 0; }
+.author-input:focus{border-color:var(--accent);background:#fff}
 
-/* ── Stats ── */
-.stats { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-.stat {
-  background: #fff;
-  border: 1px solid var(--border); border-radius: 12px;
-  padding: 16px 20px; min-width: 100px; flex: 1;
-}
-.stat-value { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; }
-.stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
-
-/* ── Card grid ── */
-.grid {
-  display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 14px; margin-top: 20px; align-items: start;
-}
-.card {
-  background: #fff;
-  border: 1px solid var(--border); border-radius: 14px;
-  padding: 20px; transition: all 0.15s; cursor: pointer; position: relative;
-  display: flex; flex-direction: column; gap: 10px;
-}
-.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-.card-top { display: flex; align-items: flex-start; gap: 12px; }
-.card-icon {
-  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: 18px;
-}
-.card-info { flex: 1; min-width: 0; }
-.card-name { font-size: 18px; font-weight: 800; letter-spacing: -0.02em; }
-.card-cmd { font-size: 11px; color: var(--accent); font-family: 'SF Mono', monospace; font-weight: 500; margin-top: 1px; }
-.card-desc { font-size: 13px; color: #888; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
-.tag { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 5px; background: rgba(0,0,0,0.04); color: var(--text3); }
-.tag-type { background: var(--accent-light); color: var(--accent); }
-.tag-platform { background: var(--green-light); color: var(--green); }
-.tag-integration { background: var(--purple-light); color: var(--purple); }
-.card-meta { font-size: 11px; color: #bbb; font-family: 'SF Mono', 'Fira Code', monospace; }
-.card-schedule {
-  position: absolute; top: 12px; right: 12px;
-  font-size: 10px; font-weight: 600; color: var(--green);
-  background: var(--green-light); padding: 3px 8px; border-radius: 5px;
-}
-.card-detail { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; color: #777; line-height: 1.7; }
-.card.expanded .card-detail { display: block; }
-.card.expanded .card-desc { -webkit-line-clamp: unset; }
-.detail-editable { align-items: center; }
-.author-input {
-  padding: 5px 10px; border: 1px solid rgba(0,0,0,0.08); border-radius: 7px;
-  font-size: 12px; font-family: inherit; color: var(--text1); background: rgba(0,0,0,0.02);
-  outline: none; width: 160px; transition: border-color 0.15s;
-}
-.author-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 2px rgba(108,92,231,0.1); }
-.wf-author-edit {
-  display: flex; align-items: center; gap: 10px;
-  margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(0,0,0,0.06);
-  font-size: 12px;
-}
-.detail-row { display: flex; gap: 8px; margin-bottom: 6px; }
-.detail-label { color: var(--text3); min-width: 48px; flex-shrink: 0; }
-.detail-value { color: var(--text2); }
-
-/* ── Workflow ── */
-.workflow-list { margin-top: 20px; display: flex; flex-direction: column; gap: 14px; }
-.wf-card {
-  background: #fff;
-  border: 1px solid var(--border); border-radius: 14px;
-  overflow: hidden; transition: all 0.15s;
-}
-.wf-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
-.wf-header {
-  padding: 18px 24px; cursor: pointer; display: flex; align-items: center; gap: 14px;
-}
-.wf-team {
-  font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
-  background: var(--accent-light); color: var(--accent); white-space: nowrap;
-}
-.wf-title { font-size: 17px; font-weight: 700; flex: 1; letter-spacing: -0.02em; }
-.wf-meta { font-size: 12px; color: var(--text3); display: flex; gap: 12px; align-items: center; }
-.wf-meta span { display: flex; align-items: center; gap: 3px; }
-.wf-author { font-size: 11px; color: var(--text3); }
-.wf-chevron { font-size: 20px; color: #ccc; transition: transform 0.2s; }
-.wf-card.open .wf-chevron { transform: rotate(90deg); }
-.wf-body { display: none; padding: 0 24px 24px; }
-.wf-card.open .wf-body { display: block; }
-.wf-desc { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.5; }
+/* Workflows */
+.wf-list{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.wf-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+.wf-head{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:12px}
+.wf-team{font-size:11px;font-weight:600;padding:3px 8px;border-radius:5px;background:var(--accent-bg);color:var(--accent);white-space:nowrap}
+.wf-title{font-size:15px;font-weight:600;flex:1;letter-spacing:-0.01em}
+.wf-info{font-size:12px;color:var(--text3);display:flex;gap:10px;align-items:center}
+.wf-info span{display:flex;align-items:center;gap:3px}
+.wf-chevron{color:var(--text3);transition:transform 0.15s;font-size:16px}
+.wf-card.open .wf-chevron{transform:rotate(90deg)}
+.wf-body{display:none;padding:0 20px 20px}
+.wf-card.open .wf-body{display:block}
+.wf-desc{font-size:12px;color:var(--text2);margin-bottom:16px;line-height:1.5}
 
 /* Pipeline */
-.pipeline { display: flex; flex-direction: column; gap: 0; }
-.pipe-step { display: flex; align-items: stretch; gap: 0; position: relative; min-height: 68px; }
-.pipe-line { width: 44px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
-.pipe-dot {
-  width: 18px; height: 18px; border-radius: 50%; border: 3px solid;
-  z-index: 1; margin-top: 14px; flex-shrink: 0;
-}
-.pipe-dot.agent { border-color: var(--agent-color); background: rgba(108,92,231,0.15); }
-.pipe-dot.human { border-color: var(--human-color); background: rgba(253,203,110,0.2); }
-.pipe-dot.trigger { border-color: var(--trigger-color); background: rgba(178,190,195,0.15); }
-.pipe-connector { flex: 1; width: 2px; background: #ddd; margin-top: 4px; }
-.pipe-step:last-child .pipe-connector { display: none; }
-.pipe-content { flex: 1; padding: 8px 0 8px 10px; min-width: 0; }
-.pipe-content-inner {
-  background: #f8f8fa; border-radius: 10px; padding: 12px 16px;
-}
-.pipe-content-inner.gap { background: rgba(214,48,49,0.06); }
-.pipe-name { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.pipe-badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
-.pipe-badge.agent { background: var(--accent-light); color: var(--accent); }
-.pipe-badge.human { background: rgba(253,203,110,0.2); color: #e17055; }
-.pipe-badge.trigger { background: rgba(0,0,0,0.04); color: var(--text3); }
-.pipe-badge.gap { background: var(--red-light); color: var(--red); }
-.pipe-desc { font-size: 12px; color: #888; margin-top: 4px; line-height: 1.5; }
-.pipe-tools { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 6px; }
-.pipe-tool { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.04); color: var(--text3); }
-.pipe-output { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: 500; }
-.pipe-who { font-size: 11px; color: #e17055; font-weight: 500; }
-.pipe-reject { font-size: 10px; color: var(--red); margin-top: 4px; }
-.pipe-parallel {
-  margin-top: 12px; margin-left: 44px;
-  background: rgba(253,203,110,0.08); border: 1px dashed #fdcb6e; border-radius: 10px;
-  padding: 12px 16px;
-}
-.pipe-parallel-label { font-size: 10px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-.wf-legend { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
-.legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); }
-.legend-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid; }
-.legend-dot.agent { border-color: var(--agent-color); background: rgba(108,92,231,0.15); }
-.legend-dot.human { border-color: var(--human-color); background: rgba(253,203,110,0.2); }
-.legend-dot.trigger { border-color: var(--trigger-color); background: rgba(178,190,195,0.15); }
+.pipeline{display:flex;flex-direction:column}
+.pipe-step{display:flex;align-items:stretch;min-height:56px}
+.pipe-rail{width:36px;flex-shrink:0;display:flex;flex-direction:column;align-items:center}
+.pipe-dot{width:14px;height:14px;border-radius:50%;border:2.5px solid;margin-top:12px;flex-shrink:0}
+.pipe-dot.agent{border-color:var(--accent);background:var(--accent-bg)}
+.pipe-dot.human{border-color:var(--yellow);background:var(--yellow-bg)}
+.pipe-dot.trigger{border-color:var(--gray);background:var(--gray-bg)}
+.pipe-line{flex:1;width:2px;background:var(--border);margin-top:4px}
+.pipe-step:last-child .pipe-line{display:none}
+.pipe-body{flex:1;padding:6px 0 6px 8px}
+.pipe-inner{background:var(--surface);border-radius:8px;padding:10px 14px}
+.pipe-inner.gap{background:var(--red-bg)}
+.pipe-label{font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pipe-badge{font-size:10px;font-weight:600;padding:1px 6px;border-radius:3px}
+.pipe-badge.agent{background:var(--accent-bg);color:var(--accent)}
+.pipe-badge.human{background:var(--yellow-bg);color:var(--orange)}
+.pipe-badge.trigger{background:var(--surface);color:var(--text3)}
+.pipe-badge.gap{background:var(--red-bg);color:var(--red)}
+.pipe-who{font-size:11px;color:var(--orange);font-weight:500}
+.pipe-desc{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.4}
+.pipe-tools{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px}
+.pipe-tool{font-size:10px;padding:1px 5px;border-radius:3px;background:rgba(0,0,0,0.04);color:var(--text3)}
+.pipe-output{font-size:11px;color:var(--green);margin-top:3px;font-weight:500}
+.pipe-reject{font-size:10px;color:var(--red);margin-top:3px}
+.pipe-parallel{margin-top:10px;margin-left:36px;background:var(--yellow-bg);border:1px dashed var(--yellow);border-radius:8px;padding:10px 14px}
+.pipe-parallel-tag{font-size:10px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:4px}
 
-/* ── Guide banner ── */
-.guide-banner {
-  background: #fff;
-  border: 1px solid var(--border); border-radius: 14px;
-  padding: 24px; margin-top: 24px;
-  display: flex; align-items: flex-start; gap: 16px;
-}
-.guide-icon {
-  width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
-  background: var(--accent-light); color: var(--accent);
-  display: flex; align-items: center; justify-content: center; font-size: 20px;
-}
-.guide-body { flex: 1; }
-.guide-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
-.guide-body p { font-size: 13px; color: #888; line-height: 1.6; margin-bottom: 12px; }
-.guide-steps { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.guide-step {
-  display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text2);
-}
-.guide-step-num {
-  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
-  background: var(--accent-light); color: var(--accent);
-  font-size: 11px; font-weight: 700;
-  display: flex; align-items: center; justify-content: center;
-}
-.guide-step code { background: rgba(0,0,0,0.05); padding: 1px 6px; border-radius: 4px; font-size: 11px; }
-.guide-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.guide-actions .btn { font-size: 12px; padding: 7px 14px; }
+.wf-legend{display:flex;gap:14px;margin-bottom:14px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.legend-dot{width:8px;height:8px;border-radius:50%;border:2px solid}
+.legend-dot.agent{border-color:var(--accent);background:var(--accent-bg)}
+.legend-dot.human{border-color:var(--yellow);background:var(--yellow-bg)}
+.legend-dot.trigger{border-color:var(--gray);background:var(--gray-bg)}
 
-.no-results { text-align: center; padding: 60px 0; color: #aaa; font-size: 13px; grid-column: 1/-1; }
+.wf-author-edit{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);font-size:12px}
 
-/* ── Modal ── */
-.modal-overlay {
-  display: none; position: fixed; inset: 0; z-index: 100;
-  background: rgba(0,0,0,0.35);
-  align-items: center; justify-content: center;
-}
-.modal-overlay.show { display: flex; }
-.modal {
-  background: #fff; border-radius: 16px; padding: 32px;
-  width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 16px 48px rgba(0,0,0,0.15);
-}
-.modal h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
-.modal .subtitle { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
-.form-group { margin-bottom: 16px; }
-.form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 5px; }
-.form-group label .req { color: var(--red); }
-.form-group input, .form-group textarea, .form-group select {
-  width: 100%; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 10px; font-size: 13px; color: var(--text1);
-  font-family: inherit; outline: none; background: #f8f8fa;
-}
-.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108,92,231,0.1);
-}
-.form-group textarea { resize: vertical; min-height: 60px; }
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px; }
-.output-box {
-  background: #f8f8fa; border: 1px solid rgba(0,0,0,0.06); border-radius: 10px;
-  padding: 14px; font-family: 'SF Mono', monospace; font-size: 12px;
-  white-space: pre-wrap; word-break: break-all; max-height: 300px; overflow-y: auto;
-  line-height: 1.6; color: var(--text2); margin: 16px 0;
-}
-.output-actions { display: flex; gap: 8px; }
-.output-actions .btn { font-size: 12px; padding: 8px 14px; }
+/* Guide */
+.guide{border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin-top:24px;background:var(--surface)}
+.guide h3{font-size:14px;font-weight:600;margin-bottom:8px}
+.guide p{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.guide-steps{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.guide-step{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:var(--text2)}
+.guide-num{width:18px;height:18px;border-radius:50%;background:var(--accent-bg);color:var(--accent);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.guide-step code{background:rgba(0,0,0,0.05);padding:1px 5px;border-radius:3px;font-size:11px}
+.guide-actions{display:flex;gap:8px;flex-wrap:wrap}
+.guide-actions .btn{height:30px;font-size:12px}
 
-.toast {
-  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
-  background: var(--text1); color: #fff; padding: 10px 20px; border-radius: 10px;
-  font-size: 13px; font-weight: 500; transition: transform 0.3s; z-index: 200;
-}
-.toast.show { transform: translateX(-50%) translateY(0); }
+.empty{text-align:center;padding:48px 0;color:var(--text3);font-size:13px;grid-column:1/-1}
 
-@media (max-width: 768px) {
-  .hero h1 { font-size: 1.6rem; }
-  .grid { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .top-bar { flex-direction: column; }
-  .wf-meta { display: none; }
-  .guide-banner { flex-direction: column; }
+/* Modal */
+.overlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.3);align-items:center;justify-content:center}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:14px;padding:28px;width:90%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,0.12)}
+.modal h2{font-size:18px;font-weight:700;margin-bottom:3px}
+.modal .sub{font-size:12px;color:var(--text3);margin-bottom:20px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px}
+.fg .req{color:var(--red)}
+.fg input,.fg textarea,.fg select{
+  width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;
+  font-size:13px;color:var(--text);font-family:inherit;outline:none;background:var(--surface);
+}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--accent);background:#fff}
+.fg textarea{resize:vertical;min-height:56px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.factions{display:flex;gap:8px;justify-content:flex-end;margin-top:20px}
+.output-box{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'SF Mono',monospace;font-size:11px;white-space:pre-wrap;word-break:break-all;max-height:260px;overflow-y:auto;line-height:1.5;color:var(--text2);margin:14px 0}
+
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--text);color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:500;transition:transform 0.25s;z-index:200}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:768px){
+  .grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(3,1fr)}
+  .frow{grid-template-columns:1fr}
+  .wf-info{display:none}
+  .header-actions .btn:not(.btn-primary){display:none}
+  .guide{flex-direction:column}
 }
 </style>
 </head>
 <body>
 
 <div class="page">
-  <!-- Header -->
-  <div class="site-header">
-    <div class="site-header-left">
+  <header>
+    <div class="logo">
       <img src="logo.svg" alt="">
-      <div>
-        <h1>Routinery Skill Registry</h1>
-        <p>팀이 만든 에이전트, 스킬, 자동화 워크플로우를 한눈에</p>
-      </div>
+      <h1>Skill Registry</h1>
     </div>
+    <div class="header-actions">
+      <button class="btn" onclick="exportJSON()">Export</button>
+      <button class="btn btn-primary" onclick="openForm()">+ 등록</button>
+    </div>
+  </header>
+
+  <div class="search-wrap">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input class="search" type="text" id="search" placeholder="검색..." oninput="renderContent()">
   </div>
 
-  <!-- Top bar -->
-  <div class="top-bar">
-    <div class="search-wrap">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="search" placeholder="검색 -- 이름, 설명, 도구, 만든 사람..." oninput="renderContent()">
-    </div>
-    <button class="btn" onclick="exportJSON()">JSON 내보내기</button>
-    <button class="btn btn-primary" onclick="openForm()">+ 등록하기</button>
-  </div>
-
-  <!-- Tabs -->
-  <div class="main-tabs" id="mainTabs"></div>
-
-  <!-- Sub-filters -->
-  <div class="sub-filters" id="subFilters"></div>
-
-  <!-- Content -->
+  <div class="tabs" id="mainTabs"></div>
+  <div class="filters" id="subFilters"></div>
   <div id="content"></div>
 </div>
 
-<!-- Register Modal -->
-<div class="modal-overlay" id="formModal">
+<div class="overlay" id="formModal">
   <div class="modal">
     <h2>새 스킬/에이전트 등록</h2>
-    <p class="subtitle">등록 후 JSON을 복사하여 <code>data/registry.json</code>에 추가하세요.</p>
-    <div class="form-row">
-      <div class="form-group"><label>이름 <span class="req">*</span></label><input type="text" id="f-name" placeholder="예: 떡밥제조기"></div>
-      <div class="form-group"><label>호출 커맨드</label><input type="text" id="f-command" placeholder="예: /pm"></div>
+    <p class="sub">등록 후 JSON을 복사하여 <code>data/registry.json</code>에 추가하세요.</p>
+    <div class="frow">
+      <div class="fg"><label>이름 <span class="req">*</span></label><input type="text" id="f-name" placeholder="예: 떡밥제조기"></div>
+      <div class="fg"><label>호출 커맨드</label><input type="text" id="f-command" placeholder="예: /pm"></div>
     </div>
-    <div class="form-group"><label>한줄 설명 <span class="req">*</span></label><textarea id="f-desc" rows="2" placeholder="뭘 하는 건지 한두 문장으로"></textarea></div>
-    <div class="form-row">
-      <div class="form-group"><label>카테고리 <span class="req">*</span></label><select id="f-category"><option value="">선택</option><option>기획</option><option>디자인</option><option>개발</option><option>QA</option><option>릴리즈</option><option>운영</option><option>지식관리</option><option>자동화</option></select></div>
-      <div class="form-group"><label>타입 <span class="req">*</span></label><select id="f-type"><option value="">선택</option><option value="agent">에이전트</option><option value="skill">스킬</option><option value="automation">자동화</option><option value="mcp">MCP 연동</option></select></div>
+    <div class="fg"><label>한줄 설명 <span class="req">*</span></label><textarea id="f-desc" rows="2" placeholder="뭘 하는 건지 한두 문장으로"></textarea></div>
+    <div class="frow">
+      <div class="fg"><label>카테고리 <span class="req">*</span></label><select id="f-category"><option value="">선택</option><option>기획</option><option>디자인</option><option>개발</option><option>QA</option><option>릴리즈</option><option>운영</option><option>지식관리</option><option>자동화</option></select></div>
+      <div class="fg"><label>타입 <span class="req">*</span></label><select id="f-type"><option value="">선택</option><option value="agent">에이전트</option><option value="skill">스킬</option><option value="automation">자동화</option><option value="mcp">MCP 연동</option></select></div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label>플랫폼</label><select id="f-platform"><option>Claude Code</option><option>Claude Desktop</option><option>Cursor</option><option>GPT</option><option>Hermes</option><option>기타</option></select></div>
-      <div class="form-group"><label>실행 방식</label><select id="f-trigger"><option value="slash-command">슬래시 커맨드</option><option value="manual">수동 실행</option><option value="schedule">스케줄 자동</option><option value="event">이벤트 트리거</option></select></div>
+    <div class="frow">
+      <div class="fg"><label>플랫폼</label><select id="f-platform"><option>Claude Code</option><option>Claude Desktop</option><option>Cursor</option><option>GPT</option><option>Hermes</option><option>기타</option></select></div>
+      <div class="fg"><label>실행 방식</label><select id="f-trigger"><option value="slash-command">슬래시 커맨드</option><option value="manual">수동 실행</option><option value="schedule">스케줄 자동</option><option value="event">이벤트 트리거</option></select></div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label>입력</label><input type="text" id="f-input" placeholder="뭘 넣나요?"></div>
-      <div class="form-group"><label>출력</label><input type="text" id="f-output" placeholder="뭐가 나오나요?"></div>
+    <div class="frow">
+      <div class="fg"><label>입력</label><input type="text" id="f-input" placeholder="뭘 넣나요?"></div>
+      <div class="fg"><label>출력</label><input type="text" id="f-output" placeholder="뭐가 나오나요?"></div>
     </div>
-    <div class="form-group"><label>연동 도구</label><input type="text" id="f-integrations" placeholder="쉼표로 구분 -- Figma, Notion, Slack 등"></div>
-    <div class="form-row">
-      <div class="form-group"><label>아이콘 (이모지)</label><input type="text" id="f-icon" placeholder="예: 🐻" maxlength="4"></div>
-      <div class="form-group"><label>만든 사람 <span class="req">*</span></label><input type="text" id="f-author" placeholder="본인 이름"></div>
+    <div class="fg"><label>연동 도구</label><input type="text" id="f-integrations" placeholder="쉼표로 구분 - Figma, Notion, Slack 등"></div>
+    <div class="frow">
+      <div class="fg"><label>아이콘 (이모지)</label><input type="text" id="f-icon" placeholder="🐻" maxlength="4"></div>
+      <div class="fg"><label>만든 사람 <span class="req">*</span></label><input type="text" id="f-author" placeholder="본인 이름"></div>
     </div>
-    <div class="form-group"><label>스케줄 (자동화인 경우)</label><input type="text" id="f-schedule" placeholder="예: 매일 21:00"></div>
+    <div class="fg"><label>스케줄 (자동화인 경우)</label><input type="text" id="f-schedule" placeholder="예: 매일 21:00"></div>
     <div id="formOutput"></div>
-    <div class="form-actions">
+    <div class="factions">
       <button class="btn" onclick="closeForm()">닫기</button>
       <button class="btn btn-primary" onclick="generateEntry()">JSON 생성</button>
     </div>
   </div>
 </div>
 
-<div class="toast" id="toast">복사되었습니다</div>
+<div class="toast" id="toast"></div>
 
 <script>
-// ════════════════════════════════════════
-// DATA
-// ════════════════════════════════════════
-let REGISTRY = [];
-let WORKFLOWS = [];
-let mainTab = 'workflows';
-let currentFilter = 'All';
-let currentType = 'All';
-let currentAuthor = 'All';
+let REGISTRY=[], WORKFLOWS=[];
+let mainTab='workflows', currentFilter='All', currentType='All', currentAuthor='All';
 
-const TYPE_LABELS = { agent: '에이전트', skill: '스킬', automation: '자동화', mcp: 'MCP 연동' };
-const TEAMS = ['제품팀', 'QA팀', '그로스팀', 'TF팀', 'HQ'];
-const CAT_COLORS = {
-  '기획': { bg: 'var(--accent-light)', fg: 'var(--accent)' },
-  '디자인': { bg: 'var(--pink-light)', fg: 'var(--pink)' },
-  '개발': { bg: 'var(--cyan-light)', fg: 'var(--cyan)' },
-  '운영': { bg: 'var(--orange-light)', fg: 'var(--orange)' },
-  '릴리즈': { bg: 'var(--green-light)', fg: 'var(--green)' },
-  '지식관리': { bg: 'var(--purple-light)', fg: 'var(--purple)' },
-  '자동화': { bg: 'var(--cyan-light)', fg: 'var(--cyan)' },
-  'QA': { bg: 'var(--red-light)', fg: 'var(--red)' },
-};
+const TL={agent:'에이전트',skill:'스킬',automation:'자동화',mcp:'MCP 연동'};
+const TEAMS=['제품팀','QA팀','그로스팀','TF팀','HQ'];
 
-// ════════════════════════════════════════
-// EMBEDDED FALLBACK
-// ════════════════════════════════════════
 const EMBEDDED_REGISTRY = [{"id":"pm","name":"떡밥제조기","command":"/pm","description":"아이디어를 원페이저 기획안으로 고도화. VOC/데이터 기반 기획, 경쟁사 분석, 노션 기획 문서 생성.","category":"기획","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"아이디어 한 줄","output":"원페이저 기획안 (노션)","integrations":["Notion","Slack","Amplitude"],"icon":"🐻","author":"이안","updatedAt":"2026-08-28"},{"id":"designer","name":"픽셀요정","command":"/designer","description":"기획을 받아 Figma 디자인 생성. 와이어프레임→변형안→하이파이 파이프라인.","category":"디자인","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"기획안 URL","output":"Figma 디자인 (10개 변형안→수렴)","integrations":["Figma","Notion"],"icon":"🦊","author":"이안","updatedAt":"2026-08-28"},{"id":"devsigner","name":"양손잡이","command":"/devsigner","description":"디자인 + RN 코드 구현. Figma에서 디자인하고 시뮬레이터에서 바로 확인.","category":"개발","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"확정 디자인","output":"RN 코드 + PR 또는 기술 스펙","integrations":["Figma","GitHub"],"icon":"🦄","author":"이안","updatedAt":"2026-08-28"},{"id":"whats-new-generator","name":"릴리즈 노트 생성기","command":"/whats-new-generator","description":"루티너리 브랜드 보이스로 지원 로케일 전체에 맞춘 앱 릴리즈 노트 생성.","category":"릴리즈","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"버전 정보 + 변경사항","output":"iOS 33개 언어 + AOS 10개 로케일 릴리즈 노트","integrations":["App Store Connect","Google Play Console"],"icon":"📝","author":"이안","updatedAt":"2026-08-28"},{"id":"ideate","name":"아이디어 고도화","command":"/ideate","description":"아이디어를 질문으로 구체화하여 원페이저 기획안을 만드는 기획 에이전트. 디자인 씽킹 기반.","category":"기획","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"아이디어 한 줄","output":"원페이저 기획안","integrations":["Notion"],"icon":"💡","author":"이안","updatedAt":"2026-08-28"},{"id":"plan-feature","name":"기능 오케스트레이터","command":"/plan-feature","description":"아이디어→기획→디자인→개발을 순차 실행. 각 단계에 사용자 승인 게이트.","category":"기획","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"기능 아이디어","output":"기획→디자인→코드 순차 산출","integrations":["Notion","Figma","GitHub"],"icon":"🔄","author":"이안","updatedAt":"2026-08-28"},{"id":"design-variants","name":"디자인 변형안 생성","command":"/design-variants","description":"기획안 기반 Figma 디자인 변형안 10개 생성 후 피드백으로 수렴. 6가지 크리에이티브 렌즈.","category":"디자인","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"기획안","output":"Figma 디자인 변형안 10개","integrations":["Figma"],"icon":"🎨","author":"이안","updatedAt":"2026-08-28"},{"id":"implement","name":"구현 에이전트","command":"/implement","description":"확정 디자인 기반 RN 코드 작성. 복잡도 판단 후 PR 생성 또는 기술 스펙 산출.","category":"개발","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"확정 Figma 디자인","output":"RN 코드 PR 또는 기술 스펙","integrations":["Figma","GitHub"],"icon":"⚡","author":"이안","updatedAt":"2026-08-28"},{"id":"android-dev","name":"Android 아키텍처 가이드","command":"/android-dev","description":"멀티 모듈 Android 아키텍처. Phone, Wear OS, TV, Auto를 단일 코드베이스로.","category":"개발","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"Android 개발 질문/코드","output":"아키텍처 가이드 + 코드","integrations":["GitHub"],"icon":"🤖","author":"","updatedAt":"2026-08-28"},{"id":"react-native","name":"React Native 가이드","command":"/react-native","description":"React Native New Architecture (Fabric/TurboModules), Expo, 내비게이션, 성능 최적화.","category":"개발","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"RN 개발 질문/코드","output":"최적화된 RN 코드 + 가이드","integrations":["GitHub"],"icon":"⚛️","author":"","updatedAt":"2026-08-28"},{"id":"voc-triage","name":"VoC Triage","command":"","description":"사용자 제보(Gmail/App Store/Google Play) 자동 수집, 분류, Amplitude 분석, 답변/티켓 초안 생성.","category":"QA","type":"agent","platform":"Hermes","trigger":"schedule","input":"Gmail, App Store, Google Play 제보","output":"분류된 이슈 + Gmail 답변 초안 + Linear 티켓 초안","integrations":["Gmail","App Store","Google Play","Google Sheets","Amplitude","Notion","Linear","Slack"],"icon":"📥","author":"Jane, Leo, Kyum","schedule":"매일 07:00 + 30분 주기","updatedAt":"2026-08-28"},{"id":"priority-strategist","name":"Priority Strategist","command":"","description":"Linear Triage 티켓의 impact x volume x segment / effort 기반 우선순위 자동 산정.","category":"QA","type":"agent","platform":"Hermes","trigger":"schedule","input":"Linear Triage 티켓","output":"우선순위 라벨 + 분해 근거 댓글 → Planned 이동","integrations":["Amplitude","Linear"],"icon":"🎯","author":"Jane, Leo, Kyum","schedule":"매주 수,목 제외 오후 1시","updatedAt":"2026-08-28"},{"id":"bug-fixer","name":"Bug Fixer","command":"","description":"Planned+approved 이슈의 재현, 원인 분석, 자기검증 게이트 통과 후 draft PR 생성.","category":"개발","type":"agent","platform":"Hermes","trigger":"event","input":"Linear Planned + approved 티켓","output":"Draft PR + 재현/원인/테스트 근거","integrations":["Amplitude","Linear","GitHub","Figma","Slack"],"icon":"🔧","author":"Jane, Leo, Kyum","updatedAt":"2026-08-28"},{"id":"perf-guardian","name":"Perf Guardian","command":"","description":"PR 정적 게이트. typecheck/build 이진 게이트 + PR diff risk tags 부여.","category":"개발","type":"agent","platform":"Hermes","trigger":"event","input":"PR CI 완료","output":"CONFIRMED / REJECTED / INCONCLUSIVE + risk tags","integrations":["GitHub"],"icon":"🛡️","author":"Jane, Leo, Kyum","updatedAt":"2026-08-28"},{"id":"red-team","name":"Red Team","command":"","description":"코드 리뷰. RN 함정 체크리스트, OTA 롤백 경로, 버전 호환성 검증.","category":"개발","type":"agent","platform":"Hermes","trigger":"event","input":"Perf Guardian CONFIRMED PR","output":"PASS / CONDITIONAL / BLOCK + Pn 태그","integrations":["GitHub","Linear","Slack","Amplitude","Crashlytics"],"icon":"🔴","author":"Jane, Leo, Kyum","updatedAt":"2026-08-28"},{"id":"incident-responder","name":"Incident Responder","command":"","description":"15분 주기 Crashlytics/Amplitude 감시. P0 초과 시 인시던트 보고 + 완화 draft PR.","category":"운영","type":"agent","platform":"Hermes","trigger":"schedule","input":"Crashlytics, Amplitude 메트릭","output":"인시던트 보고 + 완화 draft PR","integrations":["Crashlytics","Amplitude","GitHub","Slack"],"icon":"🚨","author":"Jane, Leo, Kyum","schedule":"15분 주기","updatedAt":"2026-08-28"}];
 
 const EMBEDDED_WORKFLOWS = [{"id":"issue-pipeline","name":"이슈 처리 파이프라인","team":"제품팀","author":"Jane, Leo, Kyum","description":"VoC 수집부터 코드 머지까지. 6개 에이전트 + 3개 사람 역할. 에이전트는 초안/판정까지, 승인·머지·배포는 사람.","steps":[{"id":"voc-trigger","name":"VoC 제보","type":"trigger","description":"Gmail, App Store, Google Play에서 사용자 제보 유입","next":["voc-triage"]},{"id":"voc-triage","name":"VoC Triage","type":"agent","description":"수집, 분류, Amplitude 분석, 답변/티켓 초안 생성","tools":["Gmail","App Store","Google Play","Google Sheets","Amplitude","Notion","Linear","Slack"],"trigger":"매일 07:00 + 30분 주기 cronjob","output":"분류된 이슈 + Gmail 답변 초안 + Linear 티켓 초안","next":["voc-approver"]},{"id":"voc-approver","name":"VoC 승인자","type":"human","who":"Kyum","description":"원문 확인, 직접 재현, 티켓 생성 승인 (기록 없는 승인 무효)","tools":["Gmail","Google Sheets","Slack","Linear"],"output":"승인된 Linear 티켓 or 추가 정보 요청 답변 발송","next":["priority-strategist"],"exitCondition":"이슈 아님 → 추가 정보 요청 후 종료"},{"id":"priority-strategist","name":"Priority Strategist","type":"agent","description":"impact × volume × segment / effort 기반 우선순위 산정","tools":["Amplitude","Linear"],"trigger":"매주 수,목 제외 오후 1시","output":"우선순위 라벨 + 분해 근거 댓글 → Planned 이동","next":["bug-fixer"]},{"id":"bug-fixer","name":"Bug Fixer","type":"agent","description":"재현, 원인 분석, 자기검증 게이트 통과 후 draft PR 생성","tools":["Amplitude","Linear","GitHub","Figma","Slack"],"trigger":"Linear Planned + approved 라벨","output":"Draft PR + 재현/원인/테스트 근거","next":["perf-guardian"]},{"id":"perf-guardian","name":"Perf Guardian","type":"agent","description":"PR 정적 게이트 — typecheck/build 이진 게이트 + diff risk tags","tools":["GitHub"],"trigger":"PR CI 완료 감지","output":"CONFIRMED / REJECTED / INCONCLUSIVE + risk tags","next":["red-team"],"rejectTo":"bug-fixer"},{"id":"red-team","name":"Red Team","type":"agent","description":"코드 리뷰 — RN 함정 체크리스트, OTA 롤백 경로, 버전 호환성","tools":["GitHub","Linear","Slack","Amplitude","Crashlytics"],"trigger":"Perf Guardian CONFIRMED","output":"PASS / CONDITIONAL / BLOCK + Pn 태그 + file:line 근거","next":["issue-assignee"],"rejectTo":"bug-fixer"},{"id":"issue-assignee","name":"이슈 담당자","type":"human","who":"Jane / Leo","description":"Draft PR 검토, 추가 수정, ready 전환, 리뷰어 등록","tools":["GitHub","Linear"],"output":"Ready PR + 리뷰어 지정","next":["code-reviewer"]},{"id":"code-reviewer","name":"코드 리뷰 담당자","type":"human","who":"Jane / Leo","description":"최종 코드 리뷰 → 승인 (1명 이상, branch protection)","tools":["GitHub","Linear"],"output":"Approved PR","next":["merge"]},{"id":"merge","name":"Merge","type":"human","who":"담당 개발자","description":"에이전트는 merge/deploy/rollback 절대 불가. 사람만 실행.","output":"코드 머지 완료","next":[]}],"parallel":[{"id":"incident-responder","name":"Incident Responder","type":"agent","description":"15분 주기 Crashlytics/Amplitude 감시. P0 초과 시 인시던트 보고 + 완화 draft PR","tools":["Crashlytics","Amplitude","GitHub","Slack"],"trigger":"15분 주기","output":"인시던트 보고 + 완화 draft PR → 사람이 rollback/deploy 실행","label":"상시 병렬"}]},{"id":"release-notes","name":"릴리즈 노트 프로세스","team":"제품팀","author":"이안","description":"매주 앱 릴리즈 노트 생성 → 번역 → App Store/Google Play 업로드","steps":[{"id":"release-trigger","name":"릴리즈 준비","type":"trigger","description":"새 버전 릴리즈 준비 완료","next":["whats-new-gen"]},{"id":"whats-new-gen","name":"릴리즈 노트 생성기","type":"agent","description":"루티너리 브랜드 보이스로 iOS 33개 언어 + AOS 10개 로케일 릴리즈 노트 자동 생성","tools":["App Store Connect","Google Play Console"],"trigger":"/whats-new-generator","output":"다국어 릴리즈 노트","next":["release-review"]},{"id":"release-review","name":"릴리즈 노트 확인","type":"human","who":"이안","description":"생성된 릴리즈 노트 검토 및 최종 확인","output":"확인된 릴리즈 노트","next":["store-upload"]},{"id":"store-upload","name":"스토어 업로드","type":"agent","description":"App Store Connect + Google Play Console에 자동 입력","tools":["App Store Connect","Google Play Console"],"output":"스토어 반영 완료","next":[]}]},{"id":"hq-monthly-report","name":"월간 투자사 리포트","team":"HQ","author":"이안","description":"매월 데이터 수집 → 리포트 생성 → 노션 업데이트","steps":[{"id":"report-trigger","name":"월초","type":"trigger","description":"매월 리포트 작성 시점","next":["report-agent"]},{"id":"report-agent","name":"월간 리포트 에이전트","type":"agent","description":"매출/유저/리텐션 데이터 수집 → 노션 월간 결산 페이지 갱신","tools":["Notion","Amplitude"],"trigger":"/monthly-report","output":"노션 월간 결산 페이지","next":["report-review"]},{"id":"report-review","name":"리포트 확인","type":"human","who":"이안","description":"데이터 정확성 검토 및 코멘트 추가","output":"최종 리포트","next":[]}]},{"id":"feature-pipeline","name":"기능 기획→구현 파이프라인","team":"제품팀","author":"이안","description":"아이디어 → 기획 → 디자인 → 구현까지 에이전트 오케스트레이션","steps":[{"id":"idea-trigger","name":"아이디어","type":"trigger","description":"기능 아이디어 입력","next":["pm-agent"]},{"id":"pm-agent","name":"떡밥제조기","type":"agent","description":"아이디어를 원페이저 기획안으로 고도화. VOC/데이터 기반.","tools":["Notion","Slack","Amplitude"],"trigger":"/pm","output":"원페이저 기획안 (노션)","next":["idea-review"]},{"id":"idea-review","name":"기획 확인","type":"human","who":"이안","description":"기획안 검토, 방향 수정, 승인","output":"승인된 기획안","next":["designer-agent"]},{"id":"designer-agent","name":"픽셀요정","type":"agent","description":"기획안 기반 Figma 디자인 생성. 와이어프레임→변형안 10개→수렴.","tools":["Figma","Notion"],"trigger":"/designer","output":"확정 Figma 디자인","next":["design-review"]},{"id":"design-review","name":"디자인 확인","type":"human","who":"이안","description":"디자인 변형안 피드백 → 최종 확정","output":"확정 디자인","next":["devsigner-agent"]},{"id":"devsigner-agent","name":"양손잡이","type":"agent","description":"확정 디자인 기반 RN 코드 구현. 시뮬레이터 확인.","tools":["Figma","GitHub"],"trigger":"/devsigner","output":"RN 코드 + PR 또는 기술 스펙","next":["impl-review"]},{"id":"impl-review","name":"코드 확인","type":"human","who":"이안 / 개발팀","description":"구현 코드 리뷰 및 머지","output":"머지된 코드","next":[]}]}];
 
-// ════════════════════════════════════════
-// LOAD
-// ════════════════════════════════════════
-async function loadData() {
-  try {
-    const [r1, r2] = await Promise.all([
-      fetch('data/registry.json?t=' + Date.now()),
-      fetch('data/workflows.json?t=' + Date.now()),
-    ]);
-    if (!r1.ok || !r2.ok) throw new Error('fetch');
-    REGISTRY = await r1.json();
-    WORKFLOWS = await r2.json();
-  } catch (e) {
-    REGISTRY = EMBEDDED_REGISTRY;
-    WORKFLOWS = EMBEDDED_WORKFLOWS;
-  }
+async function loadData(){
+  try{
+    const[r1,r2]=await Promise.all([fetch('data/registry.json?t='+Date.now()),fetch('data/workflows.json?t='+Date.now())]);
+    if(!r1.ok||!r2.ok)throw 0;
+    REGISTRY=await r1.json();WORKFLOWS=await r2.json();
+  }catch(e){REGISTRY=EMBEDDED_REGISTRY;WORKFLOWS=EMBEDDED_WORKFLOWS}
   renderAll();
 }
 
-// ════════════════════════════════════════
-// RENDER
-// ════════════════════════════════════════
-function renderAll() {
-  renderMainTabs();
-  renderSubFilters();
-  renderContent();
+function renderAll(){renderTabs();renderFilters();renderContent()}
+
+function renderTabs(){
+  const gc=WORKFLOWS.reduce((n,w)=>n+w.steps.filter(s=>s.gap).length,0);
+  document.getElementById('mainTabs').innerHTML=`
+    <button class="tab${mainTab==='workflows'?' active':''}" onclick="switchTab('workflows')">Workflows<span class="tab-badge">${WORKFLOWS.length}</span>${gc?`<span class="tab-badge" style="color:var(--red);background:var(--red-bg)">${gc} gaps</span>`:''}</button>
+    <button class="tab${mainTab==='registry'?' active':''}" onclick="switchTab('registry')">Registry<span class="tab-badge">${REGISTRY.length}</span></button>`;
+}
+function switchTab(t){mainTab=t;currentFilter='All';currentType='All';currentAuthor='All';renderAll()}
+
+function getAuthors(src){
+  return[...new Set(src.flatMap(d=>(d.author||'').split(',').map(a=>a.trim())).filter(Boolean))].sort();
 }
 
-function renderMainTabs() {
-  const gapCount = WORKFLOWS.reduce((n, w) => n + w.steps.filter(s => s.gap).length, 0);
-  document.getElementById('mainTabs').innerHTML = `
-    <button class="main-tab${mainTab === 'workflows' ? ' active' : ''}" onclick="switchTab('workflows')">
-      Workflows<span class="tab-count">${WORKFLOWS.length}</span>
-      ${gapCount ? `<span class="tab-gap-count">${gapCount} gaps</span>` : ''}
-    </button>
-    <button class="main-tab${mainTab === 'registry' ? ' active' : ''}" onclick="switchTab('registry')">
-      Registry<span class="tab-count">${REGISTRY.length}</span>
-    </button>
-  `;
-}
-
-function switchTab(tab) {
-  mainTab = tab; currentFilter = 'All'; currentType = 'All'; currentAuthor = 'All';
-  renderAll();
-}
-
-function getAllAuthors(source) {
-  const raw = source.flatMap(d => (d.author || '').split(',').map(a => a.trim())).filter(Boolean);
-  return [...new Set(raw)].sort();
-}
-
-function renderSubFilters() {
-  const el = document.getElementById('subFilters');
-  if (mainTab === 'workflows') {
-    const dataTeams = [...new Set(WORKFLOWS.map(w => w.team))];
-    const teams = [...new Set([...TEAMS, ...dataTeams])];
-    const authors = getAllAuthors(WORKFLOWS);
-    let h = `<button class="chip${currentFilter === 'All' ? ' active' : ''}" onclick="setFilter('All')">전체</button>`;
-    teams.forEach(t => { h += `<button class="chip${currentFilter === t ? ' active' : ''}" onclick="setFilter('${t}')">${t}</button>`; });
-    if (authors.length) {
-      h += `<span class="chip-divider"></span>`;
-      h += `<button class="chip chip-author${currentAuthor === 'All' ? ' active' : ''}" onclick="setAuthor('All')">전체 멤버</button>`;
-      authors.forEach(a => { h += `<button class="chip chip-author${currentAuthor === a ? ' active' : ''}" onclick="setAuthor('${a}')">${a}</button>`; });
-    }
-    el.innerHTML = h;
-  } else {
-    const cats = [...new Set(REGISTRY.map(d => d.category))].sort();
-    const types = [...new Set(REGISTRY.map(d => d.type))];
-    const authors = getAllAuthors(REGISTRY);
-    let h = `<button class="chip${currentFilter === 'All' ? ' active' : ''}" onclick="setFilter('All')">전체</button>`;
-    cats.forEach(c => { h += `<button class="chip${currentFilter === c ? ' active' : ''}" onclick="setFilter('${c}')">${c}</button>`; });
-    h += `<span class="chip-divider"></span>`;
-    types.forEach(t => { h += `<button class="chip${currentType === t ? ' active' : ''}" onclick="setType('${t}')">${TYPE_LABELS[t]||t}</button>`; });
-    if (authors.length) {
-      h += `<span class="chip-divider"></span>`;
-      h += `<button class="chip chip-author${currentAuthor === 'All' ? ' active' : ''}" onclick="setAuthor('All')">전체 멤버</button>`;
-      authors.forEach(a => { h += `<button class="chip chip-author${currentAuthor === a ? ' active' : ''}" onclick="setAuthor('${a}')">${a}</button>`; });
-    }
-    el.innerHTML = h;
+function renderFilters(){
+  const el=document.getElementById('subFilters');
+  if(mainTab==='workflows'){
+    const teams=[...new Set([...TEAMS,...WORKFLOWS.map(w=>w.team)])];
+    const au=getAuthors(WORKFLOWS);
+    let h=`<button class="filter${currentFilter==='All'?' active':''}" onclick="sf('All')">전체</button>`;
+    teams.forEach(t=>{h+=`<button class="filter${currentFilter===t?' active':''}" onclick="sf('${t}')">${t}</button>`});
+    if(au.length){h+=`<span class="filter-sep"></span><button class="filter author${currentAuthor==='All'?' active':''}" onclick="sa('All')">전체 멤버</button>`;au.forEach(a=>{h+=`<button class="filter author${currentAuthor===a?' active':''}" onclick="sa('${a}')">${a}</button>`})}
+    el.innerHTML=h;
+  }else{
+    const cats=[...new Set(REGISTRY.map(d=>d.category))].sort();
+    const types=[...new Set(REGISTRY.map(d=>d.type))];
+    const au=getAuthors(REGISTRY);
+    let h=`<button class="filter${currentFilter==='All'?' active':''}" onclick="sf('All')">전체</button>`;
+    cats.forEach(c=>{h+=`<button class="filter${currentFilter===c?' active':''}" onclick="sf('${c}')">${c}</button>`});
+    h+=`<span class="filter-sep"></span>`;
+    types.forEach(t=>{h+=`<button class="filter${currentType===t?' active':''}" onclick="st('${t}')">${TL[t]||t}</button>`});
+    if(au.length){h+=`<span class="filter-sep"></span><button class="filter author${currentAuthor==='All'?' active':''}" onclick="sa('All')">전체 멤버</button>`;au.forEach(a=>{h+=`<button class="filter author${currentAuthor===a?' active':''}" onclick="sa('${a}')">${a}</button>`})}
+    el.innerHTML=h;
   }
 }
+function sf(f){currentFilter=f;renderFilters();renderContent()}
+function st(t){currentType=currentType===t?'All':t;renderFilters();renderContent()}
+function sa(a){currentAuthor=a;renderFilters();renderContent()}
+function matchAuth(a){return currentAuthor==='All'||(a||'').split(',').map(s=>s.trim()).includes(currentAuthor)}
+function renderContent(){mainTab==='workflows'?renderWF():renderReg()}
 
-function setFilter(f) { currentFilter = f; renderSubFilters(); renderContent(); }
-function setType(t) { currentType = currentType === t ? 'All' : t; renderSubFilters(); renderContent(); }
-function setAuthor(a) { currentAuthor = a; renderSubFilters(); renderContent(); }
-
-function matchesAuthor(itemAuthor) {
-  if (currentAuthor === 'All') return true;
-  return (itemAuthor || '').split(',').map(a => a.trim()).includes(currentAuthor);
+// ── Workflows ──
+function renderWF(){
+  const q=document.getElementById('search').value.toLowerCase();
+  let items=WORKFLOWS;
+  if(currentFilter!=='All')items=items.filter(w=>w.team===currentFilter);
+  if(currentAuthor!=='All')items=items.filter(w=>matchAuth(w.author));
+  if(q)items=items.filter(w=>w.name.toLowerCase().includes(q)||w.description.toLowerCase().includes(q)||w.team.toLowerCase().includes(q));
+  document.getElementById('content').innerHTML=`<div class="wf-list">${items.map(wfHTML).join('')}</div>`+guideHTML();
 }
-function renderContent() { mainTab === 'workflows' ? renderWorkflows() : renderRegistry(); }
-
-// ════════════════════════════════════════
-// WORKFLOWS
-// ════════════════════════════════════════
-function renderWorkflows() {
-  const q = document.getElementById('search').value.toLowerCase();
-  let items = WORKFLOWS;
-  if (currentFilter !== 'All') items = items.filter(w => w.team === currentFilter);
-  if (currentAuthor !== 'All') items = items.filter(w => matchesAuthor(w.author));
-  if (q) items = items.filter(w => w.name.toLowerCase().includes(q) || w.description.toLowerCase().includes(q) || w.team.toLowerCase().includes(q));
-
-  let html = items.map(wfCardHTML).join('');
-  html += guideHTML();
-  document.getElementById('content').innerHTML = html;
+function toggleWf(el){el.closest('.wf-card').classList.toggle('open')}
+function wfHTML(wf){
+  const ac=wf.steps.filter(s=>s.type==='agent').length+(wf.parallel||[]).length;
+  const hc=wf.steps.filter(s=>s.type==='human').length;
+  let steps=wf.steps.map(stepHTML).join('');
+  if(wf.parallel)steps+=wf.parallel.map(p=>`<div class="pipe-parallel"><div class="pipe-parallel-tag">${p.label||'병렬 트랙'}</div><div class="pipe-label"><span>${p.name}</span><span class="pipe-badge agent">에이전트</span></div><div class="pipe-desc">${p.description}</div>${p.tools?.length?`<div class="pipe-tools">${p.tools.map(t=>`<span class="pipe-tool">${t}</span>`).join('')}</div>`:''}${p.output?`<div class="pipe-output">\u2192 ${p.output}</div>`:''}</div>`).join('');
+  return`<div class="wf-card${wf.steps.length<=5?' open':''}"><div class="wf-head" onclick="toggleWf(this)"><span class="wf-team">${wf.team}</span><span class="wf-title">${wf.name}</span><div class="wf-info"><span style="font-size:11px;color:var(--text3)">by ${wf.author||'미지정'}</span><span style="color:var(--accent)">\u{1F916} ${ac}</span><span style="color:var(--orange)">\u{1F464} ${hc}</span></div><span class="wf-chevron">\u203A</span></div><div class="wf-body"><div class="wf-desc">${wf.description}</div><div class="wf-legend"><div class="legend-item"><div class="legend-dot agent"></div>에이전트</div><div class="legend-item"><div class="legend-dot human"></div>사람</div><div class="legend-item"><div class="legend-dot trigger"></div>트리거</div></div><div class="pipeline">${steps}</div><div class="wf-author-edit"><span class="detail-label">담당자</span><input class="author-input" value="${wf.author||''}" placeholder="이름" onclick="event.stopPropagation()" onchange="updateWfAuth('${wf.id}',this.value)"/></div></div></div>`;
 }
-
-function toggleWf(el) { el.closest('.wf-card').classList.toggle('open'); }
-
-function wfCardHTML(wf) {
-  const ac = wf.steps.filter(s => s.type === 'agent').length + (wf.parallel || []).length;
-  const hc = wf.steps.filter(s => s.type === 'human').length;
-  const gc = wf.steps.filter(s => s.gap).length;
-
-  let stepsHtml = wf.steps.map(stepHTML).join('');
-  if (wf.parallel) stepsHtml += wf.parallel.map(p => `
-    <div class="pipe-parallel">
-      <div class="pipe-parallel-label">${p.label || '병렬 트랙'}</div>
-      <div class="pipe-name"><span>${p.name}</span><span class="pipe-badge agent">에이전트</span></div>
-      <div class="pipe-desc">${p.description}</div>
-      ${p.tools?.length ? `<div class="pipe-tools">${p.tools.map(t=>`<span class="pipe-tool">${t}</span>`).join('')}</div>` : ''}
-      ${p.output ? `<div class="pipe-output">\u2192 ${p.output}</div>` : ''}
-    </div>`).join('');
-
-  return `<div class="wf-card${wf.steps.length <= 5 ? ' open' : ''}">
-    <div class="wf-header" onclick="toggleWf(this)">
-      <span class="wf-team">${wf.team}</span>
-      <span class="wf-title">${wf.name}</span>
-      <div class="wf-meta">
-        <span class="wf-author">by ${wf.author || '미지정'}</span>
-        <span style="color:var(--agent-color)">\u{1F916} ${ac}</span>
-        <span style="color:#e17055">\u{1F464} ${hc}</span>
-        ${gc ? `<span style="color:var(--red)">\u26A0 ${gc} gap</span>` : ''}
-      </div>
-      <span class="wf-chevron">\u203A</span>
-    </div>
-    <div class="wf-body">
-      <div class="wf-desc">${wf.description}</div>
-      <div class="wf-legend">
-        <div class="legend-item"><div class="legend-dot agent"></div>에이전트</div>
-        <div class="legend-item"><div class="legend-dot human"></div>사람 (게이트)</div>
-        <div class="legend-item"><div class="legend-dot trigger"></div>트리거</div>
-      </div>
-      <div class="pipeline">${stepsHtml}</div>
-      <div class="wf-author-edit">
-        <span class="detail-label">담당자</span>
-        <input class="author-input" value="${wf.author||''}" placeholder="이름 입력"
-          onclick="event.stopPropagation()"
-          onchange="updateWfAuthor('${wf.id}', this.value)" />
-      </div>
-    </div>
-  </div>`;
+function stepHTML(s){
+  const t=s.type,label=t==='agent'?'에이전트':t==='human'?'사람':'트리거';
+  const tools=(s.tools||[]).map(t=>`<span class="pipe-tool">${t}</span>`).join('');
+  return`<div class="pipe-step"><div class="pipe-rail"><div class="pipe-dot ${t}"></div><div class="pipe-line"></div></div><div class="pipe-body"><div class="pipe-inner${s.gap?' gap':''}"><div class="pipe-label"><span>${s.name}</span><span class="pipe-badge ${t}">${label}</span>${s.gap?'<span class="pipe-badge gap">GAP</span>':''}${s.who?`<span class="pipe-who">${s.who}</span>`:''}</div><div class="pipe-desc">${s.description}</div>${tools?`<div class="pipe-tools">${tools}</div>`:''}${s.output?`<div class="pipe-output">\u2192 ${s.output}</div>`:''}${s.rejectTo?`<div class="pipe-reject">\u21A9 REJECTED \u2192 ${s.rejectTo}</div>`:''}${s.exitCondition?`<div class="pipe-reject" style="color:var(--orange)">\u2197 ${s.exitCondition}</div>`:''}</div></div></div>`;
 }
 
-function stepHTML(s) {
-  const t = s.type;
-  const label = t === 'agent' ? '에이전트' : t === 'human' ? '사람' : '트리거';
-  const tools = (s.tools || []).map(t => `<span class="pipe-tool">${t}</span>`).join('');
-  return `<div class="pipe-step">
-    <div class="pipe-line"><div class="pipe-dot ${t}"></div><div class="pipe-connector"></div></div>
-    <div class="pipe-content">
-      <div class="pipe-content-inner ${t}${s.gap ? ' gap' : ''}">
-        <div class="pipe-name">
-          <span>${s.name}</span>
-          <span class="pipe-badge ${t}">${label}</span>
-          ${s.gap ? '<span class="pipe-badge gap">GAP - 미수집</span>' : ''}
-          ${s.who ? `<span class="pipe-who">${s.who}</span>` : ''}
-        </div>
-        <div class="pipe-desc">${s.description}</div>
-        ${tools ? `<div class="pipe-tools">${tools}</div>` : ''}
-        ${s.output ? `<div class="pipe-output">\u2192 ${s.output}</div>` : ''}
-        ${s.rejectTo ? `<div class="pipe-reject">\u21A9 REJECTED \u2192 ${s.rejectTo}</div>` : ''}
-        ${s.exitCondition ? `<div class="pipe-reject" style="color:var(--orange)">\u2197 ${s.exitCondition}</div>` : ''}
-      </div>
-    </div>
-  </div>`;
+// ── Guide ──
+function guideHTML(){
+  return`<div class="guide"><h3>워크플로우 또는 에이전트 추가하기</h3><p>팀에서 사용하는 에이전트, 스킬, 자동화를 등록할 수 있습니다.</p><div class="guide-steps"><div class="guide-step"><div class="guide-num">1</div><div><strong>UI로 등록</strong> \u2014 오른쪽 위 <strong>+ 등록</strong> 버튼으로 JSON 생성</div></div><div class="guide-step"><div class="guide-num">2</div><div><strong>JSON 직접 편집</strong> \u2014 <code>data/registry.json</code> 또는 <code>data/workflows.json</code>에 PR</div></div><div class="guide-step"><div class="guide-num">3</div><div><strong>Claude Code</strong> \u2014 <code>~/skill-dashboard</code>에서 "대시보드 업데이트해줘"</div></div></div><div class="guide-actions"><a class="btn" href="https://github.com/Routinery/skill-dashboard" target="_blank">GitHub</a><a class="btn" href="https://app.notion.com/p/routinery/Routinery-667a9e216c774316b024301b9cca66a3" target="_blank">Notion</a><button class="btn btn-primary" onclick="openForm()">+ 등록</button></div></div>`;
 }
 
-// ════════════════════════════════════════
-// GUIDE
-// ════════════════════════════════════════
-function guideHTML() {
-  return `<div class="guide-banner">
-    <div class="guide-icon">\u{1F4D6}</div>
-    <div class="guide-body">
-      <h3>워크플로우 또는 에이전트 추가하기</h3>
-      <p>팀에서 사용하는 에이전트, 스킬, 자동화를 이 대시보드에 등록할 수 있습니다.<br>
-      두 가지 방법이 있습니다.</p>
-      <div class="guide-steps">
-        <div class="guide-step">
-          <div class="guide-step-num">1</div>
-          <div><strong>UI로 등록</strong> \u2014 오른쪽 위 <strong>+ 등록하기</strong> 버튼을 누르면 폼이 열립니다. 정보를 입력하면 JSON이 생성됩니다.</div>
-        </div>
-        <div class="guide-step">
-          <div class="guide-step-num">2</div>
-          <div><strong>JSON 직접 편집</strong> \u2014 GitHub에서 <code>data/registry.json</code> (개별 에이전트) 또는 <code>data/workflows.json</code> (파이프라인)에 항목을 추가하고 PR을 올립니다. 머지되면 자동 반영.</div>
-        </div>
-        <div class="guide-step">
-          <div class="guide-step-num">3</div>
-          <div><strong>Claude Code로 업데이트</strong> \u2014 <code>~/skill-dashboard</code>에서 Claude Code를 실행하고 "대시보드 업데이트해줘"라고 말하면 스킬/프로젝트를 스캔하여 동기화합니다.</div>
-        </div>
-      </div>
-      <div class="guide-actions">
-        <a class="btn" href="https://github.com/Routinery/skill-dashboard" target="_blank">GitHub 저장소</a>
-        <a class="btn" href="https://app.notion.com/p/routinery/Routinery-667a9e216c774316b024301b9cca66a3" target="_blank">Notion 홈</a>
-        <button class="btn btn-primary" onclick="openForm()">+ 등록하기</button>
-      </div>
-    </div>
-  </div>`;
+// ── Registry ──
+function renderReg(){
+  const q=document.getElementById('search').value.toLowerCase();
+  let items=REGISTRY;
+  if(currentFilter!=='All')items=items.filter(d=>d.category===currentFilter);
+  if(currentType!=='All')items=items.filter(d=>d.type===currentType);
+  if(currentAuthor!=='All')items=items.filter(d=>matchAuth(d.author));
+  if(q)items=items.filter(d=>d.name.toLowerCase().includes(q)||d.description.toLowerCase().includes(q)||(d.command||'').toLowerCase().includes(q)||(d.author||'').toLowerCase().includes(q)||(d.integrations||[]).some(i=>i.toLowerCase().includes(q)));
+  const tp={};REGISTRY.forEach(d=>{tp[d.type]=(tp[d.type]||0)+1});
+  const au=new Set(REGISTRY.map(d=>d.author).filter(Boolean));
+  let h=`<div class="stats"><div class="stat"><div class="stat-val">${REGISTRY.length}</div><div class="stat-label">전체</div></div><div class="stat"><div class="stat-val">${tp.agent||0}</div><div class="stat-label">에이전트</div></div><div class="stat"><div class="stat-val">${tp.skill||0}</div><div class="stat-label">스킬</div></div><div class="stat"><div class="stat-val">${tp.automation||0}</div><div class="stat-label">자동화</div></div><div class="stat"><div class="stat-val">${au.size}</div><div class="stat-label">기여자</div></div></div>`;
+  if(!items.length)h+=`<div class="empty">검색 결과가 없습니다.</div>`;
+  else h+=`<div class="grid">${items.map(cardHTML).join('')}</div>`;
+  h+=guideHTML();
+  document.getElementById('content').innerHTML=h;
 }
-
-// ════════════════════════════════════════
-// REGISTRY
-// ════════════════════════════════════════
-function renderRegistry() {
-  const q = document.getElementById('search').value.toLowerCase();
-  let items = REGISTRY;
-  if (currentFilter !== 'All') items = items.filter(d => d.category === currentFilter);
-  if (currentType !== 'All') items = items.filter(d => d.type === currentType);
-  if (currentAuthor !== 'All') items = items.filter(d => matchesAuthor(d.author));
-  if (q) items = items.filter(d =>
-    d.name.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) ||
-    (d.command || '').toLowerCase().includes(q) || (d.author || '').toLowerCase().includes(q) ||
-    (d.integrations || []).some(i => i.toLowerCase().includes(q))
-  );
-
-  const types = {}; REGISTRY.forEach(d => { types[d.type] = (types[d.type] || 0) + 1; });
-  const authors = new Set(REGISTRY.map(d => d.author).filter(Boolean));
-
-  let html = `<div class="stats">
-    <div class="stat"><div class="stat-value">${REGISTRY.length}</div><div class="stat-label">전체 등록</div></div>
-    <div class="stat"><div class="stat-value">${types.agent || 0}</div><div class="stat-label">에이전트</div></div>
-    <div class="stat"><div class="stat-value">${types.skill || 0}</div><div class="stat-label">스킬</div></div>
-    <div class="stat"><div class="stat-value">${types.automation || 0}</div><div class="stat-label">자동화</div></div>
-    <div class="stat"><div class="stat-value">${authors.size}</div><div class="stat-label">기여자</div></div>
-  </div>`;
-
-  if (!items.length) {
-    html += `<div class="no-results" style="padding:60px 0">검색 결과가 없습니다.</div>`;
-  } else {
-    html += `<div class="grid">${items.map(cardHTML).join('')}</div>`;
-  }
-  html += guideHTML();
-  document.getElementById('content').innerHTML = html;
+function cardHTML(d){
+  const ints=(d.integrations||[]).slice(0,3).map(i=>`<span class="tag tag-int">${i}</span>`).join('');
+  const extra=(d.integrations||[]).length>3?`<span class="tag">+${d.integrations.length-3}</span>`:'';
+  return`<div class="card" onclick="toggleCard(this,event)">${d.schedule?`<div class="card-schedule">${d.schedule}</div>`:''}<div class="card-head"><span class="card-emoji">${d.icon||'\u{1F527}'}</span><div><div class="card-name">${d.name}</div>${d.command?`<div class="card-cmd">${d.command}</div>`:''}</div></div><div class="card-desc">${d.description}</div><div class="card-tags"><span class="tag tag-type">${TL[d.type]||d.type}</span><span class="tag tag-platform">${d.platform}</span>${ints}${extra}</div><div class="card-footer"><span>by ${d.author||'미지정'}</span></div><div class="card-detail">${d.input?`<div class="detail-row"><span class="detail-label">입력</span><span>${d.input}</span></div>`:''}${d.output?`<div class="detail-row"><span class="detail-label">출력</span><span>${d.output}</span></div>`:''}${d.trigger?`<div class="detail-row"><span class="detail-label">실행</span><span>${d.trigger}</span></div>`:''}<div class="detail-row"><span class="detail-label">담당자</span><input class="author-input" value="${d.author||''}" placeholder="이름" onclick="event.stopPropagation()" onchange="updateAuth('${d.id}',this.value)"/></div></div></div>`;
 }
+function toggleCard(el,e){if(e.target.closest('.author-input'))return;el.classList.toggle('expanded')}
+function updateAuth(id,v){const d=REGISTRY.find(d=>d.id===id);if(d){d.author=v.trim();toast(v.trim()?'담당자: '+v.trim():'담당자 해제됨');renderFilters()}}
+function updateWfAuth(id,v){const w=WORKFLOWS.find(w=>w.id===id);if(w){w.author=v.trim();toast(v.trim()?'담당자: '+v.trim():'담당자 해제됨');renderFilters();renderContent()}}
 
-function cardHTML(d, idx) {
-  const c = CAT_COLORS[d.category] || { bg:'rgba(0,0,0,0.04)', fg:'var(--text2)' };
-  const ints = (d.integrations||[]).map(i=>`<span class="tag tag-integration">${i}</span>`).join('');
-  const sched = d.schedule ? `<div class="card-schedule">\u26A1 ${d.schedule}</div>` : '';
-  const authorDisplay = d.author || '미지정';
-  return `<div class="card" onclick="toggleCard(this, event)">
-    ${sched}
-    <div class="card-top">
-      <div class="card-icon" style="background:${c.bg};color:${c.fg}">${d.icon||'\u{1F527}'}</div>
-      <div class="card-info">
-        <div class="card-name">${d.name}</div>
-        ${d.command?`<div class="card-cmd">${d.command}</div>`:''}
-      </div>
-    </div>
-    <div class="card-desc">${d.description}</div>
-    <div class="card-tags">
-      <span class="tag tag-type">${TYPE_LABELS[d.type]||d.type}</span>
-      <span class="tag tag-platform">${d.platform}</span>
-      ${ints}
-    </div>
-    <div class="card-meta">by ${authorDisplay}</div>
-    <div class="card-detail">
-      ${d.input?`<div class="detail-row"><span class="detail-label">입력</span><span class="detail-value">${d.input}</span></div>`:''}
-      ${d.output?`<div class="detail-row"><span class="detail-label">출력</span><span class="detail-value">${d.output}</span></div>`:''}
-      ${d.trigger?`<div class="detail-row"><span class="detail-label">실행</span><span class="detail-value">${d.trigger}</span></div>`:''}
-      <div class="detail-row detail-editable">
-        <span class="detail-label">담당자</span>
-        <input class="author-input" value="${d.author||''}" placeholder="이름 입력"
-          onclick="event.stopPropagation()"
-          onchange="updateAuthor('${d.id}', this.value)" />
-      </div>
-    </div>
-  </div>`;
+// ── Form ──
+function openForm(){document.getElementById('formModal').classList.add('show');document.getElementById('formOutput').innerHTML=''}
+function closeForm(){document.getElementById('formModal').classList.remove('show')}
+document.getElementById('formModal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeForm()});
+function generateEntry(){
+  const name=$('f-name').value.trim(),desc=$('f-desc').value.trim(),cat=$('f-category').value,type=$('f-type').value,author=$('f-author').value.trim();
+  if(!name||!desc||!cat||!type||!author){alert('필수 항목(*)을 모두 입력해주세요.');return}
+  const id=($('f-command').value||name).replace(/^\//,'').replace(/\s+/g,'-').toLowerCase();
+  const entry={id,name,command:$('f-command').value.trim()||undefined,description:desc,category:cat,type,platform:$('f-platform').value,trigger:$('f-trigger').value,input:$('f-input').value.trim()||undefined,output:$('f-output').value.trim()||undefined,integrations:$('f-integrations').value.split(',').map(s=>s.trim()).filter(Boolean),icon:$('f-icon').value.trim()||undefined,author,schedule:$('f-schedule').value.trim()||undefined,updatedAt:new Date().toISOString().split('T')[0]};
+  Object.keys(entry).forEach(k=>entry[k]===undefined&&delete entry[k]);
+  const json=JSON.stringify(entry,null,2);
+  $('formOutput').innerHTML=`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:6px">생성된 JSON</div><div class="output-box">${esc(json)}</div><div style="display:flex;gap:8px"><button class="btn" onclick="copyText(\`${json.replace(/`/g,'\\`')}\`)">복사</button><button class="btn btn-primary" onclick='addLocal(${escA(json)})'>바로 추가</button></div><p style="font-size:11px;color:var(--text3);margin-top:8px">영구 반영: <code>data/registry.json</code>에 추가 후 push</p></div>`;
 }
-
-function toggleCard(el, e) {
-  if (e.target.closest('.author-input')) return;
-  el.classList.toggle('expanded');
-}
-
-function updateAuthor(id, value) {
-  const item = REGISTRY.find(d => d.id === id);
-  if (item) {
-    item.author = value.trim();
-    showToast(value.trim() ? '담당자: ' + value.trim() : '담당자 해제됨');
-    renderSubFilters();
-  }
-}
-
-function updateWfAuthor(id, value) {
-  const wf = WORKFLOWS.find(w => w.id === id);
-  if (wf) {
-    wf.author = value.trim();
-    showToast(value.trim() ? '담당자: ' + value.trim() : '담당자 해제됨');
-    renderSubFilters();
-    // Re-render just the header author text
-    const card = document.querySelector(`.wf-card .wf-header .wf-author`);
-    // Full re-render for simplicity since author filters may change
-    renderContent();
-  }
-}
-
-// ════════════════════════════════════════
-// FORM
-// ════════════════════════════════════════
-function openForm() { document.getElementById('formModal').classList.add('show'); document.getElementById('formOutput').innerHTML = ''; }
-function closeForm() { document.getElementById('formModal').classList.remove('show'); }
-document.getElementById('formModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeForm(); });
-
-function generateEntry() {
-  const name = document.getElementById('f-name').value.trim();
-  const desc = document.getElementById('f-desc').value.trim();
-  const cat = document.getElementById('f-category').value;
-  const type = document.getElementById('f-type').value;
-  const author = document.getElementById('f-author').value.trim();
-  if (!name||!desc||!cat||!type||!author) { alert('필수 항목(*)을 모두 입력해주세요.'); return; }
-  const id = (document.getElementById('f-command').value||name).replace(/^\//,'').replace(/\s+/g,'-').toLowerCase();
-  const entry = { id, name,
-    command: document.getElementById('f-command').value.trim()||undefined,
-    description: desc, category: cat, type,
-    platform: document.getElementById('f-platform').value,
-    trigger: document.getElementById('f-trigger').value,
-    input: document.getElementById('f-input').value.trim()||undefined,
-    output: document.getElementById('f-output').value.trim()||undefined,
-    integrations: document.getElementById('f-integrations').value.split(',').map(s=>s.trim()).filter(Boolean),
-    icon: document.getElementById('f-icon').value.trim()||undefined,
-    author,
-    schedule: document.getElementById('f-schedule').value.trim()||undefined,
-    updatedAt: new Date().toISOString().split('T')[0],
-  };
-  Object.keys(entry).forEach(k => entry[k] === undefined && delete entry[k]);
-  const json = JSON.stringify(entry, null, 2);
-  document.getElementById('formOutput').innerHTML = `
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.06)">
-      <div style="font-size:13px;font-weight:600;margin-bottom:8px;">생성된 JSON</div>
-      <div class="output-box">${esc(json)}</div>
-      <div class="output-actions">
-        <button class="btn" onclick="copyText(\`${json.replace(/`/g,'\\`')}\`)">JSON 복사</button>
-        <button class="btn btn-primary" onclick='addLocal(${escA(json)})'>바로 추가</button>
-      </div>
-      <p style="font-size:11px;color:var(--text3);margin-top:10px;">영구 반영: <code>data/registry.json</code>에 추가 후 push</p>
-    </div>`;
-}
-function addLocal(e) { if(typeof e==='string')e=JSON.parse(e); REGISTRY.push(e); closeForm(); renderAll(); showToast('추가됨 (이 세션만)'); }
-function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function escA(s) { return s.replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
-function exportJSON() {
-  const b = new Blob([JSON.stringify({registry:REGISTRY,workflows:WORKFLOWS},null,2)],{type:'application/json'});
-  const u = URL.createObjectURL(b);
-  const a = document.createElement('a'); a.href=u; a.download='skill-dashboard-export.json'; a.click();
-  URL.revokeObjectURL(u);
-}
-function copyText(t) { navigator.clipboard.writeText(t); showToast('복사되었습니다'); }
-function showToast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
+function $(id){return document.getElementById(id)}
+function addLocal(e){if(typeof e==='string')e=JSON.parse(e);REGISTRY.push(e);closeForm();renderAll();toast('추가됨 (이 세션만)')}
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function escA(s){return s.replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;')}
+function exportJSON(){const b=new Blob([JSON.stringify({registry:REGISTRY,workflows:WORKFLOWS},null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='skill-dashboard-export.json';a.click();URL.revokeObjectURL(u)}
+function copyText(t){navigator.clipboard.writeText(t);toast('복사되었습니다')}
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)}
 
 loadData();
 </script>
