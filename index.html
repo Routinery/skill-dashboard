@@ -9,254 +9,275 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-  --bg: #f6f6f9;
-  --card: #ffffff;
-  --border: rgba(0,0,0,0.06);
-  --text1: #111827;
-  --text2: #6b7280;
-  --text3: #9ca3af;
-  --accent: #4f46e5;
-  --accent-light: #eef2ff;
-  --green: #059669;
-  --green-light: #ecfdf5;
-  --orange: #d97706;
-  --orange-light: #fffbeb;
-  --pink: #db2777;
-  --pink-light: #fdf2f8;
-  --cyan: #0891b2;
-  --cyan-light: #ecfeff;
-  --purple: #7c3aed;
-  --purple-light: #f5f3ff;
-  --red: #dc2626;
-  --red-light: #fef2f2;
-  --human: #f59e0b;
-  --human-light: #fffbeb;
-  --agent-color: #4f46e5;
-  --human-color: #f59e0b;
-  --trigger-color: #9ca3af;
+  --bg: #eae5f0;
+  --card: rgba(255,255,255,0.65);
+  --card-hover: rgba(255,255,255,0.85);
+  --border: rgba(0,0,0,0.05);
+  --text1: #1a1a2e;
+  --text2: #555;
+  --text3: #999;
+  --accent: #6c5ce7;
+  --accent-light: rgba(108,92,231,0.08);
+  --green: #00b894;
+  --green-light: rgba(0,184,148,0.08);
+  --orange: #e17055;
+  --orange-light: rgba(225,112,85,0.08);
+  --pink: #e84393;
+  --pink-light: rgba(232,67,147,0.08);
+  --cyan: #0984e3;
+  --cyan-light: rgba(9,132,227,0.08);
+  --purple: #6c5ce7;
+  --purple-light: rgba(108,92,231,0.08);
+  --red: #d63031;
+  --red-light: rgba(214,48,49,0.08);
+  --human-color: #fdcb6e;
+  --agent-color: #6c5ce7;
+  --trigger-color: #b2bec3;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', system-ui, sans-serif;
-  background: var(--bg); color: var(--text1);
-  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Inter', system-ui, sans-serif;
+  background: linear-gradient(180deg, #e8e0f0 0%, #dce8e8 40%, #eaeef2 100%);
+  background-attachment: fixed;
+  color: var(--text1); min-height: 100vh; -webkit-font-smoothing: antialiased;
 }
 
-.page { max-width: 1120px; margin: 0 auto; padding: 0 24px 80px; }
+.page { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
 
-/* ── Header ── */
-.header {
-  padding: 48px 0 0;
-  display: flex; align-items: flex-end; justify-content: space-between;
-  gap: 16px; flex-wrap: wrap;
+/* ── Hero Header ── */
+.hero {
+  position: relative; overflow: hidden;
+  border-radius: 0 0 20px 20px;
+  margin-bottom: 0;
 }
-.header-left h1 {
-  font-size: 28px; font-weight: 800; letter-spacing: -0.03em;
-  display: flex; align-items: center; gap: 10px;
+.hero img {
+  width: 100%; max-height: 320px; object-fit: cover;
+  display: block; filter: brightness(0.35);
 }
-.header-left h1 img { width: 32px; height: 32px; border-radius: 8px; }
-.header-left p { color: var(--text3); font-size: 14px; margin-top: 4px; }
-.header-right { display: flex; gap: 8px; }
+.hero-overlay {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; z-index: 1; text-align: center; padding: 0 24px;
+}
+.hero h1 {
+  font-size: 2.4rem; font-weight: 800; color: #fff;
+  letter-spacing: -0.04em; line-height: 1.15;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+.hero p {
+  color: rgba(255,255,255,0.65); font-size: 14px; margin-top: 8px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.3);
+}
+
+/* ── Top bar ── */
+.top-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-top: 20px; flex-wrap: wrap;
+}
+.search-wrap { flex: 1; min-width: 200px; position: relative; }
+.search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #aaa; }
+.search-wrap input {
+  width: 100%; padding: 10px 16px 10px 40px;
+  background: var(--card); backdrop-filter: blur(8px);
+  border: 1px solid var(--border); border-radius: 12px;
+  color: var(--text1); font-size: 14px; outline: none;
+}
+.search-wrap input:focus { border-color: rgba(108,92,231,0.3); background: rgba(255,255,255,0.9); }
+.search-wrap input::placeholder { color: #bbb; }
+
 .btn {
-  padding: 9px 18px; border-radius: 10px; font-size: 13px; font-weight: 600;
-  border: 1px solid var(--border); background: var(--card); color: var(--text1);
-  cursor: pointer; transition: all 0.15s; display: flex; align-items: center; gap: 6px;
+  padding: 9px 18px; border-radius: 12px; font-size: 13px; font-weight: 600;
+  border: 1px solid var(--border); background: var(--card); backdrop-filter: blur(8px);
+  color: var(--text1); cursor: pointer; transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
 }
-.btn:hover { border-color: rgba(0,0,0,0.12); box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.btn:hover { background: var(--card-hover); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
 .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-.btn-primary:hover { background: #4338ca; }
+.btn-primary:hover { background: #5a4bd6; }
 
-/* ── Tabs ── */
+/* ── Main Tabs ── */
 .main-tabs {
-  display: flex; gap: 0; margin-top: 28px;
-  border-bottom: 2px solid var(--border);
+  display: flex; gap: 0; margin-top: 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
 }
 .main-tab {
-  padding: 12px 24px; background: none; border: none;
-  font-size: 15px; font-weight: 600; color: var(--text3);
-  cursor: pointer; border-bottom: 2px solid transparent;
-  margin-bottom: -2px; transition: all 0.15s;
+  padding: 14px 24px; background: none; border: none;
+  font-size: 17px; font-weight: 600; color: #aaa;
+  cursor: pointer; border-bottom: 3px solid transparent;
+  margin-bottom: -1px; transition: color 0.15s;
+  display: flex; align-items: center; gap: 8px;
 }
-.main-tab:hover { color: var(--text2); }
-.main-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-.main-tab .tab-count {
-  font-size: 11px; background: rgba(0,0,0,0.05); padding: 1px 7px;
-  border-radius: 5px; margin-left: 6px;
+.main-tab:hover { color: #555; }
+.main-tab.active { color: #111; border-bottom-color: #111; }
+.tab-count {
+  font-size: 13px; color: #bbb; background: rgba(0,0,0,0.04);
+  padding: 2px 8px; border-radius: 6px;
 }
-.main-tab.active .tab-count { background: var(--accent-light); color: var(--accent); }
+.main-tab.active .tab-count { color: #666; background: rgba(0,0,0,0.07); }
+.tab-gap-count {
+  font-size: 11px; color: var(--red); background: var(--red-light);
+  padding: 2px 8px; border-radius: 6px; font-weight: 600;
+}
+
+/* ── Sub-filters ── */
+.sub-filters {
+  margin-top: 14px; display: flex; gap: 4px; flex-wrap: wrap;
+}
+.chip {
+  padding: 6px 14px; border-radius: 10px; border: none;
+  background: transparent; color: #999; font-size: 12px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+}
+.chip:hover { color: #555; background: rgba(0,0,0,0.04); }
+.chip.active { color: #111; background: rgba(0,0,0,0.06); }
 
 /* ── Stats ── */
-.stats { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+.stats { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
 .stat {
-  background: var(--card); border: 1px solid var(--border); border-radius: 12px;
-  padding: 16px 20px; min-width: 140px; flex: 1;
+  background: var(--card); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 16px 20px; min-width: 120px; flex: 1;
 }
-.stat-value { font-size: 28px; font-weight: 800; }
-.stat-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
-
-/* ── Toolbar ── */
-.toolbar { display: flex; gap: 8px; margin-top: 20px; align-items: center; flex-wrap: wrap; }
-.search-wrap { flex: 1; min-width: 200px; position: relative; }
-.search-wrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-.search-wrap input {
-  width: 100%; padding: 10px 14px 10px 38px;
-  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
-  font-size: 14px; color: var(--text1); outline: none;
-}
-.search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
-.search-wrap input::placeholder { color: var(--text3); }
-.filter-group { display: flex; gap: 4px; flex-wrap: wrap; }
-.chip {
-  padding: 7px 14px; border-radius: 8px; font-size: 12px; font-weight: 500;
-  border: 1px solid transparent; background: transparent; color: var(--text3);
-  cursor: pointer; transition: all 0.15s; white-space: nowrap;
-}
-.chip:hover { color: var(--text2); background: rgba(0,0,0,0.03); }
-.chip.active { color: var(--accent); background: var(--accent-light); border-color: rgba(79,70,229,0.15); }
+.stat-value { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; }
+.stat-label { font-size: 11px; color: var(--text3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.04em; }
 
 /* ── Card grid ── */
 .grid {
-  display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 12px; margin-top: 20px;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin-top: 18px;
 }
 .card {
-  background: var(--card); border: 1px solid var(--border); border-radius: 14px;
+  background: var(--card); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 16px;
   padding: 20px; transition: all 0.2s; cursor: pointer; position: relative;
+  display: flex; flex-direction: column; gap: 10px;
 }
-.card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); border-color: rgba(0,0,0,0.1); }
+.card:hover { background: var(--card-hover); box-shadow: 0 2px 20px rgba(0,0,0,0.04); }
 .card-top { display: flex; align-items: flex-start; gap: 12px; }
 .card-icon {
-  width: 42px; height: 42px; border-radius: 11px; flex-shrink: 0;
-  display: flex; align-items: center; justify-content: center; font-size: 20px;
+  width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
 }
 .card-info { flex: 1; min-width: 0; }
-.card-name { font-size: 15px; font-weight: 700; }
+.card-name { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif; }
 .card-cmd { font-size: 11px; color: var(--accent); font-family: 'SF Mono', monospace; font-weight: 500; margin-top: 1px; }
-.card-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-top: 8px; }
-.card-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 10px; }
+.card-desc { font-size: 13px; color: #888; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.card-tags { display: flex; gap: 4px; flex-wrap: wrap; }
 .tag { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 5px; background: rgba(0,0,0,0.04); color: var(--text3); }
 .tag-type { background: var(--accent-light); color: var(--accent); }
 .tag-platform { background: var(--green-light); color: var(--green); }
 .tag-integration { background: var(--purple-light); color: var(--purple); }
-.card-author { font-size: 11px; color: var(--text3); margin-top: 10px; }
+.card-meta { font-size: 11px; color: #bbb; font-family: 'SF Mono', 'Fira Code', monospace; }
 .card-schedule {
   position: absolute; top: 12px; right: 12px;
   font-size: 10px; font-weight: 600; color: var(--green);
   background: var(--green-light); padding: 3px 8px; border-radius: 5px;
 }
-.card-detail { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.card-detail { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; color: #777; line-height: 1.7; }
 .card.expanded .card-detail { display: block; }
-.detail-row { display: flex; gap: 8px; margin-bottom: 8px; font-size: 12px; }
-.detail-label { color: var(--text3); min-width: 56px; flex-shrink: 0; }
+.card.expanded .card-desc { -webkit-line-clamp: unset; }
+.detail-row { display: flex; gap: 8px; margin-bottom: 6px; }
+.detail-label { color: var(--text3); min-width: 48px; flex-shrink: 0; }
 .detail-value { color: var(--text2); }
-.cat-기획 { background: var(--accent-light); color: var(--accent); }
-.cat-디자인 { background: var(--pink-light); color: var(--pink); }
-.cat-개발 { background: var(--cyan-light); color: var(--cyan); }
-.cat-운영 { background: var(--orange-light); color: var(--orange); }
-.cat-릴리즈 { background: var(--green-light); color: var(--green); }
-.cat-지식관리 { background: var(--purple-light); color: var(--purple); }
-.cat-자동화 { background: var(--cyan-light); color: var(--cyan); }
-.cat-QA { background: var(--red-light); color: var(--red); }
 
 /* ── Workflow ── */
-.workflow-list { margin-top: 20px; display: flex; flex-direction: column; gap: 16px; }
+.workflow-list { margin-top: 18px; display: flex; flex-direction: column; gap: 12px; }
 .wf-card {
-  background: var(--card); border: 1px solid var(--border); border-radius: 16px;
-  overflow: hidden; transition: box-shadow 0.2s;
+  background: var(--card); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 16px;
+  overflow: hidden; transition: all 0.2s;
 }
-.wf-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.wf-card:hover { box-shadow: 0 2px 20px rgba(0,0,0,0.04); }
 .wf-header {
-  padding: 20px 24px; cursor: pointer; display: flex; align-items: center; gap: 16px;
+  padding: 18px 24px; cursor: pointer; display: flex; align-items: center; gap: 14px;
 }
 .wf-team {
   font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px;
   background: var(--accent-light); color: var(--accent); white-space: nowrap;
 }
-.wf-title { font-size: 17px; font-weight: 700; flex: 1; }
-.wf-meta { font-size: 12px; color: var(--text3); display: flex; gap: 12px; }
+.wf-title { font-size: 17px; font-weight: 700; flex: 1; letter-spacing: -0.02em; }
+.wf-meta { font-size: 12px; color: var(--text3); display: flex; gap: 12px; align-items: center; }
 .wf-meta span { display: flex; align-items: center; gap: 3px; }
-.wf-chevron { font-size: 20px; color: var(--text3); transition: transform 0.2s; }
+.wf-author { font-size: 11px; color: var(--text3); }
+.wf-chevron { font-size: 20px; color: #ccc; transition: transform 0.2s; }
 .wf-card.open .wf-chevron { transform: rotate(90deg); }
 .wf-body { display: none; padding: 0 24px 24px; }
 .wf-card.open .wf-body { display: block; }
-.wf-desc { font-size: 13px; color: var(--text2); margin-bottom: 20px; line-height: 1.5; }
+.wf-desc { font-size: 13px; color: #888; margin-bottom: 20px; line-height: 1.5; }
 
-/* Pipeline visualization */
-.pipeline { display: flex; flex-direction: column; gap: 0; position: relative; }
-.pipe-step {
-  display: flex; align-items: stretch; gap: 0; position: relative;
-  min-height: 72px;
-}
-.pipe-line {
-  width: 48px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center;
-  position: relative;
-}
+/* Pipeline */
+.pipeline { display: flex; flex-direction: column; gap: 0; }
+.pipe-step { display: flex; align-items: stretch; gap: 0; position: relative; min-height: 68px; }
+.pipe-line { width: 44px; flex-shrink: 0; display: flex; flex-direction: column; align-items: center; }
 .pipe-dot {
   width: 14px; height: 14px; border-radius: 50%; border: 3px solid;
-  z-index: 1; margin-top: 18px; flex-shrink: 0;
+  z-index: 1; margin-top: 16px; flex-shrink: 0;
 }
-.pipe-dot.agent { border-color: var(--agent-color); background: var(--accent-light); }
-.pipe-dot.human { border-color: var(--human-color); background: var(--human-light); }
-.pipe-dot.trigger { border-color: var(--trigger-color); background: #f3f4f6; }
-.pipe-connector {
-  flex: 1; width: 2px; background: #e5e7eb; margin-top: 4px;
-}
+.pipe-dot.agent { border-color: var(--agent-color); background: rgba(108,92,231,0.15); }
+.pipe-dot.human { border-color: var(--human-color); background: rgba(253,203,110,0.2); }
+.pipe-dot.trigger { border-color: var(--trigger-color); background: rgba(178,190,195,0.15); }
+.pipe-connector { flex: 1; width: 2px; background: #ddd; margin-top: 4px; }
 .pipe-step:last-child .pipe-connector { display: none; }
-
-.pipe-content {
-  flex: 1; padding: 10px 0 10px 12px; min-width: 0;
-}
+.pipe-content { flex: 1; padding: 8px 0 8px 10px; min-width: 0; }
 .pipe-content-inner {
-  background: var(--bg); border-radius: 10px; padding: 12px 16px;
+  background: rgba(255,255,255,0.5); border-radius: 10px; padding: 12px 16px;
   border-left: 3px solid transparent;
 }
 .pipe-content-inner.agent { border-left-color: var(--agent-color); }
 .pipe-content-inner.human { border-left-color: var(--human-color); }
 .pipe-content-inner.trigger { border-left-color: var(--trigger-color); }
-.pipe-content-inner.gap {
-  border-left-color: var(--red);
-  background: var(--red-light);
-}
-.pipe-name { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.pipe-badge {
-  font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px;
-}
+.pipe-content-inner.gap { border-left-color: var(--red); background: rgba(214,48,49,0.06); }
+.pipe-name { font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pipe-badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 4px; }
 .pipe-badge.agent { background: var(--accent-light); color: var(--accent); }
-.pipe-badge.human { background: var(--human-light); color: var(--human-color); }
-.pipe-badge.trigger { background: #f3f4f6; color: var(--text3); }
+.pipe-badge.human { background: rgba(253,203,110,0.2); color: #e17055; }
+.pipe-badge.trigger { background: rgba(0,0,0,0.04); color: var(--text3); }
 .pipe-badge.gap { background: var(--red-light); color: var(--red); }
-.pipe-desc { font-size: 12px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
+.pipe-desc { font-size: 12px; color: #888; margin-top: 4px; line-height: 1.5; }
 .pipe-tools { display: flex; gap: 3px; flex-wrap: wrap; margin-top: 6px; }
 .pipe-tool { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,0.04); color: var(--text3); }
 .pipe-output { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: 500; }
-.pipe-who { font-size: 11px; color: var(--human-color); font-weight: 500; }
-.pipe-reject {
-  font-size: 10px; color: var(--red); margin-top: 4px;
-  display: flex; align-items: center; gap: 4px;
-}
-
-/* Parallel track */
+.pipe-who { font-size: 11px; color: #e17055; font-weight: 500; }
+.pipe-reject { font-size: 10px; color: var(--red); margin-top: 4px; }
 .pipe-parallel {
-  margin-top: 12px; margin-left: 48px;
-  background: #fffbeb; border: 1px dashed #f59e0b; border-radius: 10px;
+  margin-top: 12px; margin-left: 44px;
+  background: rgba(253,203,110,0.08); border: 1px dashed #fdcb6e; border-radius: 10px;
   padding: 12px 16px;
 }
-.pipe-parallel-label {
-  font-size: 10px; font-weight: 700; color: var(--orange);
-  text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
-}
-
-/* Legend */
-.wf-legend {
-  display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
-}
+.pipe-parallel-label { font-size: 10px; font-weight: 700; color: var(--orange); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+.wf-legend { display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap; }
 .legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text2); }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid; }
-.legend-dot.agent { border-color: var(--agent-color); background: var(--accent-light); }
-.legend-dot.human { border-color: var(--human-color); background: var(--human-light); }
-.legend-dot.trigger { border-color: var(--trigger-color); background: #f3f4f6; }
+.legend-dot.agent { border-color: var(--agent-color); background: rgba(108,92,231,0.15); }
+.legend-dot.human { border-color: var(--human-color); background: rgba(253,203,110,0.2); }
+.legend-dot.trigger { border-color: var(--trigger-color); background: rgba(178,190,195,0.15); }
 
-.no-results { text-align: center; padding: 60px 0; color: var(--text3); font-size: 14px; grid-column: 1/-1; }
+/* ── Guide banner ── */
+.guide-banner {
+  background: var(--card); backdrop-filter: blur(12px);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 24px; margin-top: 18px;
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.guide-icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+.guide-body { flex: 1; }
+.guide-body h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
+.guide-body p { font-size: 13px; color: #888; line-height: 1.6; margin-bottom: 12px; }
+.guide-steps { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
+.guide-step {
+  display: flex; align-items: flex-start; gap: 10px; font-size: 12px; color: var(--text2);
+}
+.guide-step-num {
+  width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+  background: var(--accent-light); color: var(--accent);
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.guide-step code { background: rgba(0,0,0,0.05); padding: 1px 6px; border-radius: 4px; font-size: 11px; }
+.guide-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.guide-actions .btn { font-size: 12px; padding: 7px 14px; }
+
+.no-results { text-align: center; padding: 60px 0; color: #aaa; font-size: 13px; grid-column: 1/-1; }
 
 /* ── Modal ── */
 .modal-overlay {
@@ -266,34 +287,35 @@ body {
 }
 .modal-overlay.show { display: flex; }
 .modal {
-  background: var(--card); border-radius: 18px; padding: 32px;
+  background: #fff; border-radius: 18px; padding: 32px;
   width: 90%; max-width: 600px; max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
 }
 .modal h2 { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
 .modal .subtitle { font-size: 13px; color: var(--text3); margin-bottom: 24px; }
 .form-group { margin-bottom: 16px; }
 .form-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 5px; }
-.form-group label .required { color: var(--red); }
+.form-group label .req { color: var(--red); }
 .form-group input, .form-group textarea, .form-group select {
-  width: 100%; padding: 10px 12px; border: 1px solid var(--border);
-  border-radius: 9px; font-size: 13px; color: var(--text1);
-  font-family: inherit; outline: none; background: var(--bg);
+  width: 100%; padding: 10px 12px; border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 10px; font-size: 13px; color: var(--text1);
+  font-family: inherit; outline: none; background: #f8f8fa;
 }
 .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
-  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+  border-color: var(--accent); box-shadow: 0 0 0 3px rgba(108,92,231,0.1);
 }
 .form-group textarea { resize: vertical; min-height: 60px; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .form-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 24px; }
 .output-box {
-  background: var(--bg); border: 1px solid var(--border); border-radius: 10px;
+  background: #f8f8fa; border: 1px solid rgba(0,0,0,0.06); border-radius: 10px;
   padding: 14px; font-family: 'SF Mono', monospace; font-size: 12px;
   white-space: pre-wrap; word-break: break-all; max-height: 300px; overflow-y: auto;
   line-height: 1.6; color: var(--text2); margin: 16px 0;
 }
-.output-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.output-actions { display: flex; gap: 8px; }
 .output-actions .btn { font-size: 12px; padding: 8px 14px; }
+
 .toast {
   position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(100px);
   background: var(--text1); color: #fff; padding: 10px 20px; border-radius: 10px;
@@ -302,56 +324,45 @@ body {
 .toast.show { transform: translateX(-50%) translateY(0); }
 
 @media (max-width: 768px) {
-  .header { flex-direction: column; align-items: flex-start; }
-  .stats { gap: 8px; }
-  .stat { min-width: 0; padding: 12px 14px; }
-  .stat-value { font-size: 22px; }
+  .hero h1 { font-size: 1.6rem; }
   .grid { grid-template-columns: 1fr; }
   .form-row { grid-template-columns: 1fr; }
-  .toolbar { flex-direction: column; }
+  .top-bar { flex-direction: column; }
   .wf-meta { display: none; }
+  .guide-banner { flex-direction: column; }
 }
 </style>
 </head>
 <body>
+
 <div class="page">
-  <div class="header">
-    <div class="header-left">
-      <h1><img src="favicon.png" alt="">Routinery Skill Registry</h1>
+  <!-- Hero -->
+  <div class="hero">
+    <img src="hero.jpg" alt="">
+    <div class="hero-overlay">
+      <h1>Routinery Skill Registry</h1>
       <p>팀이 만든 에이전트, 스킬, 자동화 워크플로우를 한눈에</p>
     </div>
-    <div class="header-right">
-      <button class="btn" onclick="exportJSON()">JSON 내보내기</button>
-      <button class="btn btn-primary" onclick="openForm()">+ 등록하기</button>
-    </div>
   </div>
 
+  <!-- Top bar -->
+  <div class="top-bar">
+    <div class="search-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="search" placeholder="검색 -- 이름, 설명, 도구, 만든 사람..." oninput="renderContent()">
+    </div>
+    <button class="btn" onclick="exportJSON()">JSON 내보내기</button>
+    <button class="btn btn-primary" onclick="openForm()">+ 등록하기</button>
+  </div>
+
+  <!-- Tabs -->
   <div class="main-tabs" id="mainTabs"></div>
 
-  <!-- Workflows page -->
-  <div id="workflowPage" style="display:none">
-    <div class="toolbar">
-      <div class="filter-group" id="teamFilters"></div>
-    </div>
-    <div class="workflow-list" id="workflowList"></div>
-  </div>
+  <!-- Sub-filters -->
+  <div class="sub-filters" id="subFilters"></div>
 
-  <!-- Registry page -->
-  <div id="registryPage" style="display:none">
-    <div class="stats" id="stats"></div>
-    <div class="toolbar">
-      <div class="search-wrap">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="search" placeholder="검색 -- 이름, 설명, 도구, 만든 사람..." oninput="renderRegistry()">
-      </div>
-      <div class="filter-group" id="categoryFilters"></div>
-    </div>
-    <div class="toolbar" style="margin-top:8px">
-      <div class="filter-group" id="typeFilters"></div>
-      <div class="filter-group" id="authorFilters"></div>
-    </div>
-    <div class="grid" id="grid"></div>
-  </div>
+  <!-- Content -->
+  <div id="content"></div>
 </div>
 
 <!-- Register Modal -->
@@ -360,16 +371,16 @@ body {
     <h2>새 스킬/에이전트 등록</h2>
     <p class="subtitle">등록 후 JSON을 복사하여 <code>data/registry.json</code>에 추가하세요.</p>
     <div class="form-row">
-      <div class="form-group"><label>이름 <span class="required">*</span></label><input type="text" id="f-name" placeholder="예: 떡밥제조기"></div>
+      <div class="form-group"><label>이름 <span class="req">*</span></label><input type="text" id="f-name" placeholder="예: 떡밥제조기"></div>
       <div class="form-group"><label>호출 커맨드</label><input type="text" id="f-command" placeholder="예: /pm"></div>
     </div>
-    <div class="form-group"><label>한줄 설명 <span class="required">*</span></label><textarea id="f-desc" rows="2" placeholder="뭘 하는 건지 한두 문장으로"></textarea></div>
+    <div class="form-group"><label>한줄 설명 <span class="req">*</span></label><textarea id="f-desc" rows="2" placeholder="뭘 하는 건지 한두 문장으로"></textarea></div>
     <div class="form-row">
-      <div class="form-group"><label>카테고리 <span class="required">*</span></label><select id="f-category"><option value="">선택</option><option>기획</option><option>디자인</option><option>개발</option><option>QA</option><option>릴리즈</option><option>운영</option><option>지식관리</option><option>자동화</option></select></div>
-      <div class="form-group"><label>타입 <span class="required">*</span></label><select id="f-type"><option value="">선택</option><option value="agent">에이전트</option><option value="skill">스킬</option><option value="automation">자동화</option><option value="mcp">MCP 연동</option></select></div>
+      <div class="form-group"><label>카테고리 <span class="req">*</span></label><select id="f-category"><option value="">선택</option><option>기획</option><option>디자인</option><option>개발</option><option>QA</option><option>릴리즈</option><option>운영</option><option>지식관리</option><option>자동화</option></select></div>
+      <div class="form-group"><label>타입 <span class="req">*</span></label><select id="f-type"><option value="">선택</option><option value="agent">에이전트</option><option value="skill">스킬</option><option value="automation">자동화</option><option value="mcp">MCP 연동</option></select></div>
     </div>
     <div class="form-row">
-      <div class="form-group"><label>플랫폼</label><select id="f-platform"><option>Claude Code</option><option>Claude Desktop</option><option>Cursor</option><option>GPT</option><option>기타</option></select></div>
+      <div class="form-group"><label>플랫폼</label><select id="f-platform"><option>Claude Code</option><option>Claude Desktop</option><option>Cursor</option><option>GPT</option><option>Hermes</option><option>기타</option></select></div>
       <div class="form-group"><label>실행 방식</label><select id="f-trigger"><option value="slash-command">슬래시 커맨드</option><option value="manual">수동 실행</option><option value="schedule">스케줄 자동</option><option value="event">이벤트 트리거</option></select></div>
     </div>
     <div class="form-row">
@@ -379,7 +390,7 @@ body {
     <div class="form-group"><label>연동 도구</label><input type="text" id="f-integrations" placeholder="쉼표로 구분 -- Figma, Notion, Slack 등"></div>
     <div class="form-row">
       <div class="form-group"><label>아이콘 (이모지)</label><input type="text" id="f-icon" placeholder="예: 🐻" maxlength="4"></div>
-      <div class="form-group"><label>만든 사람 <span class="required">*</span></label><input type="text" id="f-author" placeholder="본인 이름"></div>
+      <div class="form-group"><label>만든 사람 <span class="req">*</span></label><input type="text" id="f-author" placeholder="본인 이름"></div>
     </div>
     <div class="form-group"><label>스케줄 (자동화인 경우)</label><input type="text" id="f-schedule" placeholder="예: 매일 21:00"></div>
     <div id="formOutput"></div>
@@ -399,10 +410,8 @@ body {
 let REGISTRY = [];
 let WORKFLOWS = [];
 let mainTab = 'workflows';
-let currentTeam = 'All';
-let currentCategory = 'All';
+let currentFilter = 'All';
 let currentType = 'All';
-let currentAuthor = 'All';
 
 const TYPE_LABELS = { agent: '에이전트', skill: '스킬', automation: '자동화', mcp: 'MCP 연동' };
 const CAT_COLORS = {
@@ -417,11 +426,11 @@ const CAT_COLORS = {
 };
 
 // ════════════════════════════════════════
-// EMBEDDED DATA (fallback for file://)
+// EMBEDDED FALLBACK
 // ════════════════════════════════════════
 const EMBEDDED_REGISTRY = [{"id":"pm","name":"떡밥제조기","command":"/pm","description":"아이디어를 원페이저 기획안으로 고도화. VOC/데이터 기반 기획, 경쟁사 분석, 노션 기획 문서 생성.","category":"기획","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"아이디어 한 줄","output":"원페이저 기획안 (노션)","integrations":["Notion","Slack","Amplitude"],"icon":"🐻","author":"이안","updatedAt":"2026-08-28"},{"id":"designer","name":"픽셀요정","command":"/designer","description":"기획을 받아 Figma 디자인 생성. 와이어프레임→변형안→하이파이 파이프라인.","category":"디자인","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"기획안 URL","output":"Figma 디자인 (10개 변형안→수렴)","integrations":["Figma","Notion"],"icon":"🦊","author":"이안","updatedAt":"2026-08-28"},{"id":"devsigner","name":"양손잡이","command":"/devsigner","description":"디자인 + RN 코드 구현. Figma에서 디자인하고 시뮬레이터에서 바로 확인.","category":"개발","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"확정 디자인","output":"RN 코드 + PR 또는 기술 스펙","integrations":["Figma","GitHub"],"icon":"🦄","author":"이안","updatedAt":"2026-08-28"},{"id":"ceo-staff","name":"비서실장","command":"/ceo-staff","description":"재무/인사/행정/IR 전반. 데이터 수집→분석→문서 작성→팀 커뮤니케이션.","category":"운영","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"업무 지시","output":"문서, 슬랙 메시지, 노션 정리","integrations":["Notion","Slack","Gmail","Google Drive"],"icon":"🐧","author":"이안","updatedAt":"2026-08-28"},{"id":"ceo-coach","name":"허튼소리하지마세CEO코치","command":"/ceo-coach","description":"경영 고민 경청, 질문으로 사고 확장, 의사결정 프레이밍, 액션 아이템 도출.","category":"운영","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"고민거리","output":"질문, 프레이밍, 액션 아이템","integrations":[],"icon":"🦉","author":"이안","updatedAt":"2026-08-28"},{"id":"knowledge-scan","name":"Knowledge Scout","command":"/knowledge-scan","description":"이안의 지식 체계와 다른 새 정보를 웹에서 찾아 슬랙으로 보고.","category":"지식관리","type":"agent","platform":"Claude Code","trigger":"schedule","input":"자동 (지식 체계 참조)","output":"슬랙 DM (충돌/보완/새영역)","integrations":["Slack"],"icon":"🔍","author":"이안","updatedAt":"2026-08-28"},{"id":"knowledge-extract","name":"Knowledge Miner","command":"/knowledge-extract","description":"노션 주간 회고 + 옵시디언 일기에서 믿음/원칙/판단 기준을 추출하여 지식 체계 구축.","category":"지식관리","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"자동 (노션+옵시디언)","output":"지식 체계 후보 → 승인 후 확정","integrations":["Notion"],"icon":"📚","author":"이안","updatedAt":"2026-08-28"},{"id":"health-agent","name":"건강지키미","command":"/health","description":"SleepCycle 수면 데이터 + 건강검진 + 건강 메모 기반 주간 건강 리포트 & 조언.","category":"운영","type":"agent","platform":"Claude Code","trigger":"slash-command","input":"SleepCycle 데이터 + 건강 메모","output":"주간 건강 리포트 + 조언","integrations":["Slack"],"icon":"💚","author":"이안","updatedAt":"2026-08-28"},{"id":"whats-new-generator","name":"릴리즈 노트 생성기","command":"/whats-new-generator","description":"루티너리 브랜드 보이스로 지원 로케일 전체에 맞춘 앱 릴리즈 노트 생성.","category":"릴리즈","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"버전 정보 + 변경사항","output":"iOS 33개 언어 + AOS 10개 로케일 릴리즈 노트","integrations":["App Store Connect","Google Play Console"],"icon":"📝","author":"이안","updatedAt":"2026-08-28"},{"id":"monthly-report","name":"월간 투자사 리포트","command":"/monthly-report","description":"월간 결산 데이터를 수집하여 루티너리 월간 투자사 리포트 노션 페이지 갱신.","category":"운영","type":"skill","platform":"Claude Code","trigger":"manual","input":"매출/유저/리텐션 데이터","output":"노션 월간 결산 페이지 업데이트","integrations":["Notion","Amplitude"],"icon":"📊","author":"이안","updatedAt":"2026-08-28"},{"id":"monthly-settlement","name":"월별 거래 결산","command":"/monthly-settlement","description":"매월 카드/은행 거래내역을 자동 분류·정산하여 엑셀 생성.","category":"운영","type":"skill","platform":"Claude Code","trigger":"manual","input":"카드/은행 xls 파일","output":"카테고리별 정산 엑셀 (3시트)","integrations":[],"icon":"💰","author":"이안","updatedAt":"2026-08-28"},{"id":"ideate","name":"아이디어 고도화","command":"/ideate","description":"아이디어를 질문으로 구체화하여 원페이저 기획안을 만드는 기획 에이전트. 디자인 씽킹 기반.","category":"기획","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"아이디어 한 줄","output":"원페이저 기획안","integrations":["Notion"],"icon":"💡","author":"이안","updatedAt":"2026-08-28"},{"id":"plan-feature","name":"기능 오케스트레이터","command":"/plan-feature","description":"아이디어→기획→디자인→개발을 순차 실행. 각 단계에 사용자 승인 게이트.","category":"기획","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"기능 아이디어","output":"기획→디자인→코드 순차 산출","integrations":["Notion","Figma","GitHub"],"icon":"🔄","author":"이안","updatedAt":"2026-08-28"},{"id":"design-variants","name":"디자인 변형안 생성","command":"/design-variants","description":"기획안 기반 Figma 디자인 변형안 10개 생성 후 피드백으로 수렴. 6가지 크리에이티브 렌즈.","category":"디자인","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"기획안","output":"Figma 디자인 변형안 10개","integrations":["Figma"],"icon":"🎨","author":"이안","updatedAt":"2026-08-28"},{"id":"implement","name":"구현 에이전트","command":"/implement","description":"확정 디자인 기반 RN 코드 작성. 복잡도 판단 후 PR 생성 또는 기술 스펙 산출.","category":"개발","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"확정 Figma 디자인","output":"RN 코드 PR 또는 기술 스펙","integrations":["Figma","GitHub"],"icon":"⚡","author":"이안","updatedAt":"2026-08-28"},{"id":"android-dev","name":"Android 아키텍처 가이드","command":"/android-dev","description":"멀티 모듈 Android 아키텍처. Phone, Wear OS, TV, Auto를 단일 코드베이스로.","category":"개발","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"Android 개발 질문/코드","output":"아키텍처 가이드 + 코드","integrations":["GitHub"],"icon":"🤖","author":"","updatedAt":"2026-08-28"},{"id":"react-native","name":"React Native 가이드","command":"/react-native","description":"React Native New Architecture (Fabric/TurboModules), Expo, 내비게이션, 성능 최적화.","category":"개발","type":"skill","platform":"Claude Code","trigger":"slash-command","input":"RN 개발 질문/코드","output":"최적화된 RN 코드 + 가이드","integrations":["GitHub"],"icon":"⚛️","author":"","updatedAt":"2026-08-28"},{"id":"daily-obsidian-summary","name":"데일리 옵시디언 요약","command":"","description":"매일 21:00 KST 자동 실행. Notion·Slack·Tiro 데이터를 모아 Obsidian 데일리 노트에 요약 추가.","category":"자동화","type":"automation","platform":"Claude Desktop","trigger":"schedule","input":"자동 (Notion, Slack, Tiro)","output":"Obsidian 데일리 노트","integrations":["Notion","Slack"],"icon":"📓","author":"이안","schedule":"매일 21:00","updatedAt":"2026-08-28"},{"id":"voc-triage","name":"VoC Triage","command":"","description":"사용자 제보(Gmail/App Store/Google Play) 자동 수집, 분류, Amplitude 분석, 답변/티켓 초안 생성.","category":"QA","type":"agent","platform":"Hermes","trigger":"schedule","input":"Gmail, App Store, Google Play 제보","output":"분류된 이슈 + Gmail 답변 초안 + Linear 티켓 초안","integrations":["Gmail","App Store","Google Play","Google Sheets","Amplitude","Notion","Linear","Slack"],"icon":"📥","author":"Jane, Leo, Kyum","schedule":"매일 07:00 + 30분 주기","updatedAt":"2026-08-28"},{"id":"priority-strategist","name":"Priority Strategist","command":"","description":"Linear Triage 티켓의 impact x volume x segment / effort 기반 우선순위 자동 산정.","category":"QA","type":"agent","platform":"Hermes","trigger":"schedule","input":"Linear Triage 티켓","output":"우선순위 라벨 + 분해 근거 댓글 → Planned 이동","integrations":["Amplitude","Linear"],"icon":"🎯","author":"Jane, Leo, Kyum","schedule":"매주 수,목 제외 오후 1시","updatedAt":"2026-08-28"},{"id":"bug-fixer","name":"Bug Fixer","command":"","description":"Planned+approved 이슈의 재현, 원인 분석, 자기검증 게이트 통과 후 draft PR 생성.","category":"개발","type":"agent","platform":"Hermes","trigger":"event","input":"Linear Planned + approved 티켓","output":"Draft PR + 재현/원인/테스트 근거","integrations":["Amplitude","Linear","GitHub","Figma","Slack"],"icon":"🔧","author":"Jane, Leo, Kyum","updatedAt":"2026-08-28"},{"id":"perf-guardian","name":"Perf Guardian","command":"","description":"PR 정적 게이트. typecheck/build 이진 게이트 + PR diff risk tags 부여.","category":"개발","type":"agent","platform":"Hermes","trigger":"event","input":"PR CI 완료","output":"CONFIRMED / REJECTED / INCONCLUSIVE + risk tags","integrations":["GitHub"],"icon":"🛡️","author":"Jane, Leo, Kyum","updatedAt":"2026-08-28"},{"id":"red-team","name":"Red Team","command":"","description":"코드 리뷰. RN 함정 체크리스트, OTA 롤백 경로, 버전 호환성 검증.","category":"개발","type":"agent","platform":"Hermes","trigger":"event","input":"Perf Guardian CONFIRMED PR","output":"PASS / CONDITIONAL / BLOCK + Pn 태그","integrations":["GitHub","Linear","Slack","Amplitude","Crashlytics"],"icon":"🔴","author":"Jane, Leo, Kyum","updatedAt":"2026-08-28"},{"id":"incident-responder","name":"Incident Responder","command":"","description":"15분 주기 Crashlytics/Amplitude 감시. P0 초과 시 인시던트 보고 + 완화 draft PR.","category":"운영","type":"agent","platform":"Hermes","trigger":"schedule","input":"Crashlytics, Amplitude 메트릭","output":"인시던트 보고 + 완화 draft PR","integrations":["Crashlytics","Amplitude","GitHub","Slack"],"icon":"🚨","author":"Jane, Leo, Kyum","schedule":"15분 주기","updatedAt":"2026-08-28"}];
 
-const EMBEDDED_WORKFLOWS = [{"id":"issue-pipeline","name":"이슈 처리 파이프라인","team":"제품팀","description":"VoC 수집부터 코드 머지까지. 6개 에이전트 + 3개 사람 역할. 에이전트는 초안/판정까지, 승인·머지·배포는 사람.","steps":[{"id":"voc-trigger","name":"VoC 제보","type":"trigger","description":"Gmail, App Store, Google Play에서 사용자 제보 유입","next":["voc-triage"]},{"id":"voc-triage","name":"VoC Triage","type":"agent","description":"수집, 분류, Amplitude 분석, 답변/티켓 초안 생성","tools":["Gmail","App Store","Google Play","Google Sheets","Amplitude","Notion","Linear","Slack"],"trigger":"매일 07:00 + 30분 주기 cronjob","output":"분류된 이슈 + Gmail 답변 초안 + Linear 티켓 초안","next":["voc-approver"]},{"id":"voc-approver","name":"VoC 승인자","type":"human","who":"Kyum","description":"원문 확인, 직접 재현, 티켓 생성 승인 (기록 없는 승인 무효)","tools":["Gmail","Google Sheets","Slack","Linear"],"output":"승인된 Linear 티켓 or 추가 정보 요청 답변 발송","next":["priority-strategist"],"exitCondition":"이슈 아님 → 추가 정보 요청 후 종료"},{"id":"priority-strategist","name":"Priority Strategist","type":"agent","description":"impact x volume x segment / effort 기반 우선순위 산정","tools":["Amplitude","Linear"],"trigger":"매주 수,목 제외 오후 1시","output":"우선순위 라벨 + 분해 근거 댓글 → Planned 이동","next":["bug-fixer"]},{"id":"bug-fixer","name":"Bug Fixer","type":"agent","description":"재현, 원인 분석, 자기검증 게이트 통과 후 draft PR 생성","tools":["Amplitude","Linear","GitHub","Figma","Slack"],"trigger":"Linear Planned + approved 라벨","output":"Draft PR + 재현/원인/테스트 근거","next":["perf-guardian"]},{"id":"perf-guardian","name":"Perf Guardian","type":"agent","description":"PR 정적 게이트 -- typecheck/build 이진 게이트 + diff risk tags","tools":["GitHub"],"trigger":"PR CI 완료 감지","output":"CONFIRMED / REJECTED / INCONCLUSIVE + risk tags","next":["red-team"],"rejectTo":"bug-fixer"},{"id":"red-team","name":"Red Team","type":"agent","description":"코드 리뷰 -- RN 함정 체크리스트, OTA 롤백 경로, 버전 호환성","tools":["GitHub","Linear","Slack","Amplitude","Crashlytics"],"trigger":"Perf Guardian CONFIRMED","output":"PASS / CONDITIONAL / BLOCK + Pn 태그 + file:line 근거","next":["issue-assignee"],"rejectTo":"bug-fixer"},{"id":"issue-assignee","name":"이슈 담당자","type":"human","who":"Jane / Leo","description":"Draft PR 검토, 추가 수정, ready 전환, 리뷰어 등록","tools":["GitHub","Linear"],"output":"Ready PR + 리뷰어 지정","next":["code-reviewer"]},{"id":"code-reviewer","name":"코드 리뷰 담당자","type":"human","who":"Jane / Leo","description":"최종 코드 리뷰 → 승인 (1명 이상, branch protection)","tools":["GitHub","Linear"],"output":"Approved PR","next":["merge"]},{"id":"merge","name":"Merge","type":"human","who":"담당 개발자","description":"에이전트는 merge/deploy/rollback 절대 불가. 사람만 실행.","output":"코드 머지 완료","next":[]}],"parallel":[{"id":"incident-responder","name":"Incident Responder","type":"agent","description":"15분 주기 Crashlytics/Amplitude 감시. P0 초과 시 인시던트 보고 + 완화 draft PR","tools":["Crashlytics","Amplitude","GitHub","Slack"],"trigger":"15분 주기","output":"인시던트 보고 + 완화 draft PR → 사람이 rollback/deploy 실행","label":"상시 병렬"}]},{"id":"qa-chatbot","name":"QA 챗봇","team":"QA팀","description":"QA 프로세스 지원 챗봇. (상세 워크플로우 미수집)","steps":[{"id":"qa-trigger","name":"QA 요청","type":"trigger","description":"QA 테스트 요청 유입","next":["qa-chatbot-agent"]},{"id":"qa-chatbot-agent","name":"QA 챗봇","type":"agent","description":"상세 워크플로우 미수집 -- 팀원에게 확인 필요","tools":[],"output":"???","next":[],"gap":true}]},{"id":"geo-content","name":"GEO 컨텐츠 업로드 자동화","team":"그로스팀","description":"GEO 최적화 컨텐츠 자동 업로드. (상세 워크플로우 미수집)","steps":[{"id":"geo-trigger","name":"컨텐츠 준비","type":"trigger","description":"GEO 컨텐츠 생성 완료","next":["geo-upload"]},{"id":"geo-upload","name":"GEO 업로드 자동화","type":"agent","description":"상세 워크플로우 미수집 -- 팀원에게 확인 필요","tools":[],"output":"???","next":[],"gap":true}]},{"id":"puff-multi-agent","name":"Puff 멀티 에이전트","team":"TF","description":"Puff 개발용 멀티 에이전트 시스템. (상세 워크플로우 미수집)","steps":[{"id":"puff-trigger","name":"개발 요청","type":"trigger","description":"Puff 기능 개발 요청","next":["puff-agent"]},{"id":"puff-agent","name":"Puff 멀티 에이전트","type":"agent","description":"상세 워크플로우 미수집 -- 팀원에게 확인 필요","tools":[],"output":"???","next":[],"gap":true}]},{"id":"hq-release-notes","name":"릴리즈 노트 프로세스","team":"HQ","description":"매주 앱 릴리즈 노트 생성 → 번역 → App Store/Google Play 업로드","steps":[{"id":"release-trigger","name":"릴리즈 준비","type":"trigger","description":"새 버전 릴리즈 준비 완료","next":["whats-new-gen"]},{"id":"whats-new-gen","name":"릴리즈 노트 생성기","type":"agent","description":"루티너리 브랜드 보이스로 iOS 33개 언어 + AOS 10개 로케일 릴리즈 노트 자동 생성","tools":["App Store Connect","Google Play Console"],"trigger":"/whats-new-generator","output":"다국어 릴리즈 노트","next":["release-review"]},{"id":"release-review","name":"릴리즈 노트 확인","type":"human","who":"이안","description":"생성된 릴리즈 노트 검토 및 최종 확인","output":"확인된 릴리즈 노트","next":["store-upload"]},{"id":"store-upload","name":"스토어 업로드","type":"agent","description":"App Store Connect + Google Play Console에 자동 입력","tools":["App Store Connect","Google Play Console"],"output":"스토어 반영 완료","next":[]}]},{"id":"hq-monthly-report","name":"월간 투자사 리포트","team":"HQ","description":"매월 데이터 수집 → 리포트 생성 → 노션 업데이트","steps":[{"id":"report-trigger","name":"월초","type":"trigger","description":"매월 리포트 작성 시점","next":["report-agent"]},{"id":"report-agent","name":"월간 리포트 에이전트","type":"agent","description":"매출/유저/리텐션 데이터 수집 → 노션 월간 결산 페이지 갱신","tools":["Notion","Amplitude"],"trigger":"/monthly-report","output":"노션 월간 결산 페이지","next":["report-review"]},{"id":"report-review","name":"리포트 확인","type":"human","who":"이안","description":"데이터 정확성 검토 및 코멘트 추가","output":"최종 리포트","next":[]}]},{"id":"hq-daily-summary","name":"데일리 요약","team":"HQ","description":"매일 자동으로 하루 활동 요약 → Obsidian 데일리 노트","steps":[{"id":"daily-trigger","name":"매일 21:00","type":"trigger","description":"KST 21:00 cronjob","next":["daily-agent"]},{"id":"daily-agent","name":"데일리 요약 에이전트","type":"agent","description":"Notion·Slack·Tiro 데이터를 모아 Obsidian 데일리 노트에 요약 추가","tools":["Notion","Slack"],"trigger":"매일 21:00","output":"Obsidian 데일리 노트","next":[]}]},{"id":"hq-feature-pipeline","name":"기능 기획→구현 파이프라인","team":"HQ","description":"아이디어 → 기획 → 디자인 → 구현까지 에이전트 오케스트레이션","steps":[{"id":"idea-trigger","name":"아이디어","type":"trigger","description":"기능 아이디어 입력","next":["pm-agent"]},{"id":"pm-agent","name":"떡밥제조기","type":"agent","description":"아이디어를 원페이저 기획안으로 고도화. VOC/데이터 기반.","tools":["Notion","Slack","Amplitude"],"trigger":"/pm","output":"원페이저 기획안 (노션)","next":["idea-review"]},{"id":"idea-review","name":"기획 확인","type":"human","who":"이안","description":"기획안 검토, 방향 수정, 승인","output":"승인된 기획안","next":["designer-agent"]},{"id":"designer-agent","name":"픽셀요정","type":"agent","description":"기획안 기반 Figma 디자인 생성. 와이어프레임→변형안 10개→수렴.","tools":["Figma","Notion"],"trigger":"/designer","output":"확정 Figma 디자인","next":["design-review"]},{"id":"design-review","name":"디자인 확인","type":"human","who":"이안","description":"디자인 변형안 피드백 → 최종 확정","output":"확정 디자인","next":["devsigner-agent"]},{"id":"devsigner-agent","name":"양손잡이","type":"agent","description":"확정 디자인 기반 RN 코드 구현. 시뮬레이터 확인.","tools":["Figma","GitHub"],"trigger":"/devsigner","output":"RN 코드 + PR 또는 기술 스펙","next":["impl-review"]},{"id":"impl-review","name":"코드 확인","type":"human","who":"이안 / 개발팀","description":"구현 코드 리뷰 및 머지","output":"머지된 코드","next":[]}]}];
+const EMBEDDED_WORKFLOWS = [{"id":"issue-pipeline","name":"이슈 처리 파이프라인","team":"제품팀","author":"Jane, Leo, Kyum","description":"VoC 수집부터 코드 머지까지. 6개 에이전트 + 3개 사람 역할. 에이전트는 초안/판정까지, 승인\u00b7머지\u00b7배포는 사람.","steps":[{"id":"voc-trigger","name":"VoC 제보","type":"trigger","description":"Gmail, App Store, Google Play에서 사용자 제보 유입","next":["voc-triage"]},{"id":"voc-triage","name":"VoC Triage","type":"agent","description":"수집, 분류, Amplitude 분석, 답변/티켓 초안 생성","tools":["Gmail","App Store","Google Play","Google Sheets","Amplitude","Notion","Linear","Slack"],"trigger":"매일 07:00 + 30분 주기 cronjob","output":"분류된 이슈 + Gmail 답변 초안 + Linear 티켓 초안","next":["voc-approver"]},{"id":"voc-approver","name":"VoC 승인자","type":"human","who":"Kyum","description":"원문 확인, 직접 재현, 티켓 생성 승인 (기록 없는 승인 무효)","tools":["Gmail","Google Sheets","Slack","Linear"],"output":"승인된 Linear 티켓 or 추가 정보 요청 답변 발송","next":["priority-strategist"],"exitCondition":"이슈 아님 \u2192 추가 정보 요청 후 종료"},{"id":"priority-strategist","name":"Priority Strategist","type":"agent","description":"impact x volume x segment / effort 기반 우선순위 산정","tools":["Amplitude","Linear"],"trigger":"매주 수,목 제외 오후 1시","output":"우선순위 라벨 + 분해 근거 댓글 \u2192 Planned 이동","next":["bug-fixer"]},{"id":"bug-fixer","name":"Bug Fixer","type":"agent","description":"재현, 원인 분석, 자기검증 게이트 통과 후 draft PR 생성","tools":["Amplitude","Linear","GitHub","Figma","Slack"],"trigger":"Linear Planned + approved 라벨","output":"Draft PR + 재현/원인/테스트 근거","next":["perf-guardian"]},{"id":"perf-guardian","name":"Perf Guardian","type":"agent","description":"PR 정적 게이트 -- typecheck/build 이진 게이트 + diff risk tags","tools":["GitHub"],"trigger":"PR CI 완료 감지","output":"CONFIRMED / REJECTED / INCONCLUSIVE + risk tags","next":["red-team"],"rejectTo":"bug-fixer"},{"id":"red-team","name":"Red Team","type":"agent","description":"코드 리뷰 -- RN 함정 체크리스트, OTA 롤백 경로, 버전 호환성","tools":["GitHub","Linear","Slack","Amplitude","Crashlytics"],"trigger":"Perf Guardian CONFIRMED","output":"PASS / CONDITIONAL / BLOCK + Pn 태그 + file:line 근거","next":["issue-assignee"],"rejectTo":"bug-fixer"},{"id":"issue-assignee","name":"이슈 담당자","type":"human","who":"Jane / Leo","description":"Draft PR 검토, 추가 수정, ready 전환, 리뷰어 등록","tools":["GitHub","Linear"],"output":"Ready PR + 리뷰어 지정","next":["code-reviewer"]},{"id":"code-reviewer","name":"코드 리뷰 담당자","type":"human","who":"Jane / Leo","description":"최종 코드 리뷰 \u2192 승인 (1명 이상, branch protection)","tools":["GitHub","Linear"],"output":"Approved PR","next":["merge"]},{"id":"merge","name":"Merge","type":"human","who":"담당 개발자","description":"에이전트는 merge/deploy/rollback 절대 불가. 사람만 실행.","output":"코드 머지 완료","next":[]}],"parallel":[{"id":"incident-responder","name":"Incident Responder","type":"agent","description":"15분 주기 Crashlytics/Amplitude 감시. P0 초과 시 인시던트 보고 + 완화 draft PR","tools":["Crashlytics","Amplitude","GitHub","Slack"],"trigger":"15분 주기","output":"인시던트 보고 + 완화 draft PR \u2192 사람이 rollback/deploy 실행","label":"상시 병렬"}]},{"id":"feature-pipeline","name":"기능 기획\u2192구현 파이프라인","team":"제품팀","author":"이안","description":"아이디어 \u2192 기획 \u2192 디자인 \u2192 구현까지 에이전트 오케스트레이션","steps":[{"id":"idea-trigger","name":"아이디어","type":"trigger","description":"기능 아이디어 입력","next":["pm-agent"]},{"id":"pm-agent","name":"떡밥제조기","type":"agent","description":"아이디어를 원페이저 기획안으로 고도화. VOC/데이터 기반.","tools":["Notion","Slack","Amplitude"],"trigger":"/pm","output":"원페이저 기획안 (노션)","next":["idea-review"]},{"id":"idea-review","name":"기획 확인","type":"human","who":"이안","description":"기획안 검토, 방향 수정, 승인","output":"승인된 기획안","next":["designer-agent"]},{"id":"designer-agent","name":"픽셀요정","type":"agent","description":"기획안 기반 Figma 디자인 생성. 와이어프레임\u2192변형안 10개\u2192수렴.","tools":["Figma","Notion"],"trigger":"/designer","output":"확정 Figma 디자인","next":["design-review"]},{"id":"design-review","name":"디자인 확인","type":"human","who":"이안","description":"디자인 변형안 피드백 \u2192 최종 확정","output":"확정 디자인","next":["devsigner-agent"]},{"id":"devsigner-agent","name":"양손잡이","type":"agent","description":"확정 디자인 기반 RN 코드 구현. 시뮬레이터 확인.","tools":["Figma","GitHub"],"trigger":"/devsigner","output":"RN 코드 + PR 또는 기술 스펙","next":["impl-review"]},{"id":"impl-review","name":"코드 확인","type":"human","who":"이안 / 개발팀","description":"구현 코드 리뷰 및 머지","output":"머지된 코드","next":[]}]},{"id":"qa-chatbot","name":"QA 챗봇","team":"QA팀","author":"???","description":"QA 프로세스 지원 챗봇. (상세 워크플로우 미수집)","steps":[{"id":"qa-trigger","name":"QA 요청","type":"trigger","description":"QA 테스트 요청 유입","next":["qa-chatbot-agent"]},{"id":"qa-chatbot-agent","name":"QA 챗봇","type":"agent","description":"상세 워크플로우 미수집 -- 팀원에게 확인 필요","tools":[],"output":"???","next":[],"gap":true}]},{"id":"geo-content","name":"GEO 컨텐츠 업로드 자동화","team":"그로스팀","author":"???","description":"GEO 최적화 컨텐츠 자동 업로드. (상세 워크플로우 미수집)","steps":[{"id":"geo-trigger","name":"컨텐츠 준비","type":"trigger","description":"GEO 컨텐츠 생성 완료","next":["geo-upload"]},{"id":"geo-upload","name":"GEO 업로드 자동화","type":"agent","description":"상세 워크플로우 미수집 -- 팀원에게 확인 필요","tools":[],"output":"???","next":[],"gap":true}]},{"id":"puff-multi-agent","name":"Puff 멀티 에이전트","team":"TF","author":"???","description":"Puff 개발용 멀티 에이전트 시스템. (상세 워크플로우 미수집)","steps":[{"id":"puff-trigger","name":"개발 요청","type":"trigger","description":"Puff 기능 개발 요청","next":["puff-agent"]},{"id":"puff-agent","name":"Puff 멀티 에이전트","type":"agent","description":"상세 워크플로우 미수집 -- 팀원에게 확인 필요","tools":[],"output":"???","next":[],"gap":true}]},{"id":"hq-release-notes","name":"릴리즈 노트 프로세스","team":"HQ","author":"이안","description":"매주 앱 릴리즈 노트 생성 \u2192 번역 \u2192 App Store/Google Play 업로드","steps":[{"id":"release-trigger","name":"릴리즈 준비","type":"trigger","description":"새 버전 릴리즈 준비 완료","next":["whats-new-gen"]},{"id":"whats-new-gen","name":"릴리즈 노트 생성기","type":"agent","description":"루티너리 브랜드 보이스로 iOS 33개 언어 + AOS 10개 로케일 릴리즈 노트 자동 생성","tools":["App Store Connect","Google Play Console"],"trigger":"/whats-new-generator","output":"다국어 릴리즈 노트","next":["release-review"]},{"id":"release-review","name":"릴리즈 노트 확인","type":"human","who":"이안","description":"생성된 릴리즈 노트 검토 및 최종 확인","output":"확인된 릴리즈 노트","next":["store-upload"]},{"id":"store-upload","name":"스토어 업로드","type":"agent","description":"App Store Connect + Google Play Console에 자동 입력","tools":["App Store Connect","Google Play Console"],"output":"스토어 반영 완료","next":[]}]},{"id":"hq-monthly-report","name":"월간 투자사 리포트","team":"HQ","author":"이안","description":"매월 데이터 수집 \u2192 리포트 생성 \u2192 노션 업데이트","steps":[{"id":"report-trigger","name":"월초","type":"trigger","description":"매월 리포트 작성 시점","next":["report-agent"]},{"id":"report-agent","name":"월간 리포트 에이전트","type":"agent","description":"매출/유저/리텐션 데이터 수집 \u2192 노션 월간 결산 페이지 갱신","tools":["Notion","Amplitude"],"trigger":"/monthly-report","output":"노션 월간 결산 페이지","next":["report-review"]},{"id":"report-review","name":"리포트 확인","type":"human","who":"이안","description":"데이터 정확성 검토 및 코멘트 추가","output":"최종 리포트","next":[]}]}];
 
 // ════════════════════════════════════════
 // LOAD
@@ -432,12 +441,10 @@ async function loadData() {
       fetch('data/registry.json?t=' + Date.now()),
       fetch('data/workflows.json?t=' + Date.now()),
     ]);
-    if (!r1.ok) throw new Error('registry');
-    if (!r2.ok) throw new Error('workflows');
+    if (!r1.ok || !r2.ok) throw new Error('fetch');
     REGISTRY = await r1.json();
     WORKFLOWS = await r2.json();
   } catch (e) {
-    console.warn('fetch failed, using embedded data', e);
     REGISTRY = EMBEDDED_REGISTRY;
     WORKFLOWS = EMBEDDED_WORKFLOWS;
   }
@@ -445,86 +452,96 @@ async function loadData() {
 }
 
 // ════════════════════════════════════════
-// TABS
+// RENDER
 // ════════════════════════════════════════
+function renderAll() {
+  renderMainTabs();
+  renderSubFilters();
+  renderContent();
+}
+
 function renderMainTabs() {
   const gapCount = WORKFLOWS.reduce((n, w) => n + w.steps.filter(s => s.gap).length, 0);
   document.getElementById('mainTabs').innerHTML = `
-    <button class="main-tab${mainTab === 'workflows' ? ' active' : ''}" onclick="switchMainTab('workflows')">
+    <button class="main-tab${mainTab === 'workflows' ? ' active' : ''}" onclick="switchTab('workflows')">
       Workflows<span class="tab-count">${WORKFLOWS.length}</span>
-      ${gapCount ? `<span class="tab-count" style="background:var(--red-light);color:var(--red)">${gapCount} gaps</span>` : ''}
+      ${gapCount ? `<span class="tab-gap-count">${gapCount} gaps</span>` : ''}
     </button>
-    <button class="main-tab${mainTab === 'registry' ? ' active' : ''}" onclick="switchMainTab('registry')">
+    <button class="main-tab${mainTab === 'registry' ? ' active' : ''}" onclick="switchTab('registry')">
       Registry<span class="tab-count">${REGISTRY.length}</span>
     </button>
   `;
 }
 
-function switchMainTab(tab) {
-  mainTab = tab;
+function switchTab(tab) {
+  mainTab = tab; currentFilter = 'All'; currentType = 'All';
   renderAll();
 }
 
-function renderAll() {
-  renderMainTabs();
-  document.getElementById('workflowPage').style.display = mainTab === 'workflows' ? 'block' : 'none';
-  document.getElementById('registryPage').style.display = mainTab === 'registry' ? 'block' : 'none';
-  if (mainTab === 'workflows') renderWorkflows();
-  else { renderStats(); renderFilters(); renderRegistry(); }
+function renderSubFilters() {
+  const el = document.getElementById('subFilters');
+  if (mainTab === 'workflows') {
+    const teams = [...new Set(WORKFLOWS.map(w => w.team))];
+    let h = `<button class="chip${currentFilter === 'All' ? ' active' : ''}" onclick="setFilter('All')">전체</button>`;
+    teams.forEach(t => { h += `<button class="chip${currentFilter === t ? ' active' : ''}" onclick="setFilter('${t}')">${t}</button>`; });
+    el.innerHTML = h;
+  } else {
+    const cats = [...new Set(REGISTRY.map(d => d.category))].sort();
+    const types = [...new Set(REGISTRY.map(d => d.type))];
+    let h = `<button class="chip${currentFilter === 'All' ? ' active' : ''}" onclick="setFilter('All')">전체</button>`;
+    cats.forEach(c => { h += `<button class="chip${currentFilter === c ? ' active' : ''}" onclick="setFilter('${c}')">${c}</button>`; });
+    h += `<span style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 4px"></span>`;
+    types.forEach(t => { h += `<button class="chip${currentType === t ? ' active' : ''}" onclick="setType('${t}')">${TYPE_LABELS[t]||t}</button>`; });
+    el.innerHTML = h;
+  }
 }
+
+function setFilter(f) { currentFilter = f; renderSubFilters(); renderContent(); }
+function setType(t) { currentType = currentType === t ? 'All' : t; renderSubFilters(); renderContent(); }
+function renderContent() { mainTab === 'workflows' ? renderWorkflows() : renderRegistry(); }
 
 // ════════════════════════════════════════
 // WORKFLOWS
 // ════════════════════════════════════════
 function renderWorkflows() {
-  const teams = [...new Set(WORKFLOWS.map(w => w.team))];
-  let filterHtml = `<button class="chip${currentTeam === 'All' ? ' active' : ''}" onclick="setTeam('All')">전체</button>`;
-  teams.forEach(t => {
-    filterHtml += `<button class="chip${currentTeam === t ? ' active' : ''}" onclick="setTeam('${t}')">${t}</button>`;
-  });
-  document.getElementById('teamFilters').innerHTML = filterHtml;
+  const q = document.getElementById('search').value.toLowerCase();
+  let items = WORKFLOWS;
+  if (currentFilter !== 'All') items = items.filter(w => w.team === currentFilter);
+  if (q) items = items.filter(w => w.name.toLowerCase().includes(q) || w.description.toLowerCase().includes(q) || w.team.toLowerCase().includes(q));
 
-  const filtered = currentTeam === 'All' ? WORKFLOWS : WORKFLOWS.filter(w => w.team === currentTeam);
-  document.getElementById('workflowList').innerHTML = filtered.map(wfCardHTML).join('');
+  let html = items.map(wfCardHTML).join('');
+  html += guideHTML();
+  document.getElementById('content').innerHTML = html;
 }
-
-function setTeam(t) { currentTeam = t; renderWorkflows(); }
 
 function toggleWf(el) { el.closest('.wf-card').classList.toggle('open'); }
 
 function wfCardHTML(wf) {
-  const agentCount = wf.steps.filter(s => s.type === 'agent').length + (wf.parallel || []).length;
-  const humanCount = wf.steps.filter(s => s.type === 'human').length;
-  const gapCount = wf.steps.filter(s => s.gap).length;
-  const isOpen = wf.steps.length <= 5 ? ' open' : '';
+  const ac = wf.steps.filter(s => s.type === 'agent').length + (wf.parallel || []).length;
+  const hc = wf.steps.filter(s => s.type === 'human').length;
+  const gc = wf.steps.filter(s => s.gap).length;
 
   let stepsHtml = wf.steps.map(stepHTML).join('');
+  if (wf.parallel) stepsHtml += wf.parallel.map(p => `
+    <div class="pipe-parallel">
+      <div class="pipe-parallel-label">${p.label || '병렬 트랙'}</div>
+      <div class="pipe-name"><span>${p.name}</span><span class="pipe-badge agent">에이전트</span></div>
+      <div class="pipe-desc">${p.description}</div>
+      ${p.tools?.length ? `<div class="pipe-tools">${p.tools.map(t=>`<span class="pipe-tool">${t}</span>`).join('')}</div>` : ''}
+      ${p.output ? `<div class="pipe-output">\u2192 ${p.output}</div>` : ''}
+    </div>`).join('');
 
-  if (wf.parallel && wf.parallel.length) {
-    stepsHtml += wf.parallel.map(p => `
-      <div class="pipe-parallel">
-        <div class="pipe-parallel-label">${p.label || '병렬 트랙'}</div>
-        <div class="pipe-name">
-          <span>${p.name}</span>
-          <span class="pipe-badge agent">에이전트</span>
-        </div>
-        <div class="pipe-desc">${p.description}</div>
-        ${p.tools && p.tools.length ? `<div class="pipe-tools">${p.tools.map(t => `<span class="pipe-tool">${t}</span>`).join('')}</div>` : ''}
-        ${p.output ? `<div class="pipe-output">→ ${p.output}</div>` : ''}
-      </div>
-    `).join('');
-  }
-
-  return `<div class="wf-card${isOpen}">
+  return `<div class="wf-card${wf.steps.length <= 5 ? ' open' : ''}">
     <div class="wf-header" onclick="toggleWf(this)">
       <span class="wf-team">${wf.team}</span>
       <span class="wf-title">${wf.name}</span>
       <div class="wf-meta">
-        <span style="color:var(--agent-color)">🤖 ${agentCount}</span>
-        <span style="color:var(--human-color)">👤 ${humanCount}</span>
-        ${gapCount ? `<span style="color:var(--red)">⚠ ${gapCount} gap</span>` : ''}
+        ${wf.author ? `<span class="wf-author">by ${wf.author}</span>` : ''}
+        <span style="color:var(--agent-color)">\u{1F916} ${ac}</span>
+        <span style="color:#e17055">\u{1F464} ${hc}</span>
+        ${gc ? `<span style="color:var(--red)">\u26A0 ${gc} gap</span>` : ''}
       </div>
-      <span class="wf-chevron">›</span>
+      <span class="wf-chevron">\u203A</span>
     </div>
     <div class="wf-body">
       <div class="wf-desc">${wf.description}</div>
@@ -540,30 +557,55 @@ function wfCardHTML(wf) {
 
 function stepHTML(s) {
   const t = s.type;
-  const badgeLabel = t === 'agent' ? '에이전트' : t === 'human' ? '사람' : '트리거';
-  const gapBadge = s.gap ? `<span class="pipe-badge gap">GAP - 미수집</span>` : '';
+  const label = t === 'agent' ? '에이전트' : t === 'human' ? '사람' : '트리거';
   const tools = (s.tools || []).map(t => `<span class="pipe-tool">${t}</span>`).join('');
-  const rejectHtml = s.rejectTo ? `<div class="pipe-reject">↩ REJECTED → ${s.rejectTo}</div>` : '';
-  const exitHtml = s.exitCondition ? `<div class="pipe-reject" style="color:var(--orange)">↗ ${s.exitCondition}</div>` : '';
-
   return `<div class="pipe-step">
-    <div class="pipe-line">
-      <div class="pipe-dot ${t}"></div>
-      <div class="pipe-connector"></div>
-    </div>
+    <div class="pipe-line"><div class="pipe-dot ${t}"></div><div class="pipe-connector"></div></div>
     <div class="pipe-content">
       <div class="pipe-content-inner ${t}${s.gap ? ' gap' : ''}">
         <div class="pipe-name">
           <span>${s.name}</span>
-          <span class="pipe-badge ${t}">${badgeLabel}</span>
-          ${gapBadge}
+          <span class="pipe-badge ${t}">${label}</span>
+          ${s.gap ? '<span class="pipe-badge gap">GAP - 미수집</span>' : ''}
           ${s.who ? `<span class="pipe-who">${s.who}</span>` : ''}
         </div>
         <div class="pipe-desc">${s.description}</div>
         ${tools ? `<div class="pipe-tools">${tools}</div>` : ''}
-        ${s.output ? `<div class="pipe-output">→ ${s.output}</div>` : ''}
-        ${rejectHtml}
-        ${exitHtml}
+        ${s.output ? `<div class="pipe-output">\u2192 ${s.output}</div>` : ''}
+        ${s.rejectTo ? `<div class="pipe-reject">\u21A9 REJECTED \u2192 ${s.rejectTo}</div>` : ''}
+        ${s.exitCondition ? `<div class="pipe-reject" style="color:var(--orange)">\u2197 ${s.exitCondition}</div>` : ''}
+      </div>
+    </div>
+  </div>`;
+}
+
+// ════════════════════════════════════════
+// GUIDE
+// ════════════════════════════════════════
+function guideHTML() {
+  return `<div class="guide-banner">
+    <div class="guide-icon">\u{1F4D6}</div>
+    <div class="guide-body">
+      <h3>워크플로우 또는 에이전트 추가하기</h3>
+      <p>팀에서 사용하는 에이전트, 스킬, 자동화를 이 대시보드에 등록할 수 있습니다.<br>
+      두 가지 방법이 있습니다.</p>
+      <div class="guide-steps">
+        <div class="guide-step">
+          <div class="guide-step-num">1</div>
+          <div><strong>UI로 등록</strong> \u2014 오른쪽 위 <strong>+ 등록하기</strong> 버튼을 누르면 폼이 열립니다. 정보를 입력하면 JSON이 생성됩니다.</div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-step-num">2</div>
+          <div><strong>JSON 직접 편집</strong> \u2014 GitHub에서 <code>data/registry.json</code> (개별 에이전트) 또는 <code>data/workflows.json</code> (파이프라인)에 항목을 추가하고 PR을 올립니다. 머지되면 자동 반영.</div>
+        </div>
+        <div class="guide-step">
+          <div class="guide-step-num">3</div>
+          <div><strong>Claude Code로 업데이트</strong> \u2014 <code>~/skill-dashboard</code>에서 Claude Code를 실행하고 "대시보드 업데이트해줘"라고 말하면 스킬/프로젝트를 스캔하여 동기화합니다.</div>
+        </div>
+      </div>
+      <div class="guide-actions">
+        <a class="btn" href="https://github.com/Routinery/skill-dashboard" target="_blank">GitHub 저장소</a>
+        <button class="btn btn-primary" onclick="openForm()">+ 등록하기</button>
       </div>
     </div>
   </div>`;
@@ -572,83 +614,61 @@ function stepHTML(s) {
 // ════════════════════════════════════════
 // REGISTRY
 // ════════════════════════════════════════
-function renderStats() {
-  const types = {};
-  REGISTRY.forEach(d => { types[d.type] = (types[d.type] || 0) + 1; });
-  const authors = new Set(REGISTRY.map(d => d.author).filter(Boolean));
-  document.getElementById('stats').innerHTML = `
-    <div class="stat"><div class="stat-value">${REGISTRY.length}</div><div class="stat-label">전체 등록</div></div>
-    <div class="stat"><div class="stat-value">${types.agent || 0}</div><div class="stat-label">에이전트</div></div>
-    <div class="stat"><div class="stat-value">${types.skill || 0}</div><div class="stat-label">스킬</div></div>
-    <div class="stat"><div class="stat-value">${types.automation || 0}</div><div class="stat-label">자동화</div></div>
-    <div class="stat"><div class="stat-value">${authors.size}</div><div class="stat-label">기여자</div></div>
-  `;
-}
-
-function renderFilters() {
-  const cats = [...new Set(REGISTRY.map(d => d.category))].sort();
-  let h = `<button class="chip${currentCategory === 'All' ? ' active' : ''}" onclick="setFilter('category','All')">전체</button>`;
-  cats.forEach(c => { h += `<button class="chip${currentCategory === c ? ' active' : ''}" onclick="setFilter('category','${c}')">${c}</button>`; });
-  document.getElementById('categoryFilters').innerHTML = h;
-
-  const types = [...new Set(REGISTRY.map(d => d.type))];
-  let th = `<button class="chip${currentType === 'All' ? ' active' : ''}" onclick="setFilter('type','All')">전체 타입</button>`;
-  types.forEach(t => { th += `<button class="chip${currentType === t ? ' active' : ''}" onclick="setFilter('type','${t}')">${TYPE_LABELS[t] || t}</button>`; });
-  document.getElementById('typeFilters').innerHTML = th;
-
-  const authors = [...new Set(REGISTRY.map(d => d.author).filter(Boolean))].sort();
-  let ah = `<button class="chip${currentAuthor === 'All' ? ' active' : ''}" onclick="setFilter('author','All')">전체 멤버</button>`;
-  authors.forEach(a => { ah += `<button class="chip${currentAuthor === a ? ' active' : ''}" onclick="setFilter('author','${a}')">${a}</button>`; });
-  document.getElementById('authorFilters').innerHTML = ah;
-}
-
-function setFilter(dim, val) {
-  if (dim === 'category') currentCategory = val;
-  if (dim === 'type') currentType = val;
-  if (dim === 'author') currentAuthor = val;
-  renderFilters(); renderRegistry();
-}
-
 function renderRegistry() {
   const q = document.getElementById('search').value.toLowerCase();
   let items = REGISTRY;
-  if (currentCategory !== 'All') items = items.filter(d => d.category === currentCategory);
+  if (currentFilter !== 'All') items = items.filter(d => d.category === currentFilter);
   if (currentType !== 'All') items = items.filter(d => d.type === currentType);
-  if (currentAuthor !== 'All') items = items.filter(d => d.author === currentAuthor);
   if (q) items = items.filter(d =>
     d.name.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) ||
     (d.command || '').toLowerCase().includes(q) || (d.author || '').toLowerCase().includes(q) ||
     (d.integrations || []).some(i => i.toLowerCase().includes(q))
   );
-  const el = document.getElementById('grid');
-  if (!items.length) { el.innerHTML = `<div class="no-results">검색 결과가 없습니다.</div>`; return; }
-  el.innerHTML = items.map(cardHTML).join('');
+
+  const types = {}; REGISTRY.forEach(d => { types[d.type] = (types[d.type] || 0) + 1; });
+  const authors = new Set(REGISTRY.map(d => d.author).filter(Boolean));
+
+  let html = `<div class="stats">
+    <div class="stat"><div class="stat-value">${REGISTRY.length}</div><div class="stat-label">전체 등록</div></div>
+    <div class="stat"><div class="stat-value">${types.agent || 0}</div><div class="stat-label">에이전트</div></div>
+    <div class="stat"><div class="stat-value">${types.skill || 0}</div><div class="stat-label">스킬</div></div>
+    <div class="stat"><div class="stat-value">${types.automation || 0}</div><div class="stat-label">자동화</div></div>
+    <div class="stat"><div class="stat-value">${authors.size}</div><div class="stat-label">기여자</div></div>
+  </div>`;
+
+  if (!items.length) {
+    html += `<div class="no-results" style="padding:60px 0">검색 결과가 없습니다.</div>`;
+  } else {
+    html += `<div class="grid">${items.map(cardHTML).join('')}</div>`;
+  }
+  html += guideHTML();
+  document.getElementById('content').innerHTML = html;
 }
 
 function cardHTML(d) {
-  const colors = CAT_COLORS[d.category] || { bg: 'rgba(0,0,0,0.04)', fg: 'var(--text2)' };
-  const integrations = (d.integrations || []).map(i => `<span class="tag tag-integration">${i}</span>`).join('');
-  const scheduleHtml = d.schedule ? `<div class="card-schedule">⚡ ${d.schedule}</div>` : '';
+  const c = CAT_COLORS[d.category] || { bg:'rgba(0,0,0,0.04)', fg:'var(--text2)' };
+  const ints = (d.integrations||[]).map(i=>`<span class="tag tag-integration">${i}</span>`).join('');
+  const sched = d.schedule ? `<div class="card-schedule">\u26A1 ${d.schedule}</div>` : '';
   return `<div class="card" onclick="this.classList.toggle('expanded')">
-    ${scheduleHtml}
+    ${sched}
     <div class="card-top">
-      <div class="card-icon" style="background:${colors.bg};color:${colors.fg}">${d.icon || '🔧'}</div>
+      <div class="card-icon" style="background:${c.bg};color:${c.fg}">${d.icon||'\u{1F527}'}</div>
       <div class="card-info">
         <div class="card-name">${d.name}</div>
-        ${d.command ? `<div class="card-cmd">${d.command}</div>` : ''}
+        ${d.command?`<div class="card-cmd">${d.command}</div>`:''}
       </div>
     </div>
     <div class="card-desc">${d.description}</div>
     <div class="card-tags">
-      <span class="tag tag-type">${TYPE_LABELS[d.type] || d.type}</span>
+      <span class="tag tag-type">${TYPE_LABELS[d.type]||d.type}</span>
       <span class="tag tag-platform">${d.platform}</span>
-      ${integrations}
+      ${ints}
     </div>
-    ${d.author ? `<div class="card-author">by <strong>${d.author}</strong></div>` : ''}
+    ${d.author?`<div class="card-meta">by ${d.author}</div>`:''}
     <div class="card-detail">
-      ${d.input ? `<div class="detail-row"><span class="detail-label">입력</span><span class="detail-value">${d.input}</span></div>` : ''}
-      ${d.output ? `<div class="detail-row"><span class="detail-label">출력</span><span class="detail-value">${d.output}</span></div>` : ''}
-      ${d.trigger ? `<div class="detail-row"><span class="detail-label">실행</span><span class="detail-value">${d.trigger}</span></div>` : ''}
+      ${d.input?`<div class="detail-row"><span class="detail-label">입력</span><span class="detail-value">${d.input}</span></div>`:''}
+      ${d.output?`<div class="detail-row"><span class="detail-label">출력</span><span class="detail-value">${d.output}</span></div>`:''}
+      ${d.trigger?`<div class="detail-row"><span class="detail-label">실행</span><span class="detail-value">${d.trigger}</span></div>`:''}
     </div>
   </div>`;
 }
@@ -663,61 +683,48 @@ document.getElementById('formModal').addEventListener('click', e => { if (e.targ
 function generateEntry() {
   const name = document.getElementById('f-name').value.trim();
   const desc = document.getElementById('f-desc').value.trim();
-  const category = document.getElementById('f-category').value;
+  const cat = document.getElementById('f-category').value;
   const type = document.getElementById('f-type').value;
   const author = document.getElementById('f-author').value.trim();
-  if (!name || !desc || !category || !type || !author) { alert('필수 항목(*)을 모두 입력해주세요.'); return; }
-  const id = (document.getElementById('f-command').value || name).replace(/^\//, '').replace(/\s+/g, '-').toLowerCase();
+  if (!name||!desc||!cat||!type||!author) { alert('필수 항목(*)을 모두 입력해주세요.'); return; }
+  const id = (document.getElementById('f-command').value||name).replace(/^\//,'').replace(/\s+/g,'-').toLowerCase();
   const entry = { id, name,
-    command: document.getElementById('f-command').value.trim() || undefined,
-    description: desc, category, type,
+    command: document.getElementById('f-command').value.trim()||undefined,
+    description: desc, category: cat, type,
     platform: document.getElementById('f-platform').value,
     trigger: document.getElementById('f-trigger').value,
-    input: document.getElementById('f-input').value.trim() || undefined,
-    output: document.getElementById('f-output').value.trim() || undefined,
-    integrations: document.getElementById('f-integrations').value.split(',').map(s => s.trim()).filter(Boolean),
-    icon: document.getElementById('f-icon').value.trim() || undefined,
+    input: document.getElementById('f-input').value.trim()||undefined,
+    output: document.getElementById('f-output').value.trim()||undefined,
+    integrations: document.getElementById('f-integrations').value.split(',').map(s=>s.trim()).filter(Boolean),
+    icon: document.getElementById('f-icon').value.trim()||undefined,
     author,
-    schedule: document.getElementById('f-schedule').value.trim() || undefined,
+    schedule: document.getElementById('f-schedule').value.trim()||undefined,
     updatedAt: new Date().toISOString().split('T')[0],
   };
   Object.keys(entry).forEach(k => entry[k] === undefined && delete entry[k]);
   const json = JSON.stringify(entry, null, 2);
   document.getElementById('formOutput').innerHTML = `
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border)">
+    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.06)">
       <div style="font-size:13px;font-weight:600;margin-bottom:8px;">생성된 JSON</div>
-      <div class="output-box">${escapeHtml(json)}</div>
+      <div class="output-box">${esc(json)}</div>
       <div class="output-actions">
-        <button class="btn" onclick="copyText(\`${json.replace(/`/g,'\\`').replace(/\\/g,'\\\\')}\`)">JSON 복사</button>
-        <button class="btn btn-primary" onclick='addLocally(${escapeAttr(json)})'>바로 추가 (이 세션만)</button>
+        <button class="btn" onclick="copyText(\`${json.replace(/`/g,'\\`')}\`)">JSON 복사</button>
+        <button class="btn btn-primary" onclick='addLocal(${escA(json)})'>바로 추가</button>
       </div>
-      <p style="font-size:11px;color:var(--text3);margin-top:10px;">영구 반영: <code>data/registry.json</code> 배열에 추가 후 push</p>
+      <p style="font-size:11px;color:var(--text3);margin-top:10px;">영구 반영: <code>data/registry.json</code>에 추가 후 push</p>
     </div>`;
 }
-
-function addLocally(entry) {
-  if (typeof entry === 'string') entry = JSON.parse(entry);
-  REGISTRY.push(entry);
-  closeForm();
-  renderAll();
-  showToast('추가되었습니다 (이 세션만)');
-}
-
-function escapeHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function escapeAttr(s) { return s.replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
-
+function addLocal(e) { if(typeof e==='string')e=JSON.parse(e); REGISTRY.push(e); closeForm(); renderAll(); showToast('추가됨 (이 세션만)'); }
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escA(s) { return s.replace(/&/g,'&amp;').replace(/'/g,'&#39;').replace(/"/g,'&quot;'); }
 function exportJSON() {
-  const blob = new Blob([JSON.stringify({ registry: REGISTRY, workflows: WORKFLOWS }, null, 2)], { type: 'application/json' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href = url; a.download = 'skill-dashboard-export.json'; a.click();
-  URL.revokeObjectURL(url);
+  const b = new Blob([JSON.stringify({registry:REGISTRY,workflows:WORKFLOWS},null,2)],{type:'application/json'});
+  const u = URL.createObjectURL(b);
+  const a = document.createElement('a'); a.href=u; a.download='skill-dashboard-export.json'; a.click();
+  URL.revokeObjectURL(u);
 }
-
-function copyText(text) { navigator.clipboard.writeText(text); showToast('복사되었습니다'); }
-function showToast(msg) {
-  const t = document.getElementById('toast'); t.textContent = msg;
-  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1800);
-}
+function copyText(t) { navigator.clipboard.writeText(t); showToast('복사되었습니다'); }
+function showToast(m) { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800); }
 
 loadData();
 </script>

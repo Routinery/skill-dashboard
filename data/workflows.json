@@ -3,6 +3,7 @@
     "id": "issue-pipeline",
     "name": "이슈 처리 파이프라인",
     "team": "제품팀",
+    "author": "Jane, Leo, Kyum",
     "description": "VoC 수집부터 코드 머지까지. 6개 에이전트 + 3개 사람 역할. 에이전트는 초안/판정까지, 승인·머지·배포는 사람.",
     "steps": [
       {
@@ -122,6 +123,7 @@
     "id": "qa-chatbot",
     "name": "QA 챗봇",
     "team": "QA팀",
+    "author": "???",
     "description": "QA 프로세스 지원 챗봇. (상세 워크플로우 미수집)",
     "steps": [
       {
@@ -147,6 +149,7 @@
     "id": "geo-content",
     "name": "GEO 컨텐츠 업로드 자동화",
     "team": "그로스팀",
+    "author": "???",
     "description": "GEO 최적화 컨텐츠 자동 업로드. (상세 워크플로우 미수집)",
     "steps": [
       {
@@ -172,6 +175,7 @@
     "id": "puff-multi-agent",
     "name": "Puff 멀티 에이전트",
     "team": "TF",
+    "author": "???",
     "description": "Puff 개발용 멀티 에이전트 시스템. (상세 워크플로우 미수집)",
     "steps": [
       {
@@ -197,6 +201,7 @@
     "id": "hq-release-notes",
     "name": "릴리즈 노트 프로세스",
     "team": "HQ",
+    "author": "이안",
     "description": "매주 앱 릴리즈 노트 생성 → 번역 → App Store/Google Play 업로드",
     "steps": [
       {
@@ -240,6 +245,7 @@
     "id": "hq-monthly-report",
     "name": "월간 투자사 리포트",
     "team": "HQ",
+    "author": "이안",
     "description": "매월 데이터 수집 → 리포트 생성 → 노션 업데이트",
     "steps": [
       {
@@ -271,34 +277,10 @@
     ]
   },
   {
-    "id": "hq-daily-summary",
-    "name": "데일리 요약",
-    "team": "HQ",
-    "description": "매일 자동으로 하루 활동 요약 → Obsidian 데일리 노트",
-    "steps": [
-      {
-        "id": "daily-trigger",
-        "name": "매일 21:00",
-        "type": "trigger",
-        "description": "KST 21:00 cronjob",
-        "next": ["daily-agent"]
-      },
-      {
-        "id": "daily-agent",
-        "name": "데일리 요약 에이전트",
-        "type": "agent",
-        "description": "Notion·Slack·Tiro 데이터를 모아 Obsidian 데일리 노트에 요약 추가",
-        "tools": ["Notion", "Slack"],
-        "trigger": "매일 21:00",
-        "output": "Obsidian 데일리 노트",
-        "next": []
-      }
-    ]
-  },
-  {
-    "id": "hq-feature-pipeline",
+    "id": "feature-pipeline",
     "name": "기능 기획→구현 파이프라인",
-    "team": "HQ",
+    "team": "제품팀",
+    "author": "이안",
     "description": "아이디어 → 기획 → 디자인 → 구현까지 에이전트 오케스트레이션",
     "steps": [
       {
