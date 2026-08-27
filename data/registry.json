@@ -10,7 +10,11 @@
     "trigger": "slash-command",
     "input": "아이디어 한 줄",
     "output": "원페이저 기획안 (노션)",
-    "integrations": ["Notion", "Slack", "Amplitude"],
+    "integrations": [
+      "Notion",
+      "Slack",
+      "Amplitude"
+    ],
     "icon": "🐻",
     "author": "이안",
     "updatedAt": "2026-08-28"
@@ -26,7 +30,10 @@
     "trigger": "slash-command",
     "input": "기획안 URL",
     "output": "Figma 디자인 (10개 변형안→수렴)",
-    "integrations": ["Figma", "Notion"],
+    "integrations": [
+      "Figma",
+      "Notion"
+    ],
     "icon": "🦊",
     "author": "이안",
     "updatedAt": "2026-08-28"
@@ -42,88 +49,11 @@
     "trigger": "slash-command",
     "input": "확정 디자인",
     "output": "RN 코드 + PR 또는 기술 스펙",
-    "integrations": ["Figma", "GitHub"],
+    "integrations": [
+      "Figma",
+      "GitHub"
+    ],
     "icon": "🦄",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "ceo-staff",
-    "name": "비서실장",
-    "command": "/ceo-staff",
-    "description": "재무/인사/행정/IR 전반. 데이터 수집→분석→문서 작성→팀 커뮤니케이션.",
-    "category": "운영",
-    "type": "agent",
-    "platform": "Claude Code",
-    "trigger": "slash-command",
-    "input": "업무 지시",
-    "output": "문서, 슬랙 메시지, 노션 정리",
-    "integrations": ["Notion", "Slack", "Gmail", "Google Drive"],
-    "icon": "🐧",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "ceo-coach",
-    "name": "허튼소리하지마세CEO코치",
-    "command": "/ceo-coach",
-    "description": "경영 고민 경청, 질문으로 사고 확장, 의사결정 프레이밍, 액션 아이템 도출.",
-    "category": "운영",
-    "type": "agent",
-    "platform": "Claude Code",
-    "trigger": "slash-command",
-    "input": "고민거리",
-    "output": "질문, 프레이밍, 액션 아이템",
-    "integrations": [],
-    "icon": "🦉",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "knowledge-scan",
-    "name": "Knowledge Scout",
-    "command": "/knowledge-scan",
-    "description": "이안의 지식 체계와 다른 새 정보를 웹에서 찾아 슬랙으로 보고.",
-    "category": "지식관리",
-    "type": "agent",
-    "platform": "Claude Code",
-    "trigger": "schedule",
-    "input": "자동 (지식 체계 참조)",
-    "output": "슬랙 DM (충돌/보완/새영역)",
-    "integrations": ["Slack"],
-    "icon": "🔍",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "knowledge-extract",
-    "name": "Knowledge Miner",
-    "command": "/knowledge-extract",
-    "description": "노션 주간 회고 + 옵시디언 일기에서 믿음/원칙/판단 기준을 추출하여 지식 체계 구축.",
-    "category": "지식관리",
-    "type": "agent",
-    "platform": "Claude Code",
-    "trigger": "slash-command",
-    "input": "자동 (노션+옵시디언)",
-    "output": "지식 체계 후보 → 승인 후 확정",
-    "integrations": ["Notion"],
-    "icon": "📚",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "health-agent",
-    "name": "건강지키미",
-    "command": "/health",
-    "description": "SleepCycle 수면 데이터 + 건강검진 + 건강 메모 기반 주간 건강 리포트 & 조언.",
-    "category": "운영",
-    "type": "agent",
-    "platform": "Claude Code",
-    "trigger": "slash-command",
-    "input": "SleepCycle 데이터 + 건강 메모",
-    "output": "주간 건강 리포트 + 조언",
-    "integrations": ["Slack"],
-    "icon": "💚",
     "author": "이안",
     "updatedAt": "2026-08-28"
   },
@@ -138,40 +68,11 @@
     "trigger": "slash-command",
     "input": "버전 정보 + 변경사항",
     "output": "iOS 33개 언어 + AOS 10개 로케일 릴리즈 노트",
-    "integrations": ["App Store Connect", "Google Play Console"],
+    "integrations": [
+      "App Store Connect",
+      "Google Play Console"
+    ],
     "icon": "📝",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "monthly-report",
-    "name": "월간 투자사 리포트",
-    "command": "/monthly-report",
-    "description": "월간 결산 데이터를 수집하여 루티너리 월간 투자사 리포트 노션 페이지 갱신.",
-    "category": "운영",
-    "type": "skill",
-    "platform": "Claude Code",
-    "trigger": "manual",
-    "input": "매출/유저/리텐션 데이터",
-    "output": "노션 월간 결산 페이지 업데이트",
-    "integrations": ["Notion", "Amplitude"],
-    "icon": "📊",
-    "author": "이안",
-    "updatedAt": "2026-08-28"
-  },
-  {
-    "id": "monthly-settlement",
-    "name": "월별 거래 결산",
-    "command": "/monthly-settlement",
-    "description": "매월 카드/은행 거래내역을 자동 분류·정산하여 엑셀 생성.",
-    "category": "운영",
-    "type": "skill",
-    "platform": "Claude Code",
-    "trigger": "manual",
-    "input": "카드/은행 xls 파일",
-    "output": "카테고리별 정산 엑셀 (3시트)",
-    "integrations": [],
-    "icon": "💰",
     "author": "이안",
     "updatedAt": "2026-08-28"
   },
@@ -186,7 +87,9 @@
     "trigger": "slash-command",
     "input": "아이디어 한 줄",
     "output": "원페이저 기획안",
-    "integrations": ["Notion"],
+    "integrations": [
+      "Notion"
+    ],
     "icon": "💡",
     "author": "이안",
     "updatedAt": "2026-08-28"
@@ -202,7 +105,11 @@
     "trigger": "slash-command",
     "input": "기능 아이디어",
     "output": "기획→디자인→코드 순차 산출",
-    "integrations": ["Notion", "Figma", "GitHub"],
+    "integrations": [
+      "Notion",
+      "Figma",
+      "GitHub"
+    ],
     "icon": "🔄",
     "author": "이안",
     "updatedAt": "2026-08-28"
@@ -218,7 +125,9 @@
     "trigger": "slash-command",
     "input": "기획안",
     "output": "Figma 디자인 변형안 10개",
-    "integrations": ["Figma"],
+    "integrations": [
+      "Figma"
+    ],
     "icon": "🎨",
     "author": "이안",
     "updatedAt": "2026-08-28"
@@ -234,7 +143,10 @@
     "trigger": "slash-command",
     "input": "확정 Figma 디자인",
     "output": "RN 코드 PR 또는 기술 스펙",
-    "integrations": ["Figma", "GitHub"],
+    "integrations": [
+      "Figma",
+      "GitHub"
+    ],
     "icon": "⚡",
     "author": "이안",
     "updatedAt": "2026-08-28"
@@ -250,7 +162,9 @@
     "trigger": "slash-command",
     "input": "Android 개발 질문/코드",
     "output": "아키텍처 가이드 + 코드",
-    "integrations": ["GitHub"],
+    "integrations": [
+      "GitHub"
+    ],
     "icon": "🤖",
     "author": "",
     "updatedAt": "2026-08-28"
@@ -266,26 +180,141 @@
     "trigger": "slash-command",
     "input": "RN 개발 질문/코드",
     "output": "최적화된 RN 코드 + 가이드",
-    "integrations": ["GitHub"],
+    "integrations": [
+      "GitHub"
+    ],
     "icon": "⚛️",
     "author": "",
     "updatedAt": "2026-08-28"
   },
   {
-    "id": "daily-obsidian-summary",
-    "name": "데일리 옵시디언 요약",
+    "id": "voc-triage",
+    "name": "VoC Triage",
     "command": "",
-    "description": "매일 21:00 KST 자동 실행. Notion·Slack·Tiro 데이터를 모아 Obsidian 데일리 노트에 요약 추가.",
-    "category": "자동화",
-    "type": "automation",
-    "platform": "Claude Desktop",
+    "description": "사용자 제보(Gmail/App Store/Google Play) 자동 수집, 분류, Amplitude 분석, 답변/티켓 초안 생성.",
+    "category": "QA",
+    "type": "agent",
+    "platform": "Hermes",
     "trigger": "schedule",
-    "input": "자동 (Notion, Slack, Tiro)",
-    "output": "Obsidian 데일리 노트",
-    "integrations": ["Notion", "Slack"],
-    "icon": "📓",
-    "author": "이안",
-    "schedule": "매일 21:00",
+    "input": "Gmail, App Store, Google Play 제보",
+    "output": "분류된 이슈 + Gmail 답변 초안 + Linear 티켓 초안",
+    "integrations": [
+      "Gmail",
+      "App Store",
+      "Google Play",
+      "Google Sheets",
+      "Amplitude",
+      "Notion",
+      "Linear",
+      "Slack"
+    ],
+    "icon": "📥",
+    "author": "Jane, Leo, Kyum",
+    "schedule": "매일 07:00 + 30분 주기",
+    "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "priority-strategist",
+    "name": "Priority Strategist",
+    "command": "",
+    "description": "Linear Triage 티켓의 impact x volume x segment / effort 기반 우선순위 자동 산정.",
+    "category": "QA",
+    "type": "agent",
+    "platform": "Hermes",
+    "trigger": "schedule",
+    "input": "Linear Triage 티켓",
+    "output": "우선순위 라벨 + 분해 근거 댓글 → Planned 이동",
+    "integrations": [
+      "Amplitude",
+      "Linear"
+    ],
+    "icon": "🎯",
+    "author": "Jane, Leo, Kyum",
+    "schedule": "매주 수,목 제외 오후 1시",
+    "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "bug-fixer",
+    "name": "Bug Fixer",
+    "command": "",
+    "description": "Planned+approved 이슈의 재현, 원인 분석, 자기검증 게이트 통과 후 draft PR 생성.",
+    "category": "개발",
+    "type": "agent",
+    "platform": "Hermes",
+    "trigger": "event",
+    "input": "Linear Planned + approved 티켓",
+    "output": "Draft PR + 재현/원인/테스트 근거",
+    "integrations": [
+      "Amplitude",
+      "Linear",
+      "GitHub",
+      "Figma",
+      "Slack"
+    ],
+    "icon": "🔧",
+    "author": "Jane, Leo, Kyum",
+    "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "perf-guardian",
+    "name": "Perf Guardian",
+    "command": "",
+    "description": "PR 정적 게이트. typecheck/build 이진 게이트 + PR diff risk tags 부여.",
+    "category": "개발",
+    "type": "agent",
+    "platform": "Hermes",
+    "trigger": "event",
+    "input": "PR CI 완료",
+    "output": "CONFIRMED / REJECTED / INCONCLUSIVE + risk tags",
+    "integrations": [
+      "GitHub"
+    ],
+    "icon": "🛡️",
+    "author": "Jane, Leo, Kyum",
+    "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "red-team",
+    "name": "Red Team",
+    "command": "",
+    "description": "코드 리뷰. RN 함정 체크리스트, OTA 롤백 경로, 버전 호환성 검증.",
+    "category": "개발",
+    "type": "agent",
+    "platform": "Hermes",
+    "trigger": "event",
+    "input": "Perf Guardian CONFIRMED PR",
+    "output": "PASS / CONDITIONAL / BLOCK + Pn 태그",
+    "integrations": [
+      "GitHub",
+      "Linear",
+      "Slack",
+      "Amplitude",
+      "Crashlytics"
+    ],
+    "icon": "🔴",
+    "author": "Jane, Leo, Kyum",
+    "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "incident-responder",
+    "name": "Incident Responder",
+    "command": "",
+    "description": "15분 주기 Crashlytics/Amplitude 감시. P0 초과 시 인시던트 보고 + 완화 draft PR.",
+    "category": "운영",
+    "type": "agent",
+    "platform": "Hermes",
+    "trigger": "schedule",
+    "input": "Crashlytics, Amplitude 메트릭",
+    "output": "인시던트 보고 + 완화 draft PR",
+    "integrations": [
+      "Crashlytics",
+      "Amplitude",
+      "GitHub",
+      "Slack"
+    ],
+    "icon": "🚨",
+    "author": "Jane, Leo, Kyum",
+    "schedule": "15분 주기",
     "updatedAt": "2026-08-28"
   }
 ]
