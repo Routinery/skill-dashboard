@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 170 170" width="200" height="200">
   <circle cx="110" cy="110" r="75" fill="#FFD700"/>
   <path d="M 60 35 A 80 80 0 1 1 35 120" stroke="#4A4E69" stroke-width="12" fill="none" stroke-linecap="round"/>
   <polygon points="25,125 45,115 35,135" fill="#4A4E69"/>
