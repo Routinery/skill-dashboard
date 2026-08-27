@@ -119,6 +119,9 @@ body {
 }
 .chip:hover { color: #555; background: rgba(0,0,0,0.04); }
 .chip.active { color: #111; background: rgba(0,0,0,0.06); }
+.chip-author { color: #b07020; }
+.chip-author.active { color: #8a5a10; background: rgba(176,112,32,0.1); }
+.chip-divider { width: 1px; height: 20px; background: rgba(0,0,0,0.08); margin: 0 4px; align-self: center; flex-shrink: 0; }
 
 /* ── Stats ── */
 .stats { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
@@ -165,6 +168,13 @@ body {
 .card-detail { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(0,0,0,0.06); font-size: 12px; color: #777; line-height: 1.7; }
 .card.expanded .card-detail { display: block; }
 .card.expanded .card-desc { -webkit-line-clamp: unset; }
+.detail-editable { align-items: center; }
+.author-input {
+  padding: 5px 10px; border: 1px solid rgba(0,0,0,0.08); border-radius: 7px;
+  font-size: 12px; font-family: inherit; color: var(--text1); background: rgba(0,0,0,0.02);
+  outline: none; width: 160px; transition: border-color 0.15s;
+}
+.author-input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 2px rgba(108,92,231,0.1); }
 .detail-row { display: flex; gap: 8px; margin-bottom: 6px; }
 .detail-label { color: var(--text3); min-width: 48px; flex-shrink: 0; }
 .detail-value { color: var(--text2); }
@@ -403,6 +413,7 @@ let WORKFLOWS = [];
 let mainTab = 'workflows';
 let currentFilter = 'All';
 let currentType = 'All';
+let currentAuthor = 'All';
 
 const TYPE_LABELS = { agent: '에이전트', skill: '스킬', automation: '자동화', mcp: 'MCP 연동' };
 const CAT_COLORS = {
@@ -465,30 +476,53 @@ function renderMainTabs() {
 }
 
 function switchTab(tab) {
-  mainTab = tab; currentFilter = 'All'; currentType = 'All';
+  mainTab = tab; currentFilter = 'All'; currentType = 'All'; currentAuthor = 'All';
   renderAll();
+}
+
+function getAllAuthors(source) {
+  const raw = source.flatMap(d => (d.author || '').split(',').map(a => a.trim())).filter(Boolean);
+  return [...new Set(raw)].sort();
 }
 
 function renderSubFilters() {
   const el = document.getElementById('subFilters');
   if (mainTab === 'workflows') {
     const teams = [...new Set(WORKFLOWS.map(w => w.team))];
+    const authors = getAllAuthors(WORKFLOWS);
     let h = `<button class="chip${currentFilter === 'All' ? ' active' : ''}" onclick="setFilter('All')">전체</button>`;
     teams.forEach(t => { h += `<button class="chip${currentFilter === t ? ' active' : ''}" onclick="setFilter('${t}')">${t}</button>`; });
+    if (authors.length) {
+      h += `<span class="chip-divider"></span>`;
+      h += `<button class="chip chip-author${currentAuthor === 'All' ? ' active' : ''}" onclick="setAuthor('All')">전체 멤버</button>`;
+      authors.forEach(a => { h += `<button class="chip chip-author${currentAuthor === a ? ' active' : ''}" onclick="setAuthor('${a}')">${a}</button>`; });
+    }
     el.innerHTML = h;
   } else {
     const cats = [...new Set(REGISTRY.map(d => d.category))].sort();
     const types = [...new Set(REGISTRY.map(d => d.type))];
+    const authors = getAllAuthors(REGISTRY);
     let h = `<button class="chip${currentFilter === 'All' ? ' active' : ''}" onclick="setFilter('All')">전체</button>`;
     cats.forEach(c => { h += `<button class="chip${currentFilter === c ? ' active' : ''}" onclick="setFilter('${c}')">${c}</button>`; });
-    h += `<span style="width:1px;height:20px;background:rgba(0,0,0,0.08);margin:0 4px"></span>`;
+    h += `<span class="chip-divider"></span>`;
     types.forEach(t => { h += `<button class="chip${currentType === t ? ' active' : ''}" onclick="setType('${t}')">${TYPE_LABELS[t]||t}</button>`; });
+    if (authors.length) {
+      h += `<span class="chip-divider"></span>`;
+      h += `<button class="chip chip-author${currentAuthor === 'All' ? ' active' : ''}" onclick="setAuthor('All')">전체 멤버</button>`;
+      authors.forEach(a => { h += `<button class="chip chip-author${currentAuthor === a ? ' active' : ''}" onclick="setAuthor('${a}')">${a}</button>`; });
+    }
     el.innerHTML = h;
   }
 }
 
 function setFilter(f) { currentFilter = f; renderSubFilters(); renderContent(); }
 function setType(t) { currentType = currentType === t ? 'All' : t; renderSubFilters(); renderContent(); }
+function setAuthor(a) { currentAuthor = a; renderSubFilters(); renderContent(); }
+
+function matchesAuthor(itemAuthor) {
+  if (currentAuthor === 'All') return true;
+  return (itemAuthor || '').split(',').map(a => a.trim()).includes(currentAuthor);
+}
 function renderContent() { mainTab === 'workflows' ? renderWorkflows() : renderRegistry(); }
 
 // ════════════════════════════════════════
@@ -498,6 +532,7 @@ function renderWorkflows() {
   const q = document.getElementById('search').value.toLowerCase();
   let items = WORKFLOWS;
   if (currentFilter !== 'All') items = items.filter(w => w.team === currentFilter);
+  if (currentAuthor !== 'All') items = items.filter(w => matchesAuthor(w.author));
   if (q) items = items.filter(w => w.name.toLowerCase().includes(q) || w.description.toLowerCase().includes(q) || w.team.toLowerCase().includes(q));
 
   let html = items.map(wfCardHTML).join('');
@@ -610,6 +645,7 @@ function renderRegistry() {
   let items = REGISTRY;
   if (currentFilter !== 'All') items = items.filter(d => d.category === currentFilter);
   if (currentType !== 'All') items = items.filter(d => d.type === currentType);
+  if (currentAuthor !== 'All') items = items.filter(d => matchesAuthor(d.author));
   if (q) items = items.filter(d =>
     d.name.toLowerCase().includes(q) || d.description.toLowerCase().includes(q) ||
     (d.command || '').toLowerCase().includes(q) || (d.author || '').toLowerCase().includes(q) ||
@@ -636,11 +672,12 @@ function renderRegistry() {
   document.getElementById('content').innerHTML = html;
 }
 
-function cardHTML(d) {
+function cardHTML(d, idx) {
   const c = CAT_COLORS[d.category] || { bg:'rgba(0,0,0,0.04)', fg:'var(--text2)' };
   const ints = (d.integrations||[]).map(i=>`<span class="tag tag-integration">${i}</span>`).join('');
   const sched = d.schedule ? `<div class="card-schedule">\u26A1 ${d.schedule}</div>` : '';
-  return `<div class="card" onclick="this.classList.toggle('expanded')">
+  const authorDisplay = d.author || '미지정';
+  return `<div class="card" onclick="toggleCard(this, event)">
     ${sched}
     <div class="card-top">
       <div class="card-icon" style="background:${c.bg};color:${c.fg}">${d.icon||'\u{1F527}'}</div>
@@ -655,13 +692,33 @@ function cardHTML(d) {
       <span class="tag tag-platform">${d.platform}</span>
       ${ints}
     </div>
-    ${d.author?`<div class="card-meta">by ${d.author}</div>`:''}
+    <div class="card-meta">by ${authorDisplay}</div>
     <div class="card-detail">
       ${d.input?`<div class="detail-row"><span class="detail-label">입력</span><span class="detail-value">${d.input}</span></div>`:''}
       ${d.output?`<div class="detail-row"><span class="detail-label">출력</span><span class="detail-value">${d.output}</span></div>`:''}
       ${d.trigger?`<div class="detail-row"><span class="detail-label">실행</span><span class="detail-value">${d.trigger}</span></div>`:''}
+      <div class="detail-row detail-editable">
+        <span class="detail-label">담당자</span>
+        <input class="author-input" value="${d.author||''}" placeholder="이름 입력"
+          onclick="event.stopPropagation()"
+          onchange="updateAuthor('${d.id}', this.value)" />
+      </div>
     </div>
   </div>`;
+}
+
+function toggleCard(el, e) {
+  if (e.target.closest('.author-input')) return;
+  el.classList.toggle('expanded');
+}
+
+function updateAuthor(id, value) {
+  const item = REGISTRY.find(d => d.id === id);
+  if (item) {
+    item.author = value.trim();
+    showToast(value.trim() ? '담당자: ' + value.trim() : '담당자 해제됨');
+    renderSubFilters();
+  }
 }
 
 // ════════════════════════════════════════
