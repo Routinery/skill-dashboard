@@ -180,9 +180,9 @@
     ]
   },
   {
-    "id": "hq-release-notes",
+    "id": "release-notes",
     "name": "릴리즈 노트 프로세스",
-    "team": "HQ",
+    "team": "제품팀",
     "author": "이안",
     "description": "매주 앱 릴리즈 노트 생성 → 번역 → App Store/Google Play 업로드",
     "steps": [
