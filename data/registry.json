@@ -316,5 +316,41 @@
     "author": "Jane, Leo, Kyum",
     "schedule": "15분 주기",
     "updatedAt": "2026-08-28"
+  },
+  {
+    "id": "code-designer",
+    "name": "코드 디자이너",
+    "command": "/design-lab",
+    "description": "앱의 실제 RN 컴포넌트를 웹(RNW)에 렌더해 '현재 1개 + 개선 시안 3개'를 폰 토글로 비교하는 공개 링크 시안 생성. 목업이 아니라 앱 소스를 그대로 조립해 오차 0에 가깝고 개발 인계가 쉬움.",
+    "category": "디자인",
+    "type": "agent",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "디자인 브리프 (대상 화면/탭 + 개선 방향)",
+    "output": "공개 프리뷰 링크 (현재/시안A/B/C 토글) + 개발 인계 노트",
+    "integrations": [
+      "GitHub"
+    ],
+    "icon": "🎛️",
+    "author": "Sol",
+    "updatedAt": "2026-09-03"
+  },
+  {
+    "id": "design-lab",
+    "name": "디자인 랩 (rig)",
+    "command": "/design-lab",
+    "description": "루티너리 앱의 실제 RN 컴포넌트를 React Native Web에서 렌더하는 놀이터. 코드 디자이너 에이전트가 판단·자가검증 루프를 도는 렌더 rig. 앱 소스를 그대로 import해 조립.",
+    "category": "디자인",
+    "type": "skill",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "조립할 화면/컴포넌트",
+    "output": "웹 프리뷰 빌드 + 스크린샷 (자가검증)",
+    "integrations": [
+      "GitHub"
+    ],
+    "icon": "🧪",
+    "author": "Sol",
+    "updatedAt": "2026-09-03"
   }
 ]
