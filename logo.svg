@@ -1,5 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 20 170 170" width="200" height="200">
-  <circle cx="110" cy="110" r="75" fill="#FFD700"/>
-  <path d="M 60 35 A 80 80 0 1 1 35 120" stroke="#4A4E69" stroke-width="12" fill="none" stroke-linecap="round"/>
-  <polygon points="25,125 45,115 35,135" fill="#4A4E69"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <!-- Yellow circle, slightly right-down -->
+  <circle cx="65" cy="65" r="45" fill="#FFE500"/>
+  <!-- Gray arc, offset upper-left, ~300 degrees clockwise from top-left -->
+  <path d="M 32 18 A 48 48 0 1 1 18 72" stroke="#4A4E69" stroke-width="7" fill="none" stroke-linecap="round"/>
+  <!-- Arrow head at bottom-left end -->
+  <polygon points="11,78 24,68 18,82" fill="#4A4E69"/>
 </svg>

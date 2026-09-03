@@ -17,6 +17,7 @@
     ],
     "icon": "🐻",
     "author": "이안",
+    "skillPath": "skills/pm/SKILL.md",
     "updatedAt": "2026-08-28"
   },
   {
@@ -36,6 +37,7 @@
     ],
     "icon": "🦊",
     "author": "이안",
+    "skillPath": "skills/designer/SKILL.md",
     "updatedAt": "2026-08-28"
   },
   {
@@ -55,6 +57,7 @@
     ],
     "icon": "🦄",
     "author": "이안",
+    "skillPath": "skills/devsigner/SKILL.md",
     "updatedAt": "2026-08-28"
   },
   {
@@ -74,6 +77,7 @@
     ],
     "icon": "📝",
     "author": "이안",
+    "skillPath": "skills/whats-new-generator/SKILL.md",
     "updatedAt": "2026-08-28"
   },
   {
