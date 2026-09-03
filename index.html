@@ -96,6 +96,8 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
 .tag-type{background:var(--accent-bg);color:var(--accent)}
 .tag-platform{background:var(--green-bg);color:var(--green)}
 .tag-int{background:var(--blue-bg);color:var(--blue)}
+.btn-dl{font-size:11px;font-weight:500;color:var(--accent);background:var(--accent-bg);padding:3px 8px;border-radius:5px;text-decoration:none;margin-left:auto;flex-shrink:0}
+.btn-dl:hover{background:rgba(108,92,231,0.14)}
 .card-footer{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:11px;color:var(--text3)}
 .card-schedule{font-size:10px;font-weight:600;color:var(--green);background:var(--green-bg);padding:2px 6px;border-radius:4px}
 .card-detail{display:none;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.7}
@@ -256,7 +258,10 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
       <div class="fg"><label>아이콘 (이모지)</label><input type="text" id="f-icon" placeholder="🐻" maxlength="4"></div>
       <div class="fg"><label>만든 사람 <span class="req">*</span></label><input type="text" id="f-author" placeholder="본인 이름"></div>
     </div>
-    <div class="fg"><label>스케줄 (자동화인 경우)</label><input type="text" id="f-schedule" placeholder="예: 매일 21:00"></div>
+    <div class="frow">
+      <div class="fg"><label>스케줄 (자동화인 경우)</label><input type="text" id="f-schedule" placeholder="예: 매일 21:00"></div>
+      <div class="fg"><label>스킬 파일 경로</label><input type="text" id="f-skillpath" placeholder="예: skills/pm/SKILL.md"></div>
+    </div>
     <div id="formOutput"></div>
     <div class="factions">
       <button class="btn" onclick="closeForm()">닫기</button>
@@ -353,7 +358,7 @@ function stepHTML(s){
 
 // ── Guide ──
 function guideHTML(){
-  return`<div class="guide"><h3>워크플로우 또는 에이전트 추가하기</h3><p>팀에서 사용하는 에이전트, 스킬, 자동화를 등록할 수 있습니다.</p><div class="guide-steps"><div class="guide-step"><div class="guide-num">1</div><div><strong>UI로 등록</strong> \u2014 오른쪽 위 <strong>+ 등록</strong> 버튼으로 JSON 생성</div></div><div class="guide-step"><div class="guide-num">2</div><div><strong>JSON 직접 편집</strong> \u2014 <code>data/registry.json</code> 또는 <code>data/workflows.json</code>에 PR</div></div><div class="guide-step"><div class="guide-num">3</div><div><strong>Claude Code</strong> \u2014 <code>~/skill-dashboard</code>에서 "대시보드 업데이트해줘"</div></div></div><div class="guide-actions"><a class="btn" href="https://github.com/Routinery/skill-dashboard" target="_blank">GitHub</a><a class="btn" href="https://app.notion.com/p/routinery/Routinery-667a9e216c774316b024301b9cca66a3" target="_blank">Notion</a><button class="btn btn-primary" onclick="openForm()">+ 등록</button></div></div>`;
+  return`<div class="guide"><h3>워크플로우 또는 에이전트 추가하기</h3><p>팀에서 사용하는 에이전트, 스킬, 자동화를 등록할 수 있습니다. 스킬 파일도 함께 올리면 다른 팀원이 바로 다운로드할 수 있습니다.</p><div class="guide-steps"><div class="guide-step"><div class="guide-num">1</div><div><strong>UI로 등록</strong> \u2014 오른쪽 위 <strong>+ 등록</strong> 버튼으로 JSON 생성</div></div><div class="guide-step"><div class="guide-num">2</div><div><strong>JSON + 스킬 파일</strong> \u2014 <code>data/registry.json</code>에 항목 추가 + <code>skills/{id}/SKILL.md</code>에 파일 업로드 후 PR</div></div><div class="guide-step"><div class="guide-num">3</div><div><strong>Claude Code</strong> \u2014 <code>~/skill-dashboard</code>에서 "대시보드 업데이트해줘"</div></div></div><div class="guide-actions"><a class="btn" href="https://github.com/Routinery/skill-dashboard" target="_blank">GitHub</a><a class="btn" href="https://app.notion.com/p/routinery/Routinery-667a9e216c774316b024301b9cca66a3" target="_blank">Notion</a><button class="btn btn-primary" onclick="openForm()">+ 등록</button></div></div>`;
 }
 
 // ── Registry ──
@@ -375,7 +380,8 @@ function renderReg(){
 function cardHTML(d){
   const ints=(d.integrations||[]).slice(0,3).map(i=>`<span class="tag tag-int">${i}</span>`).join('');
   const extra=(d.integrations||[]).length>3?`<span class="tag">+${d.integrations.length-3}</span>`:'';
-  return`<div class="card" onclick="toggleCard(this,event)">${d.schedule?`<div class="card-schedule">${d.schedule}</div>`:''}<div class="card-head"><span class="card-emoji">${d.icon||'\u{1F527}'}</span><div><div class="card-name">${d.name}</div>${d.command?`<div class="card-cmd">${d.command}</div>`:''}</div></div><div class="card-desc">${d.description}</div><div class="card-tags"><span class="tag tag-type">${TL[d.type]||d.type}</span><span class="tag tag-platform">${d.platform}</span>${ints}${extra}</div><div class="card-footer"><span>by ${d.author||'미지정'}</span></div><div class="card-detail">${d.input?`<div class="detail-row"><span class="detail-label">입력</span><span>${d.input}</span></div>`:''}${d.output?`<div class="detail-row"><span class="detail-label">출력</span><span>${d.output}</span></div>`:''}${d.trigger?`<div class="detail-row"><span class="detail-label">실행</span><span>${d.trigger}</span></div>`:''}<div class="detail-row"><span class="detail-label">담당자</span><input class="author-input" value="${d.author||''}" placeholder="이름" onclick="event.stopPropagation()" onchange="updateAuth('${d.id}',this.value)"/></div></div></div>`;
+  const dlBtn=d.skillPath?`<a class="btn-dl" href="https://raw.githubusercontent.com/Routinery/skill-dashboard/main/${d.skillPath}" download onclick="event.stopPropagation()" title="스킬 파일 다운로드">\u2B07 파일</a>`:'';
+  return`<div class="card" onclick="toggleCard(this,event)">${d.schedule?`<div class="card-schedule">${d.schedule}</div>`:''}<div class="card-head"><span class="card-emoji">${d.icon||'\u{1F527}'}</span><div><div class="card-name">${d.name}</div>${d.command?`<div class="card-cmd">${d.command}</div>`:''}</div>${dlBtn}</div><div class="card-desc">${d.description}</div><div class="card-tags"><span class="tag tag-type">${TL[d.type]||d.type}</span><span class="tag tag-platform">${d.platform}</span>${ints}${extra}</div><div class="card-footer"><span>by ${d.author||'미지정'}</span></div><div class="card-detail">${d.input?`<div class="detail-row"><span class="detail-label">입력</span><span>${d.input}</span></div>`:''}${d.output?`<div class="detail-row"><span class="detail-label">출력</span><span>${d.output}</span></div>`:''}${d.trigger?`<div class="detail-row"><span class="detail-label">실행</span><span>${d.trigger}</span></div>`:''}<div class="detail-row"><span class="detail-label">담당자</span><input class="author-input" value="${d.author||''}" placeholder="이름" onclick="event.stopPropagation()" onchange="updateAuth('${d.id}',this.value)"/></div>${d.skillPath?`<div class="detail-row"><span class="detail-label">파일</span><a href="https://github.com/Routinery/skill-dashboard/blob/main/${d.skillPath}" target="_blank" onclick="event.stopPropagation()" style="color:var(--accent);text-decoration:none">${d.skillPath}</a></div>`:''}</div></div>`;
 }
 function toggleCard(el,e){if(e.target.closest('.author-input'))return;el.classList.toggle('expanded')}
 function updateAuth(id,v){const d=REGISTRY.find(d=>d.id===id);if(d){d.author=v.trim();toast(v.trim()?'담당자: '+v.trim():'담당자 해제됨');renderFilters()}}
@@ -389,7 +395,7 @@ function generateEntry(){
   const name=$('f-name').value.trim(),desc=$('f-desc').value.trim(),cat=$('f-category').value,type=$('f-type').value,author=$('f-author').value.trim();
   if(!name||!desc||!cat||!type||!author){alert('필수 항목(*)을 모두 입력해주세요.');return}
   const id=($('f-command').value||name).replace(/^\//,'').replace(/\s+/g,'-').toLowerCase();
-  const entry={id,name,command:$('f-command').value.trim()||undefined,description:desc,category:cat,type,platform:$('f-platform').value,trigger:$('f-trigger').value,input:$('f-input').value.trim()||undefined,output:$('f-output').value.trim()||undefined,integrations:$('f-integrations').value.split(',').map(s=>s.trim()).filter(Boolean),icon:$('f-icon').value.trim()||undefined,author,schedule:$('f-schedule').value.trim()||undefined,updatedAt:new Date().toISOString().split('T')[0]};
+  const entry={id,name,command:$('f-command').value.trim()||undefined,description:desc,category:cat,type,platform:$('f-platform').value,trigger:$('f-trigger').value,input:$('f-input').value.trim()||undefined,output:$('f-output').value.trim()||undefined,integrations:$('f-integrations').value.split(',').map(s=>s.trim()).filter(Boolean),icon:$('f-icon').value.trim()||undefined,author,schedule:$('f-schedule').value.trim()||undefined,skillPath:$('f-skillpath').value.trim()||undefined,updatedAt:new Date().toISOString().split('T')[0]};
   Object.keys(entry).forEach(k=>entry[k]===undefined&&delete entry[k]);
   const json=JSON.stringify(entry,null,2);
   $('formOutput').innerHTML=`<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)"><div style="font-size:13px;font-weight:600;margin-bottom:6px">생성된 JSON</div><div class="output-box">${esc(json)}</div><div style="display:flex;gap:8px"><button class="btn" onclick="copyText(\`${json.replace(/`/g,'\\`')}\`)">복사</button><button class="btn btn-primary" onclick='addLocal(${escA(json)})'>바로 추가</button></div><p style="font-size:11px;color:var(--text3);margin-top:8px">영구 반영: <code>data/registry.json</code>에 추가 후 push</p></div>`;
