@@ -371,5 +371,221 @@
         "next": []
       }
     ]
+  },
+  {
+    "id": "creator-outreach",
+    "name": "크리에이터 발굴 → 아웃리치",
+    "team": "그로스팀",
+    "author": "Dina",
+    "description": "유튜브·인스타·틱톡에서 루틴 크리에이터를 찾아 명단화하고 컨택하는 흐름. 수집은 자동, 누구에게 연락할지는 사람이 판단합니다.",
+    "steps": [
+      {
+        "id": "campaign-start",
+        "name": "캠페인 시작",
+        "type": "trigger",
+        "description": "협업 크리에이터 발굴이 필요한 시점 (신규 캠페인, 명단 소진)",
+        "next": [
+          "youtube-collector",
+          "creator-collector"
+        ]
+      },
+      {
+        "id": "youtube-collector",
+        "name": "유튜브 크리에이터 수집",
+        "type": "agent",
+        "description": "YouTube 공식 API로 루틴 관련 채널 수집, 구독자 수 필터링, 소개글에서 이메일 추출",
+        "tools": [
+          "YouTube Data API",
+          "Google Sheets"
+        ],
+        "trigger": "수동 실행 (1회 최대 200명, 하루 4~5회)",
+        "output": "채널 명단 CSV / 구글시트",
+        "next": [
+          "list-review"
+        ]
+      },
+      {
+        "id": "creator-collector",
+        "name": "크리에이터 수집 (인스타·틱톡)",
+        "type": "agent",
+        "description": "해시태그·검색어 기반 크리에이터 수집, 팔로워·소개·공개 이메일 확보",
+        "tools": [
+          "Instagram",
+          "TikTok",
+          "Google Sheets"
+        ],
+        "trigger": "수동 실행 (1회 20~40명, 속도 제한 있음)",
+        "output": "크리에이터 명단 CSV / 구글시트",
+        "next": [
+          "list-review"
+        ]
+      },
+      {
+        "id": "list-review",
+        "name": "명단 검토",
+        "type": "human",
+        "who": "Dina",
+        "description": "중복·부적합 계정 제거, 브랜드 적합도 판단, 컨택 우선순위 지정",
+        "tools": [
+          "Google Sheets"
+        ],
+        "output": "컨택 대상 확정 명단",
+        "next": [
+          "outreach-send"
+        ],
+        "exitCondition": "적합 크리에이터 없음 → 검색어 조정 후 재수집"
+      },
+      {
+        "id": "outreach-send",
+        "name": "컨택 발송",
+        "type": "human",
+        "who": "Dina",
+        "description": "확보한 이메일·DM으로 협업 제안 발송, 응답 관리",
+        "tools": [
+          "Gmail",
+          "Instagram"
+        ],
+        "output": "발송된 제안 + 응답 현황",
+        "next": [
+          "event-post"
+        ]
+      },
+      {
+        "id": "event-post",
+        "name": "이벤트 게시물 오픈",
+        "type": "trigger",
+        "description": "협업 확정 후 참여형 이벤트 게시물 업로드",
+        "next": [
+          "instagram-dm-bot"
+        ]
+      },
+      {
+        "id": "instagram-dm-bot",
+        "name": "인스타 댓글→DM 봇",
+        "type": "agent",
+        "description": "게시물 댓글에 지정 키워드가 달리면 참여자에게 자동으로 DM 발송 (중복 발송 방지)",
+        "tools": [
+          "Instagram",
+          "Meta Graph API"
+        ],
+        "trigger": "게시물 ID + 키워드 등록 후 실행",
+        "output": "자동 발송된 DM + 발송 기록",
+        "next": []
+      }
+    ]
+  },
+  {
+    "id": "aso-experiment",
+    "name": "ASO 스토어 실험 사이클",
+    "team": "그로스팀",
+    "author": "Dina",
+    "description": "스토어 전환율 진단부터 스크린샷 A/B 실험 결과 판정까지. 에이전트가 가설과 브리프까지 만들고, 에셋 제작·실험 등록·최종 판단은 사람이 합니다.",
+    "steps": [
+      {
+        "id": "cycle-start",
+        "name": "사이클 시작",
+        "type": "trigger",
+        "description": "직전 실험 종료 또는 스토어 지표 점검 시점",
+        "next": [
+          "aso-tool",
+          "aso-diagnose"
+        ]
+      },
+      {
+        "id": "aso-tool",
+        "name": "ASO Tool (키워드 점검)",
+        "type": "agent",
+        "description": "앱 키워드의 ASO 점수와 개선안 확인 — 사이클 진입 전 참고용",
+        "tools": [
+          "Google Play"
+        ],
+        "trigger": "웹앱에서 수동 조회",
+        "output": "ASO 점수 + 키워드별 개선안",
+        "next": [
+          "aso-diagnose"
+        ]
+      },
+      {
+        "id": "aso-diagnose",
+        "name": "진단 · 경쟁분석 · 가설",
+        "type": "agent",
+        "description": "전환율을 카테고리 벤치마크와 비교해 병목을 찾고, 경쟁사 스토어를 분석해 실험 가설을 세움",
+        "tools": [
+          "Google Play Console",
+          "BigQuery"
+        ],
+        "trigger": "python3 main.py start",
+        "output": "진단 리포트 + 가설 후보 + 선택된 가설",
+        "next": [
+          "checkpoint-a"
+        ]
+      },
+      {
+        "id": "checkpoint-a",
+        "name": "체크포인트 A — 가설·실험 설계 승인",
+        "type": "human",
+        "who": "Dina",
+        "description": "가설이 앱 실제 기능과 맞는지, 실험 설계가 가설을 검증하는지 확인 후 승인",
+        "output": "승인된 실험 스펙 + 크리에이티브 브리프",
+        "next": [
+          "asset-design"
+        ],
+        "rejectTo": "aso-diagnose"
+      },
+      {
+        "id": "asset-design",
+        "name": "에셋 제작",
+        "type": "human",
+        "who": "디자이너",
+        "description": "크리에이티브 브리프대로 control·variant 스크린샷 제작 (1080×1920 JPEG)",
+        "tools": [
+          "Figma"
+        ],
+        "output": "control + variant 스크린샷 2장",
+        "next": [
+          "checkpoint-b"
+        ]
+      },
+      {
+        "id": "checkpoint-b",
+        "name": "체크포인트 B — 실험 등록",
+        "type": "human",
+        "who": "Dina",
+        "description": "에셋을 Play Console 실험에 등록하고 실험 ID·예상 종료일을 에이전트에 입력",
+        "tools": [
+          "Google Play Console"
+        ],
+        "output": "실행 중인 스토어 실험",
+        "next": [
+          "experiment-poll"
+        ]
+      },
+      {
+        "id": "experiment-poll",
+        "name": "실험 모니터링 · 평가",
+        "type": "agent",
+        "description": "실험 기간 동안 지표를 주기적으로 확인하고, 종료 시 통계적 유의성과 방향성을 판정",
+        "tools": [
+          "Google Play Console"
+        ],
+        "trigger": "python3 main.py poll",
+        "output": "결과 판정 (winner / iterate / abandon) + 근거",
+        "next": [
+          "checkpoint-d"
+        ]
+      },
+      {
+        "id": "checkpoint-d",
+        "name": "체크포인트 D — 적용 결정",
+        "type": "human",
+        "who": "Dina",
+        "description": "실험 결과를 보고 스토어에 적용할지, 다시 실험할지, 접을지 결정",
+        "tools": [
+          "Google Play Console"
+        ],
+        "output": "스토어 반영 또는 다음 사이클 가설",
+        "next": []
+      }
+    ]
   }
 ]
