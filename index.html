@@ -174,6 +174,33 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
 .guide-actions{display:flex;gap:8px;flex-wrap:wrap}
 .guide-actions .btn{height:30px;font-size:12px}
 
+/* Lifecycle map */
+.lifecycle{margin-bottom:32px}
+.lifecycle-title{font-size:20px;font-weight:700;margin-bottom:4px}
+.lifecycle-sub{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px}
+.lc-flow{display:flex;gap:0;overflow-x:auto;padding-bottom:8px}
+.lc-stage{flex:1;min-width:140px;position:relative}
+.lc-stage:not(:last-child)::after{content:'';position:absolute;top:18px;right:-1px;width:16px;height:2px;background:var(--border);z-index:1}
+.lc-stage-head{padding:8px 12px;text-align:center;border-bottom:2px solid var(--border);margin-bottom:8px}
+.lc-stage-name{font-size:12px;font-weight:700;color:var(--text)}
+.lc-stage-count{font-size:10px;color:var(--text3);margin-top:1px}
+.lc-stage.active .lc-stage-head{border-bottom-color:var(--accent)}
+.lc-stage.empty .lc-stage-head{border-bottom-color:var(--border);opacity:0.5}
+.lc-items{padding:0 4px;display:flex;flex-direction:column;gap:4px}
+.lc-item{display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;background:var(--surface);font-size:11px;cursor:default}
+.lc-item:hover{background:var(--accent-bg)}
+.lc-item-icon{font-size:13px;flex-shrink:0}
+.lc-item-name{font-weight:500;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lc-item-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.lc-item-dot.agent{background:var(--accent)}
+.lc-item-dot.human{background:var(--yellow)}
+.lc-item-dot.skill{background:var(--green)}
+.lc-item-dot.automation{background:var(--blue)}
+.lc-item-author{font-size:10px;color:var(--text3);white-space:nowrap}
+.lc-legend{display:flex;gap:14px;margin-top:12px;justify-content:center}
+.lc-legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3)}
+.lc-arrow{display:flex;align-items:center;color:var(--border);font-size:14px;padding:0 2px;margin-top:20px}
+
 /* Team cards */
 .team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
 .member-card{border:1px solid var(--border);border-radius:10px;padding:20px;background:#fff}
@@ -414,7 +441,6 @@ function updateWfAuth(id,v){const w=WORKFLOWS.find(w=>w.id===id);if(w){w.author=
 // ── Team ──
 function renderTeam(){
   const q=document.getElementById('search').value.toLowerCase();
-  // Gather all unique authors from both sources
   const allAuthors=getAuthors([...REGISTRY,...WORKFLOWS]);
   let members=allAuthors.map(name=>{
     const skills=REGISTRY.filter(d=>(d.author||'').split(',').map(s=>s.trim()).includes(name));
@@ -431,18 +457,73 @@ function renderTeam(){
   });
   if(q)members=members.filter(m=>m.name.toLowerCase().includes(q)||m.skills.some(s=>s.name.toLowerCase().includes(q)));
 
-  // Summary stats
-  const totalSkills=REGISTRY.length;
-  const totalWF=WORKFLOWS.length;
-  const totalTools=[...new Set(REGISTRY.flatMap(d=>d.integrations||[]))].length;
+  // ── Lifecycle map ──
+  const stages=[
+    {id:'idea',name:'아이디어',match:d=>d.category==='기획'&&/아이디어|ideate/i.test(d.id+d.name)},
+    {id:'plan',name:'기획',match:d=>d.category==='기획'&&!/아이디어|ideate/i.test(d.id+d.name)},
+    {id:'design',name:'디자인',match:d=>d.category==='디자인'},
+    {id:'dev',name:'개발',match:d=>d.category==='개발'},
+    {id:'qa',name:'QA',match:d=>d.category==='QA'},
+    {id:'release',name:'릴리즈',match:d=>d.category==='릴리즈'},
+    {id:'growth',name:'그로스',match:d=>d.category==='운영'||/aso|creator|reddit|instagram|youtube/i.test(d.id)},
+    {id:'monitor',name:'모니터링',match:d=>/incident|monitor|crashlytics/i.test(d.id+d.description)},
+  ];
+  // Assign each registry item to a stage (first match wins)
+  const stageItems=stages.map(s=>({...s,items:[]}));
+  REGISTRY.forEach(d=>{
+    for(const s of stageItems){if(s.match(d)){s.items.push(d);break}}
+  });
+  // Also add human gates from workflows
+  WORKFLOWS.forEach(w=>{
+    w.steps.filter(s=>s.type==='human').forEach(step=>{
+      const stageName=
+        /승인|확인|검토|리뷰/.test(step.name)?
+          (w.team==='그로스팀'?'growth':
+           /릴리즈/.test(w.name)?'release':
+           /디자인/.test(step.name)?'design':
+           /기획/.test(step.name)?'plan':
+           /코드|PR|머지|Merge/.test(step.name)?'dev':'qa')
+        :'dev';
+      const target=stageItems.find(s=>s.id===stageName);
+      if(target&&!target.items.find(x=>x._stepId===step.id)){
+        target.items.push({_stepId:step.id,icon:'\u{1F464}',name:step.name,type:'human',author:step.who||w.author,_wf:w.name});
+      }
+    });
+  });
 
-  let h=`<div style="margin-bottom:24px">
-    <div style="font-size:20px;font-weight:700;margin-bottom:4px">우리 팀은 이렇게 일합니다</div>
-    <div style="font-size:13px;color:var(--text2);line-height:1.6">
-      ${allAuthors.length}명이 ${totalSkills}개의 에이전트/스킬을 만들고, ${totalWF}개의 워크플로우로 연결해서 쓰고 있습니다.<br>
-      ${totalTools}개의 외부 도구가 연동되어 있습니다.
+  let h=`<div class="lifecycle">
+    <div class="lifecycle-title">제품 라이프사이클</div>
+    <div class="lifecycle-sub">아이디어부터 그로스까지, 각 단계에서 에이전트와 사람이 어떻게 연결되는지</div>
+    <div class="lc-flow">`;
+  stageItems.forEach((s,i)=>{
+    const count=s.items.length;
+    h+=`<div class="lc-stage${count?' active':' empty'}">
+      <div class="lc-stage-head"><div class="lc-stage-name">${s.name}</div><div class="lc-stage-count">${count}개</div></div>
+      <div class="lc-items">`;
+    s.items.forEach(item=>{
+      const dotClass=item.type==='agent'?'agent':item.type==='human'?'human':item.type==='skill'?'skill':'automation';
+      const authorShort=(item.author||'').split(',')[0].trim();
+      h+=`<div class="lc-item" title="${item.description||item._wf||''}">
+        <span class="lc-item-icon">${item.icon||'\u{1F527}'}</span>
+        <span class="lc-item-name">${item.name}</span>
+        <span class="lc-item-dot ${dotClass}"></span>
+        <span class="lc-item-author">${authorShort}</span>
+      </div>`;
+    });
+    h+=`</div></div>`;
+    if(i<stageItems.length-1)h+=`<div class="lc-arrow">\u2192</div>`;
+  });
+  h+=`</div>
+    <div class="lc-legend">
+      <div class="lc-legend-item"><span class="lc-item-dot agent" style="display:inline-block"></span>에이전트</div>
+      <div class="lc-legend-item"><span class="lc-item-dot skill" style="display:inline-block"></span>스킬</div>
+      <div class="lc-legend-item"><span class="lc-item-dot automation" style="display:inline-block"></span>자동화</div>
+      <div class="lc-legend-item"><span class="lc-item-dot human" style="display:inline-block"></span>사람 (게이트)</div>
     </div>
   </div>`;
+
+  // ── Section divider ──
+  h+=`<div style="font-size:16px;font-weight:700;margin-bottom:16px">멤버별 상세</div>`;
 
   h+=`<div class="team-grid">`;
   members.forEach(m=>{
