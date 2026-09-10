@@ -200,6 +200,23 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
 .lc-legend{display:flex;gap:14px;margin-top:12px;justify-content:center}
 .lc-legend-item{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text3)}
 .lc-arrow{display:flex;align-items:center;color:var(--border);font-size:14px;padding:0 2px;margin-top:20px}
+.lc-item.selected{background:var(--accent-bg);outline:2px solid var(--accent);outline-offset:-2px}
+.lc-detail{margin-top:16px;border:1px solid var(--border);border-radius:10px;padding:16px 20px;background:#fff;display:none}
+.lc-detail.show{display:block}
+.lc-detail-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.lc-detail-icon{font-size:24px}
+.lc-detail-name{font-size:16px;font-weight:700}
+.lc-detail-cmd{font-size:11px;color:var(--accent);font-family:monospace}
+.lc-detail-type{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px}
+.lc-detail-close{margin-left:auto;background:none;border:none;font-size:18px;color:var(--text3);cursor:pointer;padding:4px}
+.lc-detail-close:hover{color:var(--text)}
+.lc-detail-desc{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:12px}
+.lc-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lc-detail-field{font-size:12px}
+.lc-detail-field-label{color:var(--text3);font-size:11px;margin-bottom:2px}
+.lc-detail-field-val{color:var(--text)}
+.lc-detail-tools{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px}
+.lc-detail-tool{font-size:10px;padding:2px 7px;border-radius:4px;background:var(--surface);color:var(--text3)}
 
 /* Team cards */
 .team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
@@ -262,7 +279,10 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
   <header>
     <div class="logo">
       <img src="logo.png" alt="">
-      <h1>Skill Registry</h1>
+      <div>
+        <h1>Skill Registry</h1>
+        <div id="lastUpdate" style="font-size:11px;color:var(--text3);margin-top:1px"></div>
+      </div>
     </div>
     <div class="header-actions">
       <button class="btn" onclick="exportJSON()">Export</button>
@@ -338,6 +358,16 @@ async function loadData(){
     REGISTRY=await r1.json();WORKFLOWS=await r2.json();
   }catch(e){REGISTRY=EMBEDDED_REGISTRY;WORKFLOWS=EMBEDDED_WORKFLOWS}
   renderAll();
+  // Fetch last update info
+  fetch('https://api.github.com/repos/Routinery/skill-dashboard/commits?per_page=1')
+    .then(r=>r.json()).then(data=>{
+      if(data[0]){
+        const d=new Date(data[0].commit.author.date);
+        const name=data[0].commit.author.name||'unknown';
+        const dateStr=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+        document.getElementById('lastUpdate').textContent=`${dateStr} updated by ${name}`;
+      }
+    }).catch(()=>{});
 }
 
 function renderAll(){renderTabs();renderFilters();renderContent()}
@@ -503,8 +533,9 @@ function renderTeam(){
     s.items.forEach(item=>{
       const dotClass=item.type==='agent'?'agent':item.type==='human'?'human':item.type==='skill'?'skill':'automation';
       const authorShort=(item.author||'').split(',')[0].trim();
-      h+=`<div class="lc-item" title="${item.description||item._wf||''}">
-        <span class="lc-item-icon">${item.icon||'\u{1F527}'}</span>
+      const itemId=item.id||item._stepId||'';
+      h+=`<div class="lc-item" data-lc-id="${itemId}" onclick="showLcDetail(this,'${itemId}')">
+        <span class="lc-item-icon">${item.icon||'\u{1F464}'}</span>
         <span class="lc-item-name">${item.name}</span>
         <span class="lc-item-dot ${dotClass}"></span>
         <span class="lc-item-author">${authorShort}</span>
@@ -520,6 +551,7 @@ function renderTeam(){
       <div class="lc-legend-item"><span class="lc-item-dot automation" style="display:inline-block"></span>자동화</div>
       <div class="lc-legend-item"><span class="lc-item-dot human" style="display:inline-block"></span>사람 (게이트)</div>
     </div>
+    <div class="lc-detail" id="lcDetail"></div>
   </div>`;
 
   // ── Section divider ──
@@ -568,6 +600,49 @@ function renderTeam(){
   });
   h+=`</div>`;
   document.getElementById('content').innerHTML=h;
+}
+
+// ── Lifecycle detail ──
+function showLcDetail(el,id){
+  // Toggle selection
+  document.querySelectorAll('.lc-item.selected').forEach(e=>e.classList.remove('selected'));
+  el.classList.add('selected');
+  // Find item in registry or workflow steps
+  let item=REGISTRY.find(d=>d.id===id);
+  let isStep=false;
+  if(!item){
+    WORKFLOWS.forEach(w=>{w.steps.forEach(s=>{if(s.id===id){item={...s,_wfName:w.name,_wfTeam:w.team};isStep=true}})});
+  }
+  if(!item){document.getElementById('lcDetail').classList.remove('show');return}
+  const typeLabel=isStep?(item.type==='human'?'사람 (게이트)':item.type==='agent'?'에이전트':'트리거'):(TL[item.type]||item.type);
+  const typeBg=item.type==='agent'?'var(--accent-bg)':item.type==='human'?'var(--yellow-bg)':item.type==='skill'?'var(--green-bg)':'var(--blue-bg)';
+  const typeFg=item.type==='agent'?'var(--accent)':item.type==='human'?'var(--orange)':item.type==='skill'?'var(--green)':'var(--blue)';
+  const tools=(item.tools||item.integrations||[]);
+  let d=`<div class="lc-detail-head">
+    <span class="lc-detail-icon">${item.icon||'\u{1F464}'}</span>
+    <div><div class="lc-detail-name">${item.name}</div>${item.command?`<div class="lc-detail-cmd">${item.command}</div>`:''}</div>
+    <span class="lc-detail-type" style="background:${typeBg};color:${typeFg}">${typeLabel}</span>
+    <button class="lc-detail-close" onclick="closeLcDetail()">\u2715</button>
+  </div>
+  <div class="lc-detail-desc">${item.description||''}</div>
+  <div class="lc-detail-grid">`;
+  if(item.input)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">입력</div><div class="lc-detail-field-val">${item.input}</div></div>`;
+  if(item.output)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">출력</div><div class="lc-detail-field-val">${item.output}</div></div>`;
+  if(item.author||item.who)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">담당자</div><div class="lc-detail-field-val">${item.author||item.who}</div></div>`;
+  if(item.trigger)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">실행</div><div class="lc-detail-field-val">${item.trigger}</div></div>`;
+  if(item.platform)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">플랫폼</div><div class="lc-detail-field-val">${item.platform}</div></div>`;
+  if(item._wfName)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">워크플로우</div><div class="lc-detail-field-val">${item._wfTeam} / ${item._wfName}</div></div>`;
+  if(item.schedule)d+=`<div class="lc-detail-field"><div class="lc-detail-field-label">스케줄</div><div class="lc-detail-field-val">${item.schedule}</div></div>`;
+  d+=`</div>`;
+  if(tools.length)d+=`<div class="lc-detail-tools">${tools.map(t=>`<span class="lc-detail-tool">${t}</span>`).join('')}</div>`;
+  const panel=document.getElementById('lcDetail');
+  panel.innerHTML=d;
+  panel.classList.add('show');
+  panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function closeLcDetail(){
+  document.getElementById('lcDetail').classList.remove('show');
+  document.querySelectorAll('.lc-item.selected').forEach(e=>e.classList.remove('selected'));
 }
 
 // ── Form ──
