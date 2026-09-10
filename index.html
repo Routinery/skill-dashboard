@@ -174,6 +174,26 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
 .guide-actions{display:flex;gap:8px;flex-wrap:wrap}
 .guide-actions .btn{height:30px;font-size:12px}
 
+/* Team cards */
+.team-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px}
+.member-card{border:1px solid var(--border);border-radius:10px;padding:20px;background:#fff}
+.member-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.member-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent-bg);color:var(--accent);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;flex-shrink:0}
+.member-name{font-size:16px;font-weight:700}
+.member-sub{font-size:11px;color:var(--text3);margin-top:1px}
+.member-section{margin-bottom:12px}
+.member-section-title{font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px}
+.member-items{display:flex;flex-direction:column;gap:4px}
+.member-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);padding:4px 8px;border-radius:6px;background:var(--surface)}
+.member-item-icon{font-size:14px;flex-shrink:0}
+.member-item-name{font-weight:500;color:var(--text)}
+.member-item-type{font-size:10px;color:var(--text3);margin-left:auto}
+.member-wf{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2);padding:4px 8px;border-radius:6px;background:var(--surface)}
+.member-wf-team{font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-bg);padding:1px 6px;border-radius:3px}
+.member-wf-role{font-size:10px;color:var(--text3);margin-left:auto}
+.member-tools{display:flex;gap:3px;flex-wrap:wrap;margin-top:8px}
+.member-tool{font-size:10px;padding:2px 6px;border-radius:4px;background:var(--surface);color:var(--text3)}
+
 .empty{text-align:center;padding:48px 0;color:var(--text3);font-size:13px;grid-column:1/-1}
 
 /* Modal */
@@ -200,6 +220,7 @@ header{display:flex;align-items:center;justify-content:space-between;gap:16px;ma
 
 @media(max-width:768px){
   .grid{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(3,1fr)}
   .frow{grid-template-columns:1fr}
   .wf-info{display:none}
@@ -296,9 +317,11 @@ function renderAll(){renderTabs();renderFilters();renderContent()}
 
 function renderTabs(){
   const gc=WORKFLOWS.reduce((n,w)=>n+w.steps.filter(s=>s.gap).length,0);
+  const allAuthors=getAuthors([...REGISTRY,...WORKFLOWS]);
   document.getElementById('mainTabs').innerHTML=`
     <button class="tab${mainTab==='workflows'?' active':''}" onclick="switchTab('workflows')">Workflows<span class="tab-badge">${WORKFLOWS.length}</span>${gc?`<span class="tab-badge" style="color:var(--red);background:var(--red-bg)">${gc} gaps</span>`:''}</button>
-    <button class="tab${mainTab==='registry'?' active':''}" onclick="switchTab('registry')">Registry<span class="tab-badge">${REGISTRY.length}</span></button>`;
+    <button class="tab${mainTab==='registry'?' active':''}" onclick="switchTab('registry')">Registry<span class="tab-badge">${REGISTRY.length}</span></button>
+    <button class="tab${mainTab==='team'?' active':''}" onclick="switchTab('team')">Team<span class="tab-badge">${allAuthors.length}</span></button>`;
 }
 function switchTab(t){mainTab=t;currentFilter='All';currentType='All';currentAuthor='All';renderAll()}
 
@@ -308,6 +331,7 @@ function getAuthors(src){
 
 function renderFilters(){
   const el=document.getElementById('subFilters');
+  if(mainTab==='team'){el.innerHTML='';return}
   if(mainTab==='workflows'){
     const teams=[...new Set([...TEAMS,...WORKFLOWS.map(w=>w.team)])];
     const au=getAuthors(WORKFLOWS);
@@ -331,7 +355,7 @@ function sf(f){currentFilter=f;renderFilters();renderContent()}
 function st(t){currentType=currentType===t?'All':t;renderFilters();renderContent()}
 function sa(a){currentAuthor=a;renderFilters();renderContent()}
 function matchAuth(a){return currentAuthor==='All'||(a||'').split(',').map(s=>s.trim()).includes(currentAuthor)}
-function renderContent(){mainTab==='workflows'?renderWF():renderReg()}
+function renderContent(){mainTab==='workflows'?renderWF():mainTab==='registry'?renderReg():renderTeam()}
 
 // ── Workflows ──
 function renderWF(){
@@ -386,6 +410,84 @@ function cardHTML(d){
 function toggleCard(el,e){if(e.target.closest('.author-input'))return;el.classList.toggle('expanded')}
 function updateAuth(id,v){const d=REGISTRY.find(d=>d.id===id);if(d){d.author=v.trim();toast(v.trim()?'담당자: '+v.trim():'담당자 해제됨');renderFilters()}}
 function updateWfAuth(id,v){const w=WORKFLOWS.find(w=>w.id===id);if(w){w.author=v.trim();toast(v.trim()?'담당자: '+v.trim():'담당자 해제됨');renderFilters();renderContent()}}
+
+// ── Team ──
+function renderTeam(){
+  const q=document.getElementById('search').value.toLowerCase();
+  // Gather all unique authors from both sources
+  const allAuthors=getAuthors([...REGISTRY,...WORKFLOWS]);
+  let members=allAuthors.map(name=>{
+    const skills=REGISTRY.filter(d=>(d.author||'').split(',').map(s=>s.trim()).includes(name));
+    const wfRoles=[];
+    WORKFLOWS.forEach(w=>{
+      const authorMatch=(w.author||'').split(',').map(s=>s.trim()).includes(name);
+      const stepRoles=w.steps.filter(s=>s.who&&s.who.split('/').map(x=>x.trim()).includes(name));
+      if(authorMatch)wfRoles.push({wf:w.name,team:w.team,role:'owner'});
+      stepRoles.forEach(s=>wfRoles.push({wf:w.name,team:w.team,role:s.name}));
+    });
+    const tools=[...new Set(skills.flatMap(d=>d.integrations||[]))].sort();
+    const cats=[...new Set(skills.map(d=>d.category))];
+    return{name,skills,wfRoles,tools,cats};
+  });
+  if(q)members=members.filter(m=>m.name.toLowerCase().includes(q)||m.skills.some(s=>s.name.toLowerCase().includes(q)));
+
+  // Summary stats
+  const totalSkills=REGISTRY.length;
+  const totalWF=WORKFLOWS.length;
+  const totalTools=[...new Set(REGISTRY.flatMap(d=>d.integrations||[]))].length;
+
+  let h=`<div style="margin-bottom:24px">
+    <div style="font-size:20px;font-weight:700;margin-bottom:4px">우리 팀은 이렇게 일합니다</div>
+    <div style="font-size:13px;color:var(--text2);line-height:1.6">
+      ${allAuthors.length}명이 ${totalSkills}개의 에이전트/스킬을 만들고, ${totalWF}개의 워크플로우로 연결해서 쓰고 있습니다.<br>
+      ${totalTools}개의 외부 도구가 연동되어 있습니다.
+    </div>
+  </div>`;
+
+  h+=`<div class="team-grid">`;
+  members.forEach(m=>{
+    const initial=m.name[0].toUpperCase();
+    const agentCount=m.skills.filter(s=>s.type==='agent').length;
+    const skillCount=m.skills.filter(s=>s.type!=='agent').length;
+    const subtitle=[];
+    if(m.cats.length)subtitle.push(m.cats.join(' / '));
+    if(agentCount)subtitle.push(agentCount+'개 에이전트');
+    if(skillCount)subtitle.push(skillCount+'개 스킬');
+
+    let card=`<div class="member-card">
+      <div class="member-head">
+        <div class="member-avatar">${initial}</div>
+        <div><div class="member-name">${m.name}</div>
+        <div class="member-sub">${subtitle.join(' · ')||'등록된 항목 없음'}</div></div>
+      </div>`;
+
+    if(m.skills.length){
+      card+=`<div class="member-section"><div class="member-section-title">만든 것</div><div class="member-items">`;
+      m.skills.forEach(s=>{
+        card+=`<div class="member-item"><span class="member-item-icon">${s.icon||'\u{1F527}'}</span><span class="member-item-name">${s.name}</span>${s.command?`<span style="font-size:10px;color:var(--accent);font-family:monospace">${s.command}</span>`:''}<span class="member-item-type">${TL[s.type]||s.type}</span></div>`;
+      });
+      card+=`</div></div>`;
+    }
+
+    if(m.wfRoles.length){
+      const unique=[...new Map(m.wfRoles.map(r=>[r.wf+r.role,r])).values()];
+      card+=`<div class="member-section"><div class="member-section-title">워크플로우 역할</div><div class="member-items">`;
+      unique.forEach(r=>{
+        card+=`<div class="member-wf"><span class="member-wf-team">${r.team}</span><span>${r.wf}</span><span class="member-wf-role">${r.role==='owner'?'담당자':r.role}</span></div>`;
+      });
+      card+=`</div></div>`;
+    }
+
+    if(m.tools.length){
+      card+=`<div class="member-tools">${m.tools.map(t=>`<span class="member-tool">${t}</span>`).join('')}</div>`;
+    }
+
+    card+=`</div>`;
+    h+=card;
+  });
+  h+=`</div>`;
+  document.getElementById('content').innerHTML=h;
+}
 
 // ── Form ──
 function openForm(){document.getElementById('formModal').classList.add('show');document.getElementById('formOutput').innerHTML=''}
