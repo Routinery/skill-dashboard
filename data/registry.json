@@ -473,5 +473,47 @@
     "author": "Dina",
     "schedule": "매일 22:00 / 02:00 / 07:00 (스크립트 실행 중일 때)",
     "updatedAt": "2026-09-03"
+  },
+  {
+    "id": "qa-change-analysis",
+    "name": "배포 전 QA 시나리오 도출",
+    "command": "/qa-change-analysis",
+    "description": "dev 대비 diff로 영향 범위를 3층으로 잡고, 서브에이전트 8개로 시나리오를 뽑아 적대적 토론 2라운드로 중복·누락을 거른 뒤 실행 순서까지 낸다.",
+    "category": "QA",
+    "type": "skill",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "검증할 브랜치명",
+    "output": "검증 시나리오 + 우선순위 실행 순서",
+    "integrations": [
+      "GitHub",
+      "Notion"
+    ],
+    "icon": "🔬",
+    "author": "Kyum",
+    "skillPath": "skills/qa-change-analysis/SKILL.md",
+    "updatedAt": "2026-09-22"
+  },
+  {
+    "id": "qa-test-design",
+    "name": "QA 테스트 설계",
+    "command": "/qa-test-design",
+    "description": "정본 정책·코드·실제 화면을 대조해 확인 목록을 만들고, 6단계를 거쳐 19열 테스트 케이스와 워크북까지 작성. 회귀 범위도 함께 뽑는다.",
+    "category": "QA",
+    "type": "skill",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "대상 브랜치 · 기획 문서",
+    "output": "확인 목록 + 19열 테스트 케이스 (CSV·구글 시트)",
+    "integrations": [
+      "GitHub",
+      "Notion",
+      "Google Drive",
+      "Figma"
+    ],
+    "icon": "📋",
+    "author": "Kyum",
+    "skillPath": "skills/qa-test-design/SKILL.md",
+    "updatedAt": "2026-09-22"
   }
 ]
