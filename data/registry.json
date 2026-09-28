@@ -515,5 +515,45 @@
     "author": "Kyum",
     "skillPath": "skills/qa-test-design/SKILL.md",
     "updatedAt": "2026-09-22"
+  },
+  {
+    "id": "appsshot-code-to-figma-draw",
+    "name": "앱스샷 화면 그리기 (코드→Figma)",
+    "command": "/appsshot-code-to-figma-draw",
+    "description": "origin/dev 코드를 읽어 앱 화면을 Figma에 한국어·영어로 그린다. 360×780 기준으로 그린 뒤 폰·패드로 파생하고, 색·텍스트·컴포넌트를 디자인 시스템에 연결한 채로 만든다.",
+    "category": "디자인",
+    "type": "skill",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "그릴 화면 + 대상 Figma 파일 URL",
+    "output": "Figma 프레임 (한/영 × 폰·패드)",
+    "integrations": [
+      "Figma",
+      "GitHub"
+    ],
+    "icon": "📐",
+    "author": "Clover",
+    "skillPath": "skills/appsshot-code-to-figma-draw/SKILL.md",
+    "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "appsshot-i18n",
+    "name": "앱스샷 다국어 대응",
+    "command": "/appsshot-i18n",
+    "description": "한·영 확정된 앱스토어 스크린샷을 나머지 10개 언어로 펼친다. 한국어=의미 원본·영어=문장 골격 원칙, 앱 화면 문구는 번역하지 않고 origin/dev 번역값을 인용.",
+    "category": "디자인",
+    "type": "skill",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "한·영 확정된 앱스샷 Figma 섹션",
+    "output": "10개 언어 섹션 (Es·Fr·De·Pt·Id·Zh·Pl·Ja·Vi·Ar)",
+    "integrations": [
+      "Figma",
+      "GitHub"
+    ],
+    "icon": "🌏",
+    "author": "Clover",
+    "skillPath": "skills/appsshot-i18n/SKILL.md",
+    "updatedAt": "2026-09-28"
   }
 ]
