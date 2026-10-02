@@ -533,7 +533,7 @@
     ],
     "icon": "📐",
     "author": "Clover",
-    "skillPath": "skills/appsshot-code-to-figma-draw/SKILL.md",
+    "skillPath": "skills/designer/appsshot-code-to-figma-draw/SKILL.md",
     "updatedAt": "2026-09-28"
   },
   {
@@ -553,7 +553,26 @@
     ],
     "icon": "🌏",
     "author": "Clover",
-    "skillPath": "skills/appsshot-i18n/SKILL.md",
+    "skillPath": "skills/designer/appsshot-i18n/SKILL.md",
     "updatedAt": "2026-09-28"
+  },
+  {
+    "id": "appsshot-pad-derive",
+    "name": "앱스샷 패드 사이즈 대응",
+    "command": "/appsshot-pad-derive",
+    "description": "확정된 폰 앱스샷(6.5\" 또는 5.5\")을 기준으로 iPad 2048×2732 행을 만든다. 기존 패드 목업 틀은 그대로 두고 앱 UI만 패드 폭으로 다시 그려 넣어, 기준 폰과 날짜·항목·문구가 똑같은 패드 컷을 얻는다.",
+    "category": "디자인",
+    "type": "skill",
+    "platform": "Claude Code",
+    "trigger": "slash-command",
+    "input": "확정된 폰 앱스샷 행(6.5\" 또는 5.5\") + 기존 패드 목업이 있는 Figma 섹션",
+    "output": "iPad 2048×2732 프레임 11개 (새 섹션)",
+    "integrations": [
+      "Figma"
+    ],
+    "icon": "📱",
+    "author": "Clover",
+    "skillPath": "skills/designer/appsshot-pad-derive/SKILL.md",
+    "updatedAt": "2026-10-02"
   }
 ]
